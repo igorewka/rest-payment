@@ -1,5 +1,7 @@
 package eu.isakels.rest.model;
 
+import eu.isakels.rest.model.payment.Types;
+import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,12 +15,24 @@ public class MarshallingTest {
     private static final Logger logger = LoggerFactory.getLogger(MarshallingTest.class);
 
     @Test
-    public void createPayment() throws Exception {
-        final var req = new CreatePaymentReq(new BigDecimal("10.35"), "DBTRIBAN");
-        final var reqStr = objMapper.writeValueAsString(req);
-        logger.info("reqStr: {}", reqStr);
+    public void createPaymentReq() throws Exception {
+        final var req = new CreatePaymentReq(Types.PaymentType.TYPE1, new BigDecimal("10.35"), Types.Currency.EUR, "DBTRIBAN", "CRDTRIBAN", "payment type1 details", null);
 
-        var reqRestored = objMapper.readValue(reqStr, CreatePaymentReq.class);
-        logger.info("reqRestored: {}", reqRestored);
+        final var reqMarshalled = objMapper.writeValueAsString(req);
+        logger.info("reqMarshalled: {}", reqMarshalled);
+
+        var reqUnmarshalled = objMapper.readValue(reqMarshalled, CreatePaymentReq.class);
+        Assert.assertEquals(req, reqUnmarshalled);
+    }
+
+    @Test
+    public void createPaymentResp() throws Exception {
+        final var resp = new CreatePaymentResp("afsfhdhsdfgdhshdhajkjh");
+
+        final var respMarshalled = objMapper.writeValueAsString(resp);
+        logger.info("respMarshalled: {}", respMarshalled);
+
+        var respUnmarshalled = objMapper.readValue(respMarshalled, CreatePaymentResp.class);
+        Assert.assertEquals(resp, respUnmarshalled);
     }
 }

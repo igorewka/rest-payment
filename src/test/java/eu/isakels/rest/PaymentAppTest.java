@@ -32,25 +32,27 @@ public class PaymentAppTest {
 
     @Test
     public void createPayment() throws Exception {
-        final var req = new CreatePaymentReq(new BigDecimal("10.35"), "DBTRIBAN");
-
-        final var reqStr = objMapper.writeValueAsString(req);
-        logger.info("reqStr: {}", reqStr);
-
-//        var reqRestored = objMapper.readValue(reqStr, CreatePaymentReq.class);
-//        logger.info("reqRestored: {}", reqRestored);
-
-        final MvcResult result = mvc.perform(post("/payment")
-                .content(reqStr)
-                .contentType(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-        ).andExpect(status().isOk())
-                .andReturn();
-
-        var respStr = result.getResponse().getContentAsString();
-        logger.info("respStr: {}", respStr);
-        var resp = objMapper.readValue(respStr, CreatePaymentResp.class);
-
-        assertTrue(!resp.getId().isEmpty());
+//        final var req = new CreatePaymentReq(new BigDecimal("10.35"), "DBTRIBAN");
+//
+//        final var reqStr = objMapper.writeValueAsString(req);
+//        logger.info("reqStr: {}", reqStr);
+//
+////        var reqRestored = objMapper.readValue(reqStr, CreatePaymentReq.class);
+////        logger.info("reqRestored: {}", reqRestored);
+//
+//        final MvcResult result = mvc.perform(post("/payment")
+//                .content(reqStr)
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .accept(MediaType.APPLICATION_JSON)
+//        ).andExpect(status().isOk())
+//                .andReturn();
+//
+//        var respStr = result.getResponse().getContentAsString();
+//        logger.info("respStr: {}", respStr);
+//        var resp = objMapper.readValue(respStr, CreatePaymentResp.class);
+//
+//        assertTrue(!resp.getId().isEmpty());
+        // TODO: fix test
+        assertTrue(false);
     }
 }
