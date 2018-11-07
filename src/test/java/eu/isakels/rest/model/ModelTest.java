@@ -33,105 +33,105 @@ public class ModelTest {
         TestUtil.assertExc("amount", () -> new PaymentT1(
                 null,
                 Types.Currency.EUR,
-                "DBTRIBAN",
-                "CRDTRIBAN",
-                "payment type1 details"));
+                new Types.DebtorIban("DBTRIBAN"),
+                new Types.CreditorIban("CRDTRIBAN"),
+                new Types.Details("payment type1 details")));
 
         TestUtil.assertExc("amount", () -> new PaymentT1(
-                new BigDecimal("-10.35"),
+                new Types.Amount(new BigDecimal("-10.35")),
                 Types.Currency.EUR,
-                "DBTRIBAN",
-                "CRDTRIBAN",
-                "payment type1 details"));
+                new Types.DebtorIban("DBTRIBAN"),
+                new Types.CreditorIban("CRDTRIBAN"),
+                new Types.Details("payment type1 details")));
 
         TestUtil.assertExc("currency", () -> new PaymentT1(
-                new BigDecimal("10.35"),
+                new Types.Amount(new BigDecimal("10.35")),
                 null,
-                "DBTRIBAN",
-                "CRDTRIBAN",
-                "payment type1 details"));
+                new Types.DebtorIban("DBTRIBAN"),
+                new Types.CreditorIban("CRDTRIBAN"),
+                new Types.Details("payment type1 details")));
 
         TestUtil.assertExc("currency", () -> new PaymentT1(
-                new BigDecimal("10.35"),
+                new Types.Amount(new BigDecimal("10.35")),
                 Types.Currency.USD,
-                "DBTRIBAN",
-                "CRDTRIBAN",
-                "payment type1 details"));
+                new Types.DebtorIban("DBTRIBAN"),
+                new Types.CreditorIban("CRDTRIBAN"),
+                new Types.Details("payment type1 details")));
 
         TestUtil.assertExc("debtorIban", () -> new PaymentT1(
-                new BigDecimal("10.35"),
+                new Types.Amount(new BigDecimal("10.35")),
                 Types.Currency.EUR,
                 null,
-                "CRDTRIBAN",
-                "payment type1 details"));
+                new Types.CreditorIban("CRDTRIBAN"),
+                new Types.Details("payment type1 details")));
 
         TestUtil.assertExc("debtorIban", () -> new PaymentT1(
-                new BigDecimal("10.35"),
+                new Types.Amount(new BigDecimal("10.35")),
                 Types.Currency.EUR,
-                " ",
-                "CRDTRIBAN",
-                "payment type1 details"));
+                new Types.DebtorIban(" "),
+                new Types.CreditorIban("CRDTRIBAN"),
+                new Types.Details("payment type1 details")));
 
         TestUtil.assertExc("creditorIban", () -> new PaymentT1(
-                new BigDecimal("10.35"),
+                new Types.Amount(new BigDecimal("10.35")),
                 Types.Currency.EUR,
-                "DBTRIBAN",
+                new Types.DebtorIban("DBTRIBAN"),
                 null,
-                "payment type1 details"));
+                new Types.Details("payment type1 details")));
 
         TestUtil.assertExc("creditorIban", () -> new PaymentT1(
-                new BigDecimal("10.35"),
+                new Types.Amount(new BigDecimal("10.35")),
                 Types.Currency.EUR,
-                "DBTRIBAN",
-                " ",
-                "payment type1 details"));
+                new Types.DebtorIban("DBTRIBAN"),
+                new Types.CreditorIban(" "),
+                new Types.Details("payment type1 details")));
 
         TestUtil.assertExc("details", () -> new PaymentT1(
-                new BigDecimal("10.35"),
+                new Types.Amount(new BigDecimal("10.35")),
                 Types.Currency.EUR,
-                "DBTRIBAN",
-                "CRDTRIBAN",
+                new Types.DebtorIban("DBTRIBAN"),
+                new Types.CreditorIban("CRDTRIBAN"),
                 null));
 
         TestUtil.assertExc("details", () -> new PaymentT1(
-                new BigDecimal("10.35"),
+                new Types.Amount(new BigDecimal("10.35")),
                 Types.Currency.EUR,
-                "DBTRIBAN",
-                "CRDTRIBAN",
-                " "));
+                new Types.DebtorIban("DBTRIBAN"),
+                new Types.CreditorIban("CRDTRIBAN"),
+                new Types.Details(" ")));
     }
 
     @Test
     public void paymentT2Failing() {
         TestUtil.assertExc("currency", () -> new PaymentT2(
-                new BigDecimal("10.35"),
+                new Types.Amount(new BigDecimal("10.35")),
                 Types.Currency.EUR,
-                "DBTRIBAN",
-                "CRDTRIBAN",
+                new Types.DebtorIban("DBTRIBAN"),
+                new Types.CreditorIban("CRDTRIBAN"),
                 null));
     }
 
     @Test
     public void paymentT3Failing() {
         TestUtil.assertExc("currency", () -> new PaymentT3(
-                new BigDecimal("10.35"),
+                new Types.Amount(new BigDecimal("10.35")),
                 Types.Currency.GBP,
-                "DBTRIBAN",
-                "CRDTRIBAN",
-                "CRDTRBANKBIC"));
+                new Types.DebtorIban("DBTRIBAN"),
+                new Types.CreditorIban("CRDTRIBAN"),
+                new Types.CreditorBankBic("CRDTRBANKBIC")));
 
         TestUtil.assertExc("creditorBankBic", () -> new PaymentT3(
-                new BigDecimal("10.35"),
+                new Types.Amount(new BigDecimal("10.35")),
                 Types.Currency.EUR,
-                "DBTRIBAN",
-                "CRDTRIBAN",
+                new Types.DebtorIban("DBTRIBAN"),
+                new Types.CreditorIban("CRDTRIBAN"),
                 null));
 
         TestUtil.assertExc("creditorBankBic", () -> new PaymentT3(
-                new BigDecimal("10.35"),
+                new Types.Amount(new BigDecimal("10.35")),
                 Types.Currency.EUR,
-                "DBTRIBAN",
-                "CRDTRIBAN",
-                " "));
+                new Types.DebtorIban("DBTRIBAN"),
+                new Types.CreditorIban("CRDTRIBAN"),
+                new Types.CreditorBankBic(" ")));
     }
 }

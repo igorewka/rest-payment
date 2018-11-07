@@ -7,25 +7,25 @@ public abstract class PaymentFactory {
         final BasePayment payment;
         switch (req.getType()) {
             case TYPE1:
-                payment = new PaymentT1(req.getAmount(),
+                payment = new PaymentT1(new Types.Amount(req.getAmount()),
                         req.getCurrency(),
-                        req.getDebtorIban(),
-                        req.getCreditorIban(),
-                        req.getDetails());
+                        new Types.DebtorIban(req.getDebtorIban()),
+                        new Types.CreditorIban(req.getCreditorIban()),
+                        new Types.Details(req.getDetails()));
                 break;
             case TYPE2:
-                payment = new PaymentT2(req.getAmount(),
+                payment = new PaymentT2(new Types.Amount(req.getAmount()),
                         req.getCurrency(),
-                        req.getDebtorIban(),
-                        req.getCreditorIban(),
-                        req.getDetails());
+                        new Types.DebtorIban(req.getDebtorIban()),
+                        new Types.CreditorIban(req.getCreditorIban()),
+                        new Types.Details(req.getDetails()));
                 break;
             case TYPE3:
-                payment = new PaymentT3(req.getAmount(),
+                payment = new PaymentT3(new Types.Amount(req.getAmount()),
                         req.getCurrency(),
-                        req.getDebtorIban(),
-                        req.getCreditorIban(),
-                        req.getCreditorBankBic());
+                        new Types.DebtorIban(req.getDebtorIban()),
+                        new Types.CreditorIban(req.getCreditorIban()),
+                        new Types.CreditorBankBic(req.getCreditorBankBic()));
                 break;
             default:
                 throw new RuntimeException("unknown payment type");

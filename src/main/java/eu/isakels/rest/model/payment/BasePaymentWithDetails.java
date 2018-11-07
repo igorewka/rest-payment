@@ -1,20 +1,17 @@
 package eu.isakels.rest.model.payment;
 
-import eu.isakels.rest.model.Util;
-
-import java.math.BigDecimal;
+import java.util.UUID;
 
 abstract class BasePaymentWithDetails extends BasePayment {
 
-    // TODO: create type
-    final String details;
+    final Types.Details details;
 
-    BasePaymentWithDetails(final String id,
-                           final BigDecimal amount,
+    BasePaymentWithDetails(final UUID id,
+                           final Types.Amount amount,
                            final Types.Currency currency,
-                           final String debtorIban,
-                           final String creditorIban,
-                           final String details) {
+                           final Types.DebtorIban debtorIban,
+                           final Types.CreditorIban creditorIban,
+                           final Types.Details details) {
         super(id, amount, currency, debtorIban, creditorIban);
 
         this.details = details;

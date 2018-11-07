@@ -2,34 +2,34 @@ package eu.isakels.rest.model.payment;
 
 import eu.isakels.rest.model.Util;
 
-import java.math.BigDecimal;
+import java.util.UUID;
 
 public class PaymentT3 extends BasePayment {
-    // TODO: create type
-    private final String creditorBankBic;
 
-    public PaymentT3(final String id,
-                     final BigDecimal amount,
+    private final Types.CreditorBankBic creditorBankBic;
+
+    public PaymentT3(final UUID id,
+                     final Types.Amount amount,
                      final Types.Currency currency,
-                     final String debtorIban,
-                     final String creditorIban,
-                     final String creditorBankBic) {
+                     final Types.DebtorIban debtorIban,
+                     final Types.CreditorIban creditorIban,
+                     final Types.CreditorBankBic creditorBankBic) {
         super(id, amount, currency, debtorIban, creditorIban);
 
         Util.checkApplicableCurrencies(currency, Types.Currency.EUR, Types.Currency.USD);
 
-        this.creditorBankBic = Util.requireNonNullNotBlank(creditorBankBic, "creditorBankBic is mandatory");
+        this.creditorBankBic = (Types.CreditorBankBic) Util.requireNonNullNotBlank(creditorBankBic, "creditorBankBic is mandatory");
     }
 
-    public PaymentT3(final BigDecimal amount,
+    public PaymentT3(final Types.Amount amount,
                      final Types.Currency currency,
-                     final String debtorIban,
-                     final String creditorIban,
-                     final String creditorBankBic) {
+                     final Types.DebtorIban debtorIban,
+                     final Types.CreditorIban creditorIban,
+                     final Types.CreditorBankBic creditorBankBic) {
         this(null, amount, currency, debtorIban, creditorIban, creditorBankBic);
     }
 
-    public String getCreditorBankBic() {
+    public Types.CreditorBankBic getCreditorBankBic() {
         return creditorBankBic;
     }
 }

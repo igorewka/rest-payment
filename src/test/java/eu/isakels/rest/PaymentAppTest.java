@@ -17,7 +17,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 import static eu.isakels.rest.util.TestUtil.objMapper;
 import static org.junit.Assert.assertTrue;

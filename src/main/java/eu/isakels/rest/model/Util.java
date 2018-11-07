@@ -10,13 +10,21 @@ import java.util.stream.Collectors;
 public abstract class Util {
 
     public static boolean isNegativeOrZero(final BigDecimal amount) {
-        return amount.signum() <= 0;
+        return amount != null && amount.signum() <= 0;
     }
 
     public static BigDecimal requireNonNullPositive(final BigDecimal amount, final String msg) {
         if (amount == null || isNegativeOrZero(amount)) throw new IllegalArgumentException(msg);
 
         return amount;
+    }
+
+    public static Types.Value<BigDecimal> requireNonNullPositive(final Types.Value<BigDecimal> obj,
+                                                                 final String msg) {
+        if (obj == null || obj.getValue() == null || isNegativeOrZero(obj.getValue()))
+            throw new IllegalArgumentException(msg);
+
+        return obj;
     }
 
     public static <T> T requireNonNull(final T obj, final String msg) {
@@ -29,6 +37,14 @@ public abstract class Util {
         if (StringUtils.isBlank(str)) throw new IllegalArgumentException(msg);
 
         return str;
+    }
+
+    public static Types.Value<String> requireNonNullNotBlank(final Types.Value<String> obj,
+                                                             final String msg) {
+        if (obj == null || obj.getValue() == null || StringUtils.isBlank(obj.getValue()))
+            throw new IllegalArgumentException(msg);
+
+        return obj;
     }
 
     public static void checkApplicableCurrencies(final Types.Currency currency, final Types.Currency... applicableCurrencies) {

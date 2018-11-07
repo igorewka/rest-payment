@@ -2,38 +2,38 @@ package eu.isakels.rest.model.payment;
 
 import eu.isakels.rest.model.Util;
 
-import java.math.BigDecimal;
 import java.util.Optional;
+import java.util.UUID;
 
 public abstract class BasePayment {
-    // TODO: create type
-    private final String id;
-    // TODO: create type
-    private final BigDecimal amount;
+    private final UUID id;
+    private final Types.Amount amount;
     private final Types.Currency currency;
-    // TODO: create type
-    private final String debtorIban;
-    // TODO: create type
-    private final String creditorIban;
+    private final Types.DebtorIban debtorIban;
+    private final Types.CreditorIban creditorIban;
 
     // TODO: think about converting some params into objects
-    BasePayment(final String id,
-                final BigDecimal amount,
+    BasePayment(final UUID id,
+                // TODO: combine amount with currency
+                final Types.Amount amount,
                 final Types.Currency currency,
-                final String debtorIban,
-                final String creditorIban) {
+                final Types.DebtorIban debtorIban,
+                final Types.CreditorIban creditorIban) {
         this.id = id;
-        this.amount = Util.requireNonNullPositive(amount, "amount is mandatory and must be positive");
+        this.amount = (Types.Amount) Util.requireNonNullPositive(amount,
+                "amount is mandatory and must be positive");
         this.currency = Util.requireNonNull(currency, "currency is mandatory");
-        this.debtorIban = Util.requireNonNullNotBlank(debtorIban, "debtorIban is mandatory");
-        this.creditorIban = Util.requireNonNullNotBlank(creditorIban, "creditorIban is mandatory");
+        this.debtorIban = (Types.DebtorIban) Util.requireNonNullNotBlank(debtorIban,
+                "debtorIban is mandatory");
+        this.creditorIban = (Types.CreditorIban) Util.requireNonNullNotBlank(creditorIban,
+                "creditorIban is mandatory");
     }
 
-    public Optional<String> getId() {
+    public Optional<UUID> getId() {
         return Optional.ofNullable(id);
     }
 
-    public BigDecimal getAmount() {
+    public Types.Amount getAmount() {
         return amount;
     }
 
@@ -41,11 +41,11 @@ public abstract class BasePayment {
         return currency;
     }
 
-    public String getDebtorIban() {
+    public Types.DebtorIban getDebtorIban() {
         return debtorIban;
     }
 
-    public String getCreditorIban() {
+    public Types.CreditorIban getCreditorIban() {
         return creditorIban;
     }
 }
