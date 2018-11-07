@@ -1,6 +1,6 @@
 package eu.isakels.rest.model.payment;
 
-import eu.isakels.rest.model.CreatePaymentReq;
+import eu.isakels.rest.model.reqresp.CreatePaymentReq;
 
 public abstract class PaymentFactory {
     public static BasePayment forReq(final CreatePaymentReq req) {

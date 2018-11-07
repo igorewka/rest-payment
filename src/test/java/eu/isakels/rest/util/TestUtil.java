@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
-import eu.isakels.rest.model.CreatePaymentReq;
+import eu.isakels.rest.model.reqresp.CreatePaymentReq;
 import eu.isakels.rest.model.payment.Types;
 import org.junit.Assert;
 

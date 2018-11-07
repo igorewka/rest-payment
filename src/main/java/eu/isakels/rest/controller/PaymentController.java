@@ -1,7 +1,7 @@
 package eu.isakels.rest.controller;
 
-import eu.isakels.rest.model.CreatePaymentReq;
-import eu.isakels.rest.model.CreatePaymentResp;
+import eu.isakels.rest.model.reqresp.CreatePaymentReq;
+import eu.isakels.rest.model.reqresp.CreatePaymentResp;
 import eu.isakels.rest.model.payment.PaymentFactory;
 import eu.isakels.rest.repo.PaymentRepo;
 import org.springframework.web.bind.annotation.*;

@@ -1,6 +1,8 @@
 package eu.isakels.rest.model;
 
 import eu.isakels.rest.model.payment.Types;
+import eu.isakels.rest.model.reqresp.CreatePaymentReq;
+import eu.isakels.rest.model.reqresp.CreatePaymentResp;
 import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;

@@ -1,4 +1,4 @@
-package eu.isakels.rest.model;
+package eu.isakels.rest.model.reqresp;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 

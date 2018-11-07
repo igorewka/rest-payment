@@ -1,5 +1,6 @@
-package eu.isakels.rest.model;
+package eu.isakels.rest.model.reqresp;
 
+import eu.isakels.rest.model.Util;
 import eu.isakels.rest.model.payment.Types;
 
 import java.math.BigDecimal;
