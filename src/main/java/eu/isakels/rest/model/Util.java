@@ -19,6 +19,12 @@ public abstract class Util {
         return amount;
     }
 
+    public static <T> T requireNonNull(final T obj, final String msg) {
+        if (obj == null) throw new IllegalArgumentException(msg);
+
+        return obj;
+    }
+
     public static String requireNonNullNotBlank(final String str, final String msg) {
         if (StringUtils.isBlank(str)) throw new IllegalArgumentException(msg);
 

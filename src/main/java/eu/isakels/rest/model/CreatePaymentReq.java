@@ -27,7 +27,7 @@ public class CreatePaymentReq {
                             final String creditorIban,
                             final String details,
                             final String creditorBankBic) {
-        this.type = Objects.requireNonNull(type, "type is mandatory");
+        this.type = Util.requireNonNull(type, "type is mandatory");
         this.amount = amount;
         this.currency = currency;
         this.debtorIban = debtorIban;

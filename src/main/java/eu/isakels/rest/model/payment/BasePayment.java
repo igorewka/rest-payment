@@ -3,7 +3,6 @@ package eu.isakels.rest.model.payment;
 import eu.isakels.rest.model.Util;
 
 import java.math.BigDecimal;
-import java.util.Objects;
 import java.util.Optional;
 
 public abstract class BasePayment {
@@ -18,14 +17,14 @@ public abstract class BasePayment {
     private final String creditorIban;
 
     // TODO: think about converting some params into objects
-    public BasePayment(final String id,
-                       final BigDecimal amount,
-                       final Types.Currency currency,
-                       final String debtorIban,
-                       final String creditorIban) {
+    BasePayment(final String id,
+                final BigDecimal amount,
+                final Types.Currency currency,
+                final String debtorIban,
+                final String creditorIban) {
         this.id = id;
         this.amount = Util.requireNonNullPositive(amount, "amount is mandatory and must be positive");
-        this.currency = Objects.requireNonNull(currency, "currency is mandatory");
+        this.currency = Util.requireNonNull(currency, "currency is mandatory");
         this.debtorIban = Util.requireNonNullNotBlank(debtorIban, "debtorIban is mandatory");
         this.creditorIban = Util.requireNonNullNotBlank(creditorIban, "creditorIban is mandatory");
     }

@@ -23,7 +23,7 @@ public class PaymentT1 extends BasePaymentWithDetails {
                      final String debtorIban,
                      final String creditorIban,
                      final String details) {
-        super(null, amount, currency, debtorIban, creditorIban, details);
+        this(null, amount, currency, debtorIban, creditorIban, details);
     }
 
     public String getDetails() {

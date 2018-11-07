@@ -6,8 +6,10 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import eu.isakels.rest.model.CreatePaymentReq;
 import eu.isakels.rest.model.payment.Types;
+import org.junit.Assert;
 
 import java.math.BigDecimal;
+import java.util.function.Supplier;
 
 public abstract class TestUtil {
 
@@ -44,5 +46,27 @@ public abstract class TestUtil {
                 "CRDTRIBAN",
                 null,
                 "CRDTRBANKBIC");
+    }
+
+    public static CreatePaymentReq paymentReqT3(final Types.Currency currency) {
+        return new CreatePaymentReq(Types.PaymentType.TYPE3,
+                new BigDecimal("30.35"),
+                currency,
+                "DBTRIBAN",
+                "CRDTRIBAN",
+                null,
+                "CRDTRBANKBIC");
+    }
+
+    public static void assertExc(final String excMsgSubstring, final Supplier paymentSup) {
+        boolean excCaught;
+        try {
+            paymentSup.get();
+            excCaught = false;
+        } catch (IllegalArgumentException e) {
+            Assert.assertTrue(e.getMessage().contains(excMsgSubstring));
+            excCaught = true;
+        }
+        Assert.assertTrue(excCaught);
     }
 }
