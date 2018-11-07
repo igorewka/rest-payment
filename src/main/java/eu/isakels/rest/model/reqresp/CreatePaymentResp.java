@@ -1,21 +1,32 @@
 package eu.isakels.rest.model.reqresp;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.util.Objects;
 
 public class CreatePaymentResp {
     // TODO: create type
     private final String id;
+    // TODO: create type
+    private final String error;
 
-    // @JsonCreator is required for constructors with one parameter
-    @JsonCreator
-    public CreatePaymentResp(final String id) {
+    public CreatePaymentResp(final String id, final String error) {
         this.id = id;
+        this.error = error;
+    }
+
+    public CreatePaymentResp(final String id) {
+        this(id, null);
+    }
+
+    public static CreatePaymentResp ofError(final String error) {
+        return new CreatePaymentResp(null, error);
     }
 
     public String getId() {
         return id;
+    }
+
+    public String getError() {
+        return error;
     }
 
     @Override

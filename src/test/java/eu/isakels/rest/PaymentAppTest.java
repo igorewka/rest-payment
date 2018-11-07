@@ -1,5 +1,6 @@
 package eu.isakels.rest;
 
+import eu.isakels.rest.model.reqresp.CreatePaymentReq;
 import eu.isakels.rest.model.reqresp.CreatePaymentResp;
 import eu.isakels.rest.util.TestUtil;
 import org.apache.commons.lang3.StringUtils;
@@ -14,6 +15,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 import static eu.isakels.rest.util.TestUtil.objMapper;
 import static org.junit.Assert.assertTrue;
@@ -30,8 +34,22 @@ public class PaymentAppTest {
     private MockMvc mvc;
 
     @Test
-    public void createPayment() throws Exception {
-        final var req = TestUtil.paymentReqT1();
+    public void createPaymentSuccessful() throws Exception {
+        assertCreatePayment(TestUtil.paymentReqT1(),
+                (resp) -> assertTrue(StringUtils.isNotBlank(resp.getId())));
+        assertCreatePayment(TestUtil.paymentReqT2(),
+                (resp) -> assertTrue(StringUtils.isNotBlank(resp.getId())));
+        assertCreatePayment(TestUtil.paymentReqT3(),
+                (resp) -> assertTrue(StringUtils.isNotBlank(resp.getId())));
+    }
+
+    @Test
+    public void createPaymentFailing() throws Exception {
+        assertCreatePayment(TestUtil.paymentReqT1Failing(),
+                (resp) -> assertTrue(StringUtils.isNotBlank(resp.getError())));
+    }
+
+    private void assertCreatePayment(final CreatePaymentReq req, final Consumer<CreatePaymentResp> azzert) throws Exception {
         final var reqMarshalled = objMapper.writeValueAsString(req);
         logger.info("reqMarshalled: {}", reqMarshalled);
 
@@ -44,7 +62,6 @@ public class PaymentAppTest {
         var respMarshalled = result.getResponse().getContentAsString();
         logger.info("respMarshalled: {}", respMarshalled);
         var resp = objMapper.readValue(respMarshalled, CreatePaymentResp.class);
-
-        assertTrue(StringUtils.isNotBlank(resp.getId()));
+        azzert.accept(resp);
     }
 }

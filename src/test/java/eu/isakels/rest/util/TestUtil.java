@@ -1,11 +1,12 @@
 package eu.isakels.rest.util;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
-import eu.isakels.rest.model.reqresp.CreatePaymentReq;
 import eu.isakels.rest.model.payment.Types;
+import eu.isakels.rest.model.reqresp.CreatePaymentReq;
 import org.junit.Assert;
 
 import java.math.BigDecimal;
@@ -16,11 +17,22 @@ public abstract class TestUtil {
     public static final ObjectMapper objMapper = new ObjectMapper() {{
         registerModule(new ParameterNamesModule(JsonCreator.Mode.PROPERTIES));
         enable(SerializationFeature.INDENT_OUTPUT);
+        setSerializationInclusion(JsonInclude.Include.NON_NULL);
     }};
 
     public static CreatePaymentReq paymentReqT1() {
         return new CreatePaymentReq(Types.PaymentType.TYPE1,
                 new BigDecimal("10.35"),
+                Types.Currency.EUR,
+                "DBTRIBAN",
+                "CRDTRIBAN",
+                "payment type1 details",
+                null);
+    }
+
+    public static CreatePaymentReq paymentReqT1Failing() {
+        return new CreatePaymentReq(Types.PaymentType.TYPE1,
+                null,
                 Types.Currency.EUR,
                 "DBTRIBAN",
                 "CRDTRIBAN",
