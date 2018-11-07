@@ -33,105 +33,105 @@ public class ModelTest {
         TestUtil.assertExc("amount", () -> new PaymentT1(
                 null,
                 Types.Currency.EUR,
-                new Types.DebtorIban("DBTRIBAN"),
-                new Types.CreditorIban("CRDTRIBAN"),
-                new Types.Details("payment type1 details")));
+                Types.DebtorIban.ofValue("DBTRIBAN"),
+                Types.CreditorIban.ofValue("CRDTRIBAN"),
+                Types.Details.ofValue("payment type1 details")));
 
         TestUtil.assertExc("amount", () -> new PaymentT1(
-                new Types.Amount(new BigDecimal("-10.35")),
+                Types.Amount.ofValue(new BigDecimal("-10.35")),
                 Types.Currency.EUR,
-                new Types.DebtorIban("DBTRIBAN"),
-                new Types.CreditorIban("CRDTRIBAN"),
-                new Types.Details("payment type1 details")));
+                Types.DebtorIban.ofValue("DBTRIBAN"),
+                Types.CreditorIban.ofValue("CRDTRIBAN"),
+                Types.Details.ofValue("payment type1 details")));
 
         TestUtil.assertExc("currency", () -> new PaymentT1(
-                new Types.Amount(new BigDecimal("10.35")),
+                Types.Amount.ofValue(new BigDecimal("10.35")),
                 null,
-                new Types.DebtorIban("DBTRIBAN"),
-                new Types.CreditorIban("CRDTRIBAN"),
-                new Types.Details("payment type1 details")));
+                Types.DebtorIban.ofValue("DBTRIBAN"),
+                Types.CreditorIban.ofValue("CRDTRIBAN"),
+                Types.Details.ofValue("payment type1 details")));
 
         TestUtil.assertExc("currency", () -> new PaymentT1(
-                new Types.Amount(new BigDecimal("10.35")),
+                Types.Amount.ofValue(new BigDecimal("10.35")),
                 Types.Currency.USD,
-                new Types.DebtorIban("DBTRIBAN"),
-                new Types.CreditorIban("CRDTRIBAN"),
-                new Types.Details("payment type1 details")));
+                Types.DebtorIban.ofValue("DBTRIBAN"),
+                Types.CreditorIban.ofValue("CRDTRIBAN"),
+                Types.Details.ofValue("payment type1 details")));
 
         TestUtil.assertExc("debtorIban", () -> new PaymentT1(
-                new Types.Amount(new BigDecimal("10.35")),
+                Types.Amount.ofValue(new BigDecimal("10.35")),
                 Types.Currency.EUR,
                 null,
-                new Types.CreditorIban("CRDTRIBAN"),
-                new Types.Details("payment type1 details")));
+                Types.CreditorIban.ofValue("CRDTRIBAN"),
+                Types.Details.ofValue("payment type1 details")));
 
         TestUtil.assertExc("debtorIban", () -> new PaymentT1(
-                new Types.Amount(new BigDecimal("10.35")),
+                Types.Amount.ofValue(new BigDecimal("10.35")),
                 Types.Currency.EUR,
-                new Types.DebtorIban(" "),
-                new Types.CreditorIban("CRDTRIBAN"),
-                new Types.Details("payment type1 details")));
+                Types.DebtorIban.ofValue(" "),
+                Types.CreditorIban.ofValue("CRDTRIBAN"),
+                Types.Details.ofValue("payment type1 details")));
 
         TestUtil.assertExc("creditorIban", () -> new PaymentT1(
-                new Types.Amount(new BigDecimal("10.35")),
+                Types.Amount.ofValue(new BigDecimal("10.35")),
                 Types.Currency.EUR,
-                new Types.DebtorIban("DBTRIBAN"),
+                Types.DebtorIban.ofValue("DBTRIBAN"),
                 null,
-                new Types.Details("payment type1 details")));
+                Types.Details.ofValue("payment type1 details")));
 
         TestUtil.assertExc("creditorIban", () -> new PaymentT1(
-                new Types.Amount(new BigDecimal("10.35")),
+                Types.Amount.ofValue(new BigDecimal("10.35")),
                 Types.Currency.EUR,
-                new Types.DebtorIban("DBTRIBAN"),
-                new Types.CreditorIban(" "),
-                new Types.Details("payment type1 details")));
+                Types.DebtorIban.ofValue("DBTRIBAN"),
+                Types.CreditorIban.ofValue(" "),
+                Types.Details.ofValue("payment type1 details")));
 
         TestUtil.assertExc("details", () -> new PaymentT1(
-                new Types.Amount(new BigDecimal("10.35")),
+                Types.Amount.ofValue(new BigDecimal("10.35")),
                 Types.Currency.EUR,
-                new Types.DebtorIban("DBTRIBAN"),
-                new Types.CreditorIban("CRDTRIBAN"),
+                Types.DebtorIban.ofValue("DBTRIBAN"),
+                Types.CreditorIban.ofValue("CRDTRIBAN"),
                 null));
 
         TestUtil.assertExc("details", () -> new PaymentT1(
-                new Types.Amount(new BigDecimal("10.35")),
+                Types.Amount.ofValue(new BigDecimal("10.35")),
                 Types.Currency.EUR,
-                new Types.DebtorIban("DBTRIBAN"),
-                new Types.CreditorIban("CRDTRIBAN"),
-                new Types.Details(" ")));
+                Types.DebtorIban.ofValue("DBTRIBAN"),
+                Types.CreditorIban.ofValue("CRDTRIBAN"),
+                Types.Details.ofValue(" ")));
     }
 
     @Test
     public void paymentT2Failing() {
         TestUtil.assertExc("currency", () -> new PaymentT2(
-                new Types.Amount(new BigDecimal("10.35")),
+                Types.Amount.ofValue(new BigDecimal("10.35")),
                 Types.Currency.EUR,
-                new Types.DebtorIban("DBTRIBAN"),
-                new Types.CreditorIban("CRDTRIBAN"),
+                Types.DebtorIban.ofValue("DBTRIBAN"),
+                Types.CreditorIban.ofValue("CRDTRIBAN"),
                 null));
     }
 
     @Test
     public void paymentT3Failing() {
         TestUtil.assertExc("currency", () -> new PaymentT3(
-                new Types.Amount(new BigDecimal("10.35")),
+                Types.Amount.ofValue(new BigDecimal("10.35")),
                 Types.Currency.GBP,
-                new Types.DebtorIban("DBTRIBAN"),
-                new Types.CreditorIban("CRDTRIBAN"),
-                new Types.CreditorBankBic("CRDTRBANKBIC")));
+                Types.DebtorIban.ofValue("DBTRIBAN"),
+                Types.CreditorIban.ofValue("CRDTRIBAN"),
+                Types.CreditorBankBic.ofValue("CRDTRBANKBIC")));
 
         TestUtil.assertExc("creditorBankBic", () -> new PaymentT3(
-                new Types.Amount(new BigDecimal("10.35")),
+                Types.Amount.ofValue(new BigDecimal("10.35")),
                 Types.Currency.EUR,
-                new Types.DebtorIban("DBTRIBAN"),
-                new Types.CreditorIban("CRDTRIBAN"),
+                Types.DebtorIban.ofValue("DBTRIBAN"),
+                Types.CreditorIban.ofValue("CRDTRIBAN"),
                 null));
 
         TestUtil.assertExc("creditorBankBic", () -> new PaymentT3(
-                new Types.Amount(new BigDecimal("10.35")),
+                Types.Amount.ofValue(new BigDecimal("10.35")),
                 Types.Currency.EUR,
-                new Types.DebtorIban("DBTRIBAN"),
-                new Types.CreditorIban("CRDTRIBAN"),
-                new Types.CreditorBankBic(" ")));
+                Types.DebtorIban.ofValue("DBTRIBAN"),
+                Types.CreditorIban.ofValue("CRDTRIBAN"),
+                Types.CreditorBankBic.ofValue(" ")));
     }
 }

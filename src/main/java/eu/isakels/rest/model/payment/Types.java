@@ -15,8 +15,12 @@ public abstract class Types {
     public static final class Amount implements Value<BigDecimal> {
         private final BigDecimal value;
 
-        public Amount(final BigDecimal value) {
+        private Amount(final BigDecimal value) {
             this.value = value;
+        }
+
+        public static Amount ofValue(final BigDecimal value) {
+            return value != null ? new Amount(value) : null;
         }
 
         public BigDecimal getValue() {
@@ -47,8 +51,12 @@ public abstract class Types {
     public static final class DebtorIban implements Value<String> {
         private final String value;
 
-        public DebtorIban(final String value) {
+        private DebtorIban(final String value) {
             this.value = value;
+        }
+
+        public static DebtorIban ofValue(final String value) {
+            return value != null ? new DebtorIban(value) : null;
         }
 
         public String getValue() {
@@ -79,8 +87,12 @@ public abstract class Types {
     public static final class CreditorIban implements Value<String> {
         private final String value;
 
-        public CreditorIban(final String value) {
+        private CreditorIban(final String value) {
             this.value = value;
+        }
+
+        public static CreditorIban ofValue(final String value) {
+            return value != null ? new CreditorIban(value) : null;
         }
 
         public String getValue() {
@@ -111,8 +123,12 @@ public abstract class Types {
     public static final class Details implements Value<String> {
         private final String value;
 
-        public Details(final String value) {
+        private Details(final String value) {
             this.value = value;
+        }
+
+        public static Details ofValue(final String value) {
+            return value != null ? new Details(value) : null;
         }
 
         public String getValue() {
@@ -143,8 +159,12 @@ public abstract class Types {
     public static final class CreditorBankBic implements Value<String> {
         private final String value;
 
-        public CreditorBankBic(final String value) {
+        private CreditorBankBic(final String value) {
             this.value = value;
+        }
+
+        public static CreditorBankBic ofValue(final String value) {
+            return value != null ? new CreditorBankBic(value) : null;
         }
 
         public String getValue() {
