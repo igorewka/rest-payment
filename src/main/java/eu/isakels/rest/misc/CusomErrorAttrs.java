@@ -1,4 +1,4 @@
-package eu.isakels.rest;
+package eu.isakels.rest.misc;
 
 import org.springframework.boot.web.servlet.error.DefaultErrorAttributes;
 import org.springframework.stereotype.Component;
