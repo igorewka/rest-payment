@@ -7,25 +7,26 @@ public abstract class PaymentFactory {
         final BasePayment payment;
         switch (req.getType()) {
             case TYPE1:
-                payment = new PaymentT1(Types.Amount.ofValue(req.getAmount()),
+                // TODO: fix all NPEs
+                payment = new PaymentT1(Types.Amount.ofValue(req.getAmount().getValue()),
                         req.getCurrency(),
-                        Types.DebtorIban.ofValue(req.getDebtorIban()),
-                        Types.CreditorIban.ofValue(req.getCreditorIban()),
-                        Types.Details.ofValue(req.getDetails()));
+                        Types.DebtorIban.ofValue(req.getDebtorIban().getValue()),
+                        Types.CreditorIban.ofValue(req.getCreditorIban().getValue()),
+                        Types.Details.ofValue(req.getDetails().getValue()));
                 break;
             case TYPE2:
-                payment = new PaymentT2(Types.Amount.ofValue(req.getAmount()),
+                payment = new PaymentT2(Types.Amount.ofValue(req.getAmount().getValue()),
                         req.getCurrency(),
-                        Types.DebtorIban.ofValue(req.getDebtorIban()),
-                        Types.CreditorIban.ofValue(req.getCreditorIban()),
-                        Types.Details.ofValue(req.getDetails()));
+                        Types.DebtorIban.ofValue(req.getDebtorIban().getValue()),
+                        Types.CreditorIban.ofValue(req.getCreditorIban().getValue()),
+                        Types.Details.ofValue(req.getDetails().getValue()));
                 break;
             case TYPE3:
-                payment = new PaymentT3(Types.Amount.ofValue(req.getAmount()),
+                payment = new PaymentT3(Types.Amount.ofValue(req.getAmount().getValue()),
                         req.getCurrency(),
-                        Types.DebtorIban.ofValue(req.getDebtorIban()),
-                        Types.CreditorIban.ofValue(req.getCreditorIban()),
-                        Types.CreditorBankBic.ofValue(req.getCreditorBankBic()));
+                        Types.DebtorIban.ofValue(req.getDebtorIban().getValue()),
+                        Types.CreditorIban.ofValue(req.getCreditorIban().getValue()),
+                        Types.CreditorBankBic.ofValue(req.getCreditorBankBic().getValue()));
                 break;
             default:
                 throw new RuntimeException("unknown payment type");

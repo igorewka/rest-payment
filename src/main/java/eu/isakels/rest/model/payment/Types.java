@@ -1,5 +1,7 @@
 package eu.isakels.rest.model.payment;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.math.BigDecimal;
 import java.util.Objects;
 
@@ -19,6 +21,7 @@ public abstract class Types {
             this.value = value;
         }
 
+        @JsonCreator
         public static Amount ofValue(final BigDecimal value) {
             return value != null ? new Amount(value) : null;
         }
@@ -55,6 +58,7 @@ public abstract class Types {
             this.value = value;
         }
 
+        @JsonCreator
         public static DebtorIban ofValue(final String value) {
             return value != null ? new DebtorIban(value) : null;
         }
@@ -91,6 +95,7 @@ public abstract class Types {
             this.value = value;
         }
 
+        @JsonCreator
         public static CreditorIban ofValue(final String value) {
             return value != null ? new CreditorIban(value) : null;
         }
@@ -127,6 +132,7 @@ public abstract class Types {
             this.value = value;
         }
 
+        @JsonCreator
         public static Details ofValue(final String value) {
             return value != null ? new Details(value) : null;
         }
@@ -163,6 +169,7 @@ public abstract class Types {
             this.value = value;
         }
 
+        @JsonCreator
         public static CreditorBankBic ofValue(final String value) {
             return value != null ? new CreditorBankBic(value) : null;
         }

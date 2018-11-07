@@ -22,11 +22,11 @@ public abstract class TestUtil {
 
     public static CreatePaymentReq paymentReqT1() {
         return new CreatePaymentReq(Types.PaymentType.TYPE1,
-                new BigDecimal("10.35"),
+                Types.Amount.ofValue(new BigDecimal("10.35")),
                 Types.Currency.EUR,
-                "DBTRIBAN",
-                "CRDTRIBAN",
-                "payment type1 details",
+                Types.DebtorIban.ofValue("DBTRIBAN"),
+                Types.CreditorIban.ofValue("CRDTRIBAN"),
+                Types.Details.ofValue("payment type1 details"),
                 null);
     }
 
@@ -34,40 +34,40 @@ public abstract class TestUtil {
         return new CreatePaymentReq(Types.PaymentType.TYPE1,
                 null,
                 Types.Currency.EUR,
-                "DBTRIBAN",
-                "CRDTRIBAN",
-                "payment type1 details",
+                Types.DebtorIban.ofValue("DBTRIBAN"),
+                Types.CreditorIban.ofValue("CRDTRIBAN"),
+                Types.Details.ofValue("payment type1 details"),
                 null);
     }
 
     public static CreatePaymentReq paymentReqT2() {
         return new CreatePaymentReq(Types.PaymentType.TYPE2,
-                new BigDecimal("20.35"),
+                Types.Amount.ofValue(new BigDecimal("20.35")),
                 Types.Currency.USD,
-                "DBTRIBAN",
-                "CRDTRIBAN",
+                Types.DebtorIban.ofValue("DBTRIBAN"),
+                Types.CreditorIban.ofValue("CRDTRIBAN"),
                 null,
                 null);
     }
 
     public static CreatePaymentReq paymentReqT3() {
         return new CreatePaymentReq(Types.PaymentType.TYPE3,
-                new BigDecimal("30.35"),
+                Types.Amount.ofValue(new BigDecimal("30.35")),
                 Types.Currency.EUR,
-                "DBTRIBAN",
-                "CRDTRIBAN",
+                Types.DebtorIban.ofValue("DBTRIBAN"),
+                Types.CreditorIban.ofValue("CRDTRIBAN"),
                 null,
-                "CRDTRBANKBIC");
+                Types.CreditorBankBic.ofValue("CRDTRBANKBIC"));
     }
 
     public static CreatePaymentReq paymentReqT3(final Types.Currency currency) {
         return new CreatePaymentReq(Types.PaymentType.TYPE3,
-                new BigDecimal("30.35"),
+                Types.Amount.ofValue(new BigDecimal("30.35")),
                 currency,
-                "DBTRIBAN",
-                "CRDTRIBAN",
+                Types.DebtorIban.ofValue("DBTRIBAN"),
+                Types.CreditorIban.ofValue("CRDTRIBAN"),
                 null,
-                "CRDTRBANKBIC");
+                Types.CreditorBankBic.ofValue("CRDTRBANKBIC"));
     }
 
     public static void assertExc(final String excMsgSubstring, final Supplier sup) {

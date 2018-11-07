@@ -18,7 +18,13 @@ public class MarshallingTest {
 
     @Test
     public void createPaymentReq() throws Exception {
-        final var req = new CreatePaymentReq(Types.PaymentType.TYPE1, new BigDecimal("10.35"), Types.Currency.EUR, "DBTRIBAN", "CRDTRIBAN", "payment type1 details", null);
+        final var req = new CreatePaymentReq(Types.PaymentType.TYPE1,
+                Types.Amount.ofValue(new BigDecimal("10.35")),
+                Types.Currency.EUR,
+                Types.DebtorIban.ofValue("DBTRIBAN"),
+                Types.CreditorIban.ofValue("CRDTRIBAN"),
+                Types.Details.ofValue("payment type1 details"),
+                null);
         assertMarshallUnmarshall(req, CreatePaymentReq.class);
     }
 
