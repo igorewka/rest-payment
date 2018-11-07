@@ -1,27 +1,27 @@
 package eu.isakels.rest.model.reqresp;
 
 import java.util.Objects;
+import java.util.UUID;
 
 public class CreatePaymentResp {
-    // TODO: create type
-    private final String id;
-    // TODO: create type
+
+    private final UUID id;
     private final String error;
 
-    public CreatePaymentResp(final String id, final String error) {
+    public CreatePaymentResp(final UUID id, final String error) {
         this.id = id;
         this.error = error;
     }
 
-    public CreatePaymentResp(final String id) {
+    public CreatePaymentResp(final UUID id) {
         this(id, null);
     }
 
-    public static CreatePaymentResp ofError(final String error) {
-        return new CreatePaymentResp(null, error);
+    public CreatePaymentResp(final String error) {
+        this(null, error);
     }
 
-    public String getId() {
+    public UUID getId() {
         return id;
     }
 

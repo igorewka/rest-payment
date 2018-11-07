@@ -5,9 +5,9 @@ import eu.isakels.rest.model.reqresp.CreatePaymentReq;
 public abstract class PaymentFactory {
     public static BasePayment forReq(final CreatePaymentReq req) {
         final BasePayment payment;
+// TODO: fix all NPEs
         switch (req.getType()) {
             case TYPE1:
-                // TODO: fix all NPEs
                 payment = new PaymentT1(Types.Amount.ofValue(req.getAmount().getValue()),
                         req.getCurrency(),
                         Types.DebtorIban.ofValue(req.getDebtorIban().getValue()),

@@ -28,7 +28,7 @@ public class PaymentController {
             resp = new CreatePaymentResp(id);
         } catch (Throwable exc) {
             logger.error("", exc);
-            resp = CreatePaymentResp.ofError(exc.getMessage());
+            resp = new CreatePaymentResp(exc.getMessage());
         }
         return resp;
     }
