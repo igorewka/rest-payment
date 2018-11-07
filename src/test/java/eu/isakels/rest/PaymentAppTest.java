@@ -1,5 +1,8 @@
 package eu.isakels.rest;
 
+import eu.isakels.rest.model.reqresp.CreatePaymentResp;
+import eu.isakels.rest.util.TestUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -7,11 +10,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
-import static org.junit.Assert.*;
+import static eu.isakels.rest.util.TestUtil.objMapper;
+import static org.junit.Assert.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -24,27 +31,20 @@ public class PaymentAppTest {
 
     @Test
     public void createPayment() throws Exception {
-//        final var req = new CreatePaymentReq(new BigDecimal("10.35"), "DBTRIBAN");
-//
-//        final var reqStr = objMapper.writeValueAsString(req);
-//        logger.info("reqStr: {}", reqStr);
-//
-////        var reqRestored = objMapper.readValue(reqStr, CreatePaymentReq.class);
-////        logger.info("reqRestored: {}", reqRestored);
-//
-//        final MvcResult result = mvc.perform(post("/payment")
-//                .content(reqStr)
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .accept(MediaType.APPLICATION_JSON)
-//        ).andExpect(status().isOk())
-//                .andReturn();
-//
-//        var respStr = result.getResponse().getContentAsString();
-//        logger.info("respStr: {}", respStr);
-//        var resp = objMapper.readValue(respStr, CreatePaymentResp.class);
-//
-//        assertTrue(!resp.getId().isEmpty());
-        // TODO: fix test
-        assertTrue(false);
+        final var req = TestUtil.paymentReqT1();
+        final var reqMarshalled = objMapper.writeValueAsString(req);
+        logger.info("reqMarshalled: {}", reqMarshalled);
+
+        final MvcResult result = mvc.perform(post("/payment")
+                .content(reqMarshalled)
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isOk())
+                .andReturn();
+
+        var respMarshalled = result.getResponse().getContentAsString();
+        logger.info("respMarshalled: {}", respMarshalled);
+        var resp = objMapper.readValue(respMarshalled, CreatePaymentResp.class);
+
+        assertTrue(StringUtils.isNotBlank(resp.getId()));
     }
 }
