@@ -1,6 +1,7 @@
 package eu.isakels.rest.model.payment;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 public abstract class Types {
     public enum Currency {EUR, USD, GBP}
@@ -11,7 +12,7 @@ public abstract class Types {
         T getValue();
     }
 
-    public static class Amount implements Value<BigDecimal> {
+    public static final class Amount implements Value<BigDecimal> {
         private final BigDecimal value;
 
         public Amount(final BigDecimal value) {
@@ -21,9 +22,29 @@ public abstract class Types {
         public BigDecimal getValue() {
             return value;
         }
+
+        @Override
+        public String toString() {
+            return "Amount{" +
+                    "value=" + value +
+                    '}';
+        }
+
+        @Override
+        public boolean equals(final Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            final Amount amount = (Amount) o;
+            return Objects.equals(value, amount.value);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(value);
+        }
     }
 
-    public static class DebtorIban implements Value<String> {
+    public static final class DebtorIban implements Value<String> {
         private final String value;
 
         public DebtorIban(final String value) {
@@ -33,9 +54,29 @@ public abstract class Types {
         public String getValue() {
             return value;
         }
+
+        @Override
+        public String toString() {
+            return "DebtorIban{" +
+                    "value='" + value + '\'' +
+                    '}';
+        }
+
+        @Override
+        public boolean equals(final Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            final DebtorIban that = (DebtorIban) o;
+            return Objects.equals(value, that.value);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(value);
+        }
     }
 
-    public static class CreditorIban implements Value<String> {
+    public static final class CreditorIban implements Value<String> {
         private final String value;
 
         public CreditorIban(final String value) {
@@ -45,9 +86,29 @@ public abstract class Types {
         public String getValue() {
             return value;
         }
+
+        @Override
+        public String toString() {
+            return "CreditorIban{" +
+                    "value='" + value + '\'' +
+                    '}';
+        }
+
+        @Override
+        public boolean equals(final Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            final CreditorIban that = (CreditorIban) o;
+            return Objects.equals(value, that.value);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(value);
+        }
     }
 
-    public static class Details implements Value<String> {
+    public static final class Details implements Value<String> {
         private final String value;
 
         public Details(final String value) {
@@ -57,9 +118,29 @@ public abstract class Types {
         public String getValue() {
             return value;
         }
+
+        @Override
+        public String toString() {
+            return "Details{" +
+                    "value='" + value + '\'' +
+                    '}';
+        }
+
+        @Override
+        public boolean equals(final Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            final Details details = (Details) o;
+            return Objects.equals(value, details.value);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(value);
+        }
     }
 
-    public static class CreditorBankBic implements Value<String> {
+    public static final class CreditorBankBic implements Value<String> {
         private final String value;
 
         public CreditorBankBic(final String value) {
@@ -68,6 +149,26 @@ public abstract class Types {
 
         public String getValue() {
             return value;
+        }
+
+        @Override
+        public String toString() {
+            return "CreditorBankBic{" +
+                    "value='" + value + '\'' +
+                    '}';
+        }
+
+        @Override
+        public boolean equals(final Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            final CreditorBankBic that = (CreditorBankBic) o;
+            return Objects.equals(value, that.value);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(value);
         }
     }
 }
