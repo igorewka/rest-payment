@@ -58,10 +58,10 @@ public abstract class TestUtil {
                 "CRDTRBANKBIC");
     }
 
-    public static void assertExc(final String excMsgSubstring, final Supplier paymentSup) {
+    public static void assertExc(final String excMsgSubstring, final Supplier sup) {
         boolean excCaught;
         try {
-            paymentSup.get();
+            sup.get();
             excCaught = false;
         } catch (IllegalArgumentException e) {
             Assert.assertTrue(e.getMessage().contains(excMsgSubstring));
