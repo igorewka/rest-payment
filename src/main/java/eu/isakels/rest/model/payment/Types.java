@@ -1,7 +1,5 @@
 package eu.isakels.rest.model.payment;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-
 import java.math.BigDecimal;
 import java.util.Objects;
 
@@ -15,22 +13,22 @@ public abstract class Types {
     }
 
     public static final class Amount implements Value<BigDecimal> {
+
         private final BigDecimal value;
 
         private Amount(final BigDecimal value) {
             this.value = value;
         }
 
-        @JsonCreator
         public static Amount ofValue(final BigDecimal value) {
             return value != null ? new Amount(value) : null;
         }
 
-        @JsonCreator
         public static Amount ofObj(final Amount obj) {
             return obj != null ? new Amount(obj.getValue()) : null;
         }
 
+        @Override
         public BigDecimal getValue() {
             return value;
         }
@@ -57,22 +55,22 @@ public abstract class Types {
     }
 
     public static final class DebtorIban implements Value<String> {
+
         private final String value;
 
         private DebtorIban(final String value) {
             this.value = value;
         }
 
-        @JsonCreator
         public static DebtorIban ofValue(final String value) {
             return value != null ? new DebtorIban(value) : null;
         }
 
-        @JsonCreator
         public static DebtorIban ofObj(final DebtorIban obj) {
             return obj != null ? new DebtorIban(obj.getValue()) : null;
         }
 
+        @Override
         public String getValue() {
             return value;
         }
@@ -99,22 +97,22 @@ public abstract class Types {
     }
 
     public static final class CreditorIban implements Value<String> {
+
         private final String value;
 
         private CreditorIban(final String value) {
             this.value = value;
         }
 
-        @JsonCreator
         public static CreditorIban ofValue(final String value) {
             return value != null ? new CreditorIban(value) : null;
         }
 
-        @JsonCreator
         public static CreditorIban ofObj(final CreditorIban obj) {
             return obj != null ? new CreditorIban(obj.getValue()) : null;
         }
 
+        @Override
         public String getValue() {
             return value;
         }
@@ -141,22 +139,22 @@ public abstract class Types {
     }
 
     public static final class Details implements Value<String> {
+
         private final String value;
 
         private Details(final String value) {
             this.value = value;
         }
 
-        @JsonCreator
         public static Details ofValue(final String value) {
             return value != null ? new Details(value) : null;
         }
 
-        @JsonCreator
         public static Details ofObj(final Details obj) {
             return obj != null ? new Details(obj.getValue()) : null;
         }
 
+        @Override
         public String getValue() {
             return value;
         }
@@ -183,22 +181,22 @@ public abstract class Types {
     }
 
     public static final class CreditorBankBic implements Value<String> {
+
         private final String value;
 
         private CreditorBankBic(final String value) {
             this.value = value;
         }
 
-        @JsonCreator
         public static CreditorBankBic ofValue(final String value) {
             return value != null ? new CreditorBankBic(value) : null;
         }
 
-        @JsonCreator
         public static CreditorBankBic ofObj(final CreditorBankBic obj) {
             return obj != null ? new CreditorBankBic(obj.getValue()) : null;
         }
 
+        @Override
         public String getValue() {
             return value;
         }

@@ -8,10 +8,10 @@ import java.util.concurrent.ConcurrentHashMap;
 
 // TODO: ask/switch to H2
 public class PaymentRepo {
-    private static final Map<String, BasePayment> repo = new ConcurrentHashMap<>();
+    private static final Map<UUID, BasePayment> repo = new ConcurrentHashMap<>();
 
-    public static String create(BasePayment payment) {
-        var id = UUID.randomUUID().toString();
+    public static UUID create(BasePayment payment) {
+        var id = UUID.randomUUID();
         repo.put(id, payment);
 
         return id;

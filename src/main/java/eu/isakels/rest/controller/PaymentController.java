@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.UUID;
+
 @RestController
 public class PaymentController {
 
@@ -24,7 +26,7 @@ public class PaymentController {
     public CreatePaymentResp create(@RequestBody CreatePaymentReq req) {
         CreatePaymentResp resp;
         try {
-            final String id = PaymentRepo.create(PaymentFactory.ofReq(req));
+            final UUID id = PaymentRepo.create(PaymentFactory.ofReq(req));
             resp = new CreatePaymentResp(id);
         } catch (Throwable exc) {
             logger.error("", exc);

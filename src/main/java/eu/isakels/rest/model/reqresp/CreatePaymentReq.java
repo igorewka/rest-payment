@@ -3,25 +3,26 @@ package eu.isakels.rest.model.reqresp;
 import eu.isakels.rest.model.Util;
 import eu.isakels.rest.model.payment.Types;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 
 public class CreatePaymentReq {
     private final Types.PaymentType type;
-    private final Types.Amount amount;
+    private final BigDecimal amount;
     private final Types.Currency currency;
-    private final Types.DebtorIban debtorIban;
-    private final Types.CreditorIban creditorIban;
-    private final Types.Details details;
-    private final Types.CreditorBankBic creditorBankBic;
+    private final String debtorIban;
+    private final String creditorIban;
+    private final String details;
+    private final String creditorBankBic;
 
     // TODO: think about converting some params into objects
     public CreatePaymentReq(final Types.PaymentType type,
-                            final Types.Amount amount,
+                            final BigDecimal amount,
                             final Types.Currency currency,
-                            final Types.DebtorIban debtorIban,
-                            final Types.CreditorIban creditorIban,
-                            final Types.Details details,
-                            final Types.CreditorBankBic creditorBankBic) {
+                            final String debtorIban,
+                            final String creditorIban,
+                            final String details,
+                            final String creditorBankBic) {
         this.type = Util.requireNonNull(type, "type is mandatory");
         this.amount = amount;
         this.currency = currency;
@@ -35,7 +36,7 @@ public class CreatePaymentReq {
         return type;
     }
 
-    public Types.Amount getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
@@ -43,19 +44,19 @@ public class CreatePaymentReq {
         return currency;
     }
 
-    public Types.DebtorIban getDebtorIban() {
+    public String getDebtorIban() {
         return debtorIban;
     }
 
-    public Types.CreditorIban getCreditorIban() {
+    public String getCreditorIban() {
         return creditorIban;
     }
 
-    public Types.Details getDetails() {
+    public String getDetails() {
         return details;
     }
 
-    public Types.CreditorBankBic getCreditorBankBic() {
+    public String getCreditorBankBic() {
         return creditorBankBic;
     }
 
