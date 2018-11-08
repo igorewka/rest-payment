@@ -1,5 +1,6 @@
 package eu.isakels.rest.repo;
 
+import eu.isakels.rest.model.Constants;
 import eu.isakels.rest.model.payment.BasePayment;
 import eu.isakels.rest.model.payment.Types;
 import org.springframework.stereotype.Component;
@@ -22,19 +23,20 @@ public class PaymentRepo {
         coeffRepo.put(Types.PaymentType.TYPE3, 0.15);
     }
 
-    public UUID create(final BasePayment payment) {
-        final var id = UUID.randomUUID();
-        paymentRepo.put(id, payment);
-
-        return id;
+    public void create(final BasePayment payment) {
+        paymentRepo.put(
+                payment.getId().orElseThrow(() -> new RuntimeException(Constants.expectedIdMissing)),
+                payment);
     }
 
     public Optional<BasePayment> getPayment(final UUID id) {
         return Optional.ofNullable(paymentRepo.get(id));
     }
 
-    public void cancel(final UUID id, final BasePayment payment) {
-        paymentRepo.put(id, payment);
+    public void cancel(final BasePayment payment) {
+        paymentRepo.put(
+                payment.getId().orElseThrow(() -> new RuntimeException((Constants.expectedIdMissing))),
+                payment);
     }
 
     public double getCoeff(final Types.PaymentType type) {

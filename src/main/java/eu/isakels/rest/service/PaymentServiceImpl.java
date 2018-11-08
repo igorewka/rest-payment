@@ -15,7 +15,10 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public UUID create(final BasePayment payment) {
-        return repo.create(payment);
+        final var id = UUID.randomUUID();
+        repo.create(payment.idInstance(id));
+
+        return id;
     }
 
     @Override
@@ -27,8 +30,8 @@ public class PaymentServiceImpl implements PaymentService {
         final boolean result;
         if (payment.isCancellable()) {
             var coeff = repo.getCoeff(payment.getType());
-            var fee = payment.getCancelFee(coeff);
-            repo.cancel(id, payment.cancelledInstance(fee));
+            var fee = payment.computeCancelFee(coeff);
+            repo.cancel(payment.cancelledInstance(fee));
 
             result = true;
         } else {
@@ -36,5 +39,4 @@ public class PaymentServiceImpl implements PaymentService {
         }
         return result;
     }
-
 }

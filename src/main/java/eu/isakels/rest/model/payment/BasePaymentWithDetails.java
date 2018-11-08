@@ -15,8 +15,11 @@ abstract class BasePaymentWithDetails extends BasePayment {
                            final Types.CreditorIban creditorIban,
                            final LocalDateTime created,
                            final boolean cancelled,
+                           final LocalDateTime cancelledDateTime,
+                           final Types.Amount cancelFee,
                            final Types.Details details) {
-        super(id, type, amount, currency, debtorIban, creditorIban, created, cancelled);
+        super(id, type, amount, currency, debtorIban, creditorIban, created, cancelled,
+                cancelledDateTime, cancelFee);
 
         this.details = details;
     }

@@ -16,17 +16,23 @@ public abstract class BasePayment {
     private final Types.Currency currency;
     private final Types.DebtorIban debtorIban;
     private final Types.CreditorIban creditorIban;
-    private final LocalDateTime created;
+    private final LocalDateTime createdDateTime;
     private final boolean cancelled;
+    private final LocalDateTime cancelledDateTime;
+    private final Types.Amount cancelFee;
 
-    // TODO: think about converting some params into objects
+    // TODO: think about grouping some params
     BasePayment(final UUID id,
                 // TODO: combine amount with currency
                 final Types.PaymentType type,
                 final Types.Amount amount,
                 final Types.Currency currency,
                 final Types.DebtorIban debtorIban,
-                final Types.CreditorIban creditorIban, final LocalDateTime created, final boolean cancelled) {
+                final Types.CreditorIban creditorIban,
+                final LocalDateTime createdDateTime,
+                final boolean cancelled,
+                final LocalDateTime cancelledDateTime,
+                final Types.Amount cancelFee) {
         this.id = id;
         this.type = type;
         this.amount = (Types.Amount) Util.requireNonNullPositive(amount,
@@ -36,8 +42,10 @@ public abstract class BasePayment {
                 "debtorIban is mandatory");
         this.creditorIban = (Types.CreditorIban) Util.requireNonNullNotBlank(creditorIban,
                 "creditorIban is mandatory");
-        this.created = Util.requireNonNull(created, "created is mandatory");
+        this.createdDateTime = Util.requireNonNull(createdDateTime, "createdDateTime is mandatory");
         this.cancelled = cancelled;
+        this.cancelledDateTime = cancelledDateTime;
+        this.cancelFee = cancelFee;
     }
 
     public Optional<UUID> getId() {
@@ -64,26 +72,36 @@ public abstract class BasePayment {
         return creditorIban;
     }
 
-    public LocalDateTime getCreated() {
-        return created;
+    public LocalDateTime getCreatedDateTime() {
+        return createdDateTime;
     }
 
     public boolean isCancelled() {
         return cancelled;
     }
 
-    public boolean isCancellable() {
-        final var createdDate = created.toLocalDate();
-        final var nowDate = LocalDate.now();
-
-        return !isCancelled() && nowDate.isAfter(createdDate);
+    public LocalDateTime getCancelledDateTime() {
+        return cancelledDateTime;
     }
 
-    public BigDecimal getCancelFee(final double coeff) {
-        final var hoursPassed = Duration.between(created, LocalDateTime.now()).toHours();
+    public Types.Amount getCancelFee() {
+        return cancelFee;
+    }
+
+    public boolean isCancellable() {
+        final var createdDate = createdDateTime.toLocalDate();
+        final var nowDate = LocalDate.now();
+
+        return !isCancelled() && nowDate.isEqual(createdDate);
+    }
+
+    public BigDecimal computeCancelFee(final double coeff) {
+        final var hoursPassed = Duration.between(createdDateTime, LocalDateTime.now()).toHours();
         // TODO: check scale
         return new BigDecimal(hoursPassed * coeff);
     }
 
-    public abstract BasePayment cancelledInstance(final BigDecimal fee);
+    public abstract BasePayment cancelledInstance(final BigDecimal cancelFee);
+
+    public abstract BasePayment idInstance(final UUID id);
 }
