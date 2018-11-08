@@ -2,6 +2,7 @@ package eu.isakels.rest.model.payment;
 
 import eu.isakels.rest.model.Util;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
@@ -9,6 +10,7 @@ import java.util.UUID;
 public class PaymentT2 extends BasePaymentWithDetails {
 
     public PaymentT2(final UUID id,
+                     final Types.PaymentType type,
                      final Types.Amount amount,
                      final Types.Currency currency,
                      final Types.DebtorIban debtorIban,
@@ -16,12 +18,13 @@ public class PaymentT2 extends BasePaymentWithDetails {
                      final LocalDateTime created,
                      final boolean cancelled,
                      final Types.Details details) {
-        super(id, amount, currency, debtorIban, creditorIban, created, cancelled, details);
+        super(id, type, amount, currency, debtorIban, creditorIban, created, cancelled, details);
 
         Util.checkApplicableCurrencies(currency, Types.Currency.USD);
     }
 
-    public PaymentT2(final Types.Amount amount,
+    public PaymentT2(final Types.PaymentType type,
+                     final Types.Amount amount,
                      final Types.Currency currency,
                      final Types.DebtorIban debtorIban,
                      final Types.CreditorIban creditorIban,
@@ -34,10 +37,15 @@ public class PaymentT2 extends BasePaymentWithDetails {
                      // there're not any 100% good solution to the mentioned before issues
                      // don't have huge experience with Java Optionals, would be great to discuss.
                      final Types.Details details) {
-        this(null, amount, currency, debtorIban, creditorIban, created, cancelled, details);
+        this(null, type, amount, currency, debtorIban, creditorIban, created, cancelled, details);
     }
 
     public Optional<Types.Details> getDetails() {
         return Optional.ofNullable(details);
+    }
+
+    @Override
+    public BasePayment cancelledInstance(final BigDecimal fee) {
+        return null;
     }
 }

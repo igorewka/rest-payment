@@ -1,19 +1,43 @@
 package eu.isakels.rest.repo;
 
 import eu.isakels.rest.model.payment.BasePayment;
+import eu.isakels.rest.model.payment.Types;
+import org.springframework.stereotype.Component;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 // TODO: ask/switch to H2
+@Component
 public class PaymentRepo {
-    private static final Map<UUID, BasePayment> repo = new ConcurrentHashMap<>();
+    private final Map<UUID, BasePayment> paymentRepo = new ConcurrentHashMap<>();
+    // Local cache must be added for coefficient fetching from real DB
+    private final Map<Types.PaymentType, Double> coeffRepo = new ConcurrentHashMap<>();
 
-    public static UUID create(BasePayment payment) {
-        var id = UUID.randomUUID();
-        repo.put(id, payment);
+    {
+        coeffRepo.put(Types.PaymentType.TYPE1, 0.05);
+        coeffRepo.put(Types.PaymentType.TYPE2, 0.1);
+        coeffRepo.put(Types.PaymentType.TYPE3, 0.15);
+    }
+
+    public UUID create(final BasePayment payment) {
+        final var id = UUID.randomUUID();
+        paymentRepo.put(id, payment);
 
         return id;
+    }
+
+    public Optional<BasePayment> getPayment(final UUID id) {
+        return Optional.ofNullable(paymentRepo.get(id));
+    }
+
+    public void cancel(final UUID id, final BasePayment payment) {
+        paymentRepo.put(id, payment);
+    }
+
+    public double getCoeff(final Types.PaymentType type) {
+        return coeffRepo.get(type);
     }
 }

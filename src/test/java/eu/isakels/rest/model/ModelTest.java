@@ -13,25 +13,26 @@ public class ModelTest {
     public void paymentSuccessful() {
         {
             final var payment = PaymentFactory.ofReq(TestUtil.paymentReqT1());
-            Assert.assertTrue(payment instanceof PaymentT1);
+            Assert.assertEquals(Types.PaymentType.TYPE1, payment.getType());
         }
         {
             final var payment = PaymentFactory.ofReq(TestUtil.paymentReqT2());
-            Assert.assertTrue(payment instanceof PaymentT2);
+            Assert.assertEquals(Types.PaymentType.TYPE2, payment.getType());
         }
         {
             final var payment = PaymentFactory.ofReq(TestUtil.paymentReqT3(Types.Currency.USD));
-            Assert.assertTrue(payment instanceof PaymentT3);
+            Assert.assertEquals(Types.PaymentType.TYPE3, payment.getType());
         }
         {
             final var payment = PaymentFactory.ofReq(TestUtil.paymentReqT3(Types.Currency.EUR));
-            Assert.assertTrue(payment instanceof PaymentT3);
+            Assert.assertEquals(Types.PaymentType.TYPE3, payment.getType());
         }
     }
 
     @Test
     public void paymentT1Failing() {
         TestUtil.assertExc("amount", () -> new PaymentT1(
+                Types.PaymentType.TYPE1,
                 null,
                 Types.Currency.EUR,
                 Types.DebtorIban.ofValue("DBTRIBAN"),
@@ -41,6 +42,7 @@ public class ModelTest {
                 Types.Details.ofValue("payment type1 details")));
 
         TestUtil.assertExc("amount", () -> new PaymentT1(
+                Types.PaymentType.TYPE1,
                 Types.Amount.ofValue(new BigDecimal("-10.35")),
                 Types.Currency.EUR,
                 Types.DebtorIban.ofValue("DBTRIBAN"),
@@ -50,6 +52,7 @@ public class ModelTest {
                 Types.Details.ofValue("payment type1 details")));
 
         TestUtil.assertExc("currency", () -> new PaymentT1(
+                Types.PaymentType.TYPE1,
                 Types.Amount.ofValue(new BigDecimal("10.35")),
                 null,
                 Types.DebtorIban.ofValue("DBTRIBAN"),
@@ -59,6 +62,7 @@ public class ModelTest {
                 Types.Details.ofValue("payment type1 details")));
 
         TestUtil.assertExc("currency", () -> new PaymentT1(
+                Types.PaymentType.TYPE1,
                 Types.Amount.ofValue(new BigDecimal("10.35")),
                 Types.Currency.USD,
                 Types.DebtorIban.ofValue("DBTRIBAN"),
@@ -68,6 +72,7 @@ public class ModelTest {
                 Types.Details.ofValue("payment type1 details")));
 
         TestUtil.assertExc("debtorIban", () -> new PaymentT1(
+                Types.PaymentType.TYPE1,
                 Types.Amount.ofValue(new BigDecimal("10.35")),
                 Types.Currency.EUR,
                 null,
@@ -77,6 +82,7 @@ public class ModelTest {
                 Types.Details.ofValue("payment type1 details")));
 
         TestUtil.assertExc("debtorIban", () -> new PaymentT1(
+                Types.PaymentType.TYPE1,
                 Types.Amount.ofValue(new BigDecimal("10.35")),
                 Types.Currency.EUR,
                 Types.DebtorIban.ofValue(" "),
@@ -86,6 +92,7 @@ public class ModelTest {
                 Types.Details.ofValue("payment type1 details")));
 
         TestUtil.assertExc("creditorIban", () -> new PaymentT1(
+                Types.PaymentType.TYPE1,
                 Types.Amount.ofValue(new BigDecimal("10.35")),
                 Types.Currency.EUR,
                 Types.DebtorIban.ofValue("DBTRIBAN"),
@@ -95,6 +102,7 @@ public class ModelTest {
                 Types.Details.ofValue("payment type1 details")));
 
         TestUtil.assertExc("creditorIban", () -> new PaymentT1(
+                Types.PaymentType.TYPE1,
                 Types.Amount.ofValue(new BigDecimal("10.35")),
                 Types.Currency.EUR,
                 Types.DebtorIban.ofValue("DBTRIBAN"),
@@ -104,6 +112,7 @@ public class ModelTest {
                 Types.Details.ofValue("payment type1 details")));
 
         TestUtil.assertExc("details", () -> new PaymentT1(
+                Types.PaymentType.TYPE1,
                 Types.Amount.ofValue(new BigDecimal("10.35")),
                 Types.Currency.EUR,
                 Types.DebtorIban.ofValue("DBTRIBAN"),
@@ -113,6 +122,7 @@ public class ModelTest {
                 null));
 
         TestUtil.assertExc("details", () -> new PaymentT1(
+                Types.PaymentType.TYPE1,
                 Types.Amount.ofValue(new BigDecimal("10.35")),
                 Types.Currency.EUR,
                 Types.DebtorIban.ofValue("DBTRIBAN"),
@@ -125,6 +135,7 @@ public class ModelTest {
     @Test
     public void paymentT2Failing() {
         TestUtil.assertExc("currency", () -> new PaymentT2(
+                Types.PaymentType.TYPE1,
                 Types.Amount.ofValue(new BigDecimal("10.35")),
                 Types.Currency.EUR,
                 Types.DebtorIban.ofValue("DBTRIBAN"),
@@ -137,6 +148,7 @@ public class ModelTest {
     @Test
     public void paymentT3Failing() {
         TestUtil.assertExc("currency", () -> new PaymentT3(
+                Types.PaymentType.TYPE1,
                 Types.Amount.ofValue(new BigDecimal("10.35")),
                 Types.Currency.GBP,
                 Types.DebtorIban.ofValue("DBTRIBAN"),
@@ -146,6 +158,7 @@ public class ModelTest {
                 Types.CreditorBankBic.ofValue("CRDTRBANKBIC")));
 
         TestUtil.assertExc("creditorBankBic", () -> new PaymentT3(
+                Types.PaymentType.TYPE1,
                 Types.Amount.ofValue(new BigDecimal("10.35")),
                 Types.Currency.EUR,
                 Types.DebtorIban.ofValue("DBTRIBAN"),
@@ -155,6 +168,7 @@ public class ModelTest {
                 null));
 
         TestUtil.assertExc("creditorBankBic", () -> new PaymentT3(
+                Types.PaymentType.TYPE1,
                 Types.Amount.ofValue(new BigDecimal("10.35")),
                 Types.Currency.EUR,
                 Types.DebtorIban.ofValue("DBTRIBAN"),

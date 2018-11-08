@@ -47,6 +47,10 @@ public abstract class Util {
         return obj;
     }
 
+    public static <T> boolean nonNullNotBlank(final T obj) {
+        return obj != null && StringUtils.isNotBlank(obj.toString());
+    }
+
     public static void checkApplicableCurrencies(final Types.Currency currency, final Types.Currency... applicableCurrencies) {
         if (Arrays.stream(applicableCurrencies).noneMatch(curr -> curr.equals(currency))) {
             final var applicableCurrenciesStr = Arrays.stream(applicableCurrencies)

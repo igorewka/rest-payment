@@ -1,4 +1,4 @@
-package eu.isakels.rest.model.reqresp;
+package eu.isakels.rest.reqresp;
 
 import eu.isakels.rest.model.Util;
 import eu.isakels.rest.model.payment.Types;
@@ -6,16 +6,18 @@ import eu.isakels.rest.model.payment.Types;
 import java.math.BigDecimal;
 import java.util.Objects;
 
+// Simple DTO is intentionally used instead of class hierarchy,
+// which would unnecessary complicate Jackson configuration
 public class CreatePaymentReq {
     private final Types.PaymentType type;
     private final BigDecimal amount;
     private final Types.Currency currency;
+    // Model types not used here because of unnecessary complicated Jackson configuration
     private final String debtorIban;
     private final String creditorIban;
     private final String details;
     private final String creditorBankBic;
 
-    // TODO: think about converting some params into objects
     public CreatePaymentReq(final Types.PaymentType type,
                             final BigDecimal amount,
                             final Types.Currency currency,

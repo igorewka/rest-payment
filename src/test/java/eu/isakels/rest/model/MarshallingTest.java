@@ -1,14 +1,16 @@
 package eu.isakels.rest.model;
 
 import eu.isakels.rest.model.payment.Types;
-import eu.isakels.rest.model.reqresp.CreatePaymentReq;
-import eu.isakels.rest.model.reqresp.CreatePaymentResp;
+import eu.isakels.rest.reqresp.CancelPaymentResp;
+import eu.isakels.rest.reqresp.CreatePaymentReq;
+import eu.isakels.rest.reqresp.CreatePaymentResp;
 import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 import static eu.isakels.rest.util.TestUtil.objMapper;
 
@@ -30,8 +32,14 @@ public class MarshallingTest {
 
     @Test
     public void createPaymentResp() throws Exception {
-        final var resp = new CreatePaymentResp("afsfhdhsdfgdhshdhajkjh");
+        final var resp = new CreatePaymentResp("property is mandatory");
         assertMarshallUnmarshall(resp, CreatePaymentResp.class);
+    }
+
+    @Test
+    public void cancelPaymentResp() throws Exception {
+        final var resp = CancelPaymentResp.ofMsg(UUID.randomUUID(), "cancelled successfully");
+        assertMarshallUnmarshall(resp, CancelPaymentResp.class);
     }
 
     private <T> void assertMarshallUnmarshall(final T obj, Class<T> clazz) throws java.io.IOException {
