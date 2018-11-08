@@ -2,6 +2,8 @@ package eu.isakels.rest.model.payment;
 
 import eu.isakels.rest.model.reqresp.CreatePaymentReq;
 
+import java.time.LocalDateTime;
+
 public abstract class PaymentFactory {
     public static BasePayment ofReq(final CreatePaymentReq req) {
         final BasePayment payment;
@@ -11,6 +13,8 @@ public abstract class PaymentFactory {
                         req.getCurrency(),
                         Types.DebtorIban.ofValue(req.getDebtorIban()),
                         Types.CreditorIban.ofValue(req.getCreditorIban()),
+                        LocalDateTime.now(),
+                        false,
                         Types.Details.ofValue(req.getDetails()));
                 break;
             case TYPE2:
@@ -18,6 +22,8 @@ public abstract class PaymentFactory {
                         req.getCurrency(),
                         Types.DebtorIban.ofValue(req.getDebtorIban()),
                         Types.CreditorIban.ofValue(req.getCreditorIban()),
+                        LocalDateTime.now(),
+                        false,
                         Types.Details.ofValue(req.getDetails()));
                 break;
             case TYPE3:
@@ -25,6 +31,8 @@ public abstract class PaymentFactory {
                         req.getCurrency(),
                         Types.DebtorIban.ofValue(req.getDebtorIban()),
                         Types.CreditorIban.ofValue(req.getCreditorIban()),
+                        LocalDateTime.now(),
+                        false,
                         Types.CreditorBankBic.ofValue(req.getCreditorBankBic()));
                 break;
             default:

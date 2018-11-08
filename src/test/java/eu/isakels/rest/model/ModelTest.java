@@ -6,6 +6,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 public class ModelTest {
     @Test
@@ -35,6 +36,8 @@ public class ModelTest {
                 Types.Currency.EUR,
                 Types.DebtorIban.ofValue("DBTRIBAN"),
                 Types.CreditorIban.ofValue("CRDTRIBAN"),
+                LocalDateTime.now(),
+                false,
                 Types.Details.ofValue("payment type1 details")));
 
         TestUtil.assertExc("amount", () -> new PaymentT1(
@@ -42,6 +45,8 @@ public class ModelTest {
                 Types.Currency.EUR,
                 Types.DebtorIban.ofValue("DBTRIBAN"),
                 Types.CreditorIban.ofValue("CRDTRIBAN"),
+                LocalDateTime.now(),
+                false,
                 Types.Details.ofValue("payment type1 details")));
 
         TestUtil.assertExc("currency", () -> new PaymentT1(
@@ -49,6 +54,8 @@ public class ModelTest {
                 null,
                 Types.DebtorIban.ofValue("DBTRIBAN"),
                 Types.CreditorIban.ofValue("CRDTRIBAN"),
+                LocalDateTime.now(),
+                false,
                 Types.Details.ofValue("payment type1 details")));
 
         TestUtil.assertExc("currency", () -> new PaymentT1(
@@ -56,6 +63,8 @@ public class ModelTest {
                 Types.Currency.USD,
                 Types.DebtorIban.ofValue("DBTRIBAN"),
                 Types.CreditorIban.ofValue("CRDTRIBAN"),
+                LocalDateTime.now(),
+                false,
                 Types.Details.ofValue("payment type1 details")));
 
         TestUtil.assertExc("debtorIban", () -> new PaymentT1(
@@ -63,6 +72,8 @@ public class ModelTest {
                 Types.Currency.EUR,
                 null,
                 Types.CreditorIban.ofValue("CRDTRIBAN"),
+                LocalDateTime.now(),
+                false,
                 Types.Details.ofValue("payment type1 details")));
 
         TestUtil.assertExc("debtorIban", () -> new PaymentT1(
@@ -70,6 +81,8 @@ public class ModelTest {
                 Types.Currency.EUR,
                 Types.DebtorIban.ofValue(" "),
                 Types.CreditorIban.ofValue("CRDTRIBAN"),
+                LocalDateTime.now(),
+                false,
                 Types.Details.ofValue("payment type1 details")));
 
         TestUtil.assertExc("creditorIban", () -> new PaymentT1(
@@ -77,6 +90,8 @@ public class ModelTest {
                 Types.Currency.EUR,
                 Types.DebtorIban.ofValue("DBTRIBAN"),
                 null,
+                LocalDateTime.now(),
+                false,
                 Types.Details.ofValue("payment type1 details")));
 
         TestUtil.assertExc("creditorIban", () -> new PaymentT1(
@@ -84,6 +99,8 @@ public class ModelTest {
                 Types.Currency.EUR,
                 Types.DebtorIban.ofValue("DBTRIBAN"),
                 Types.CreditorIban.ofValue(" "),
+                LocalDateTime.now(),
+                false,
                 Types.Details.ofValue("payment type1 details")));
 
         TestUtil.assertExc("details", () -> new PaymentT1(
@@ -91,6 +108,8 @@ public class ModelTest {
                 Types.Currency.EUR,
                 Types.DebtorIban.ofValue("DBTRIBAN"),
                 Types.CreditorIban.ofValue("CRDTRIBAN"),
+                LocalDateTime.now(),
+                false,
                 null));
 
         TestUtil.assertExc("details", () -> new PaymentT1(
@@ -98,6 +117,8 @@ public class ModelTest {
                 Types.Currency.EUR,
                 Types.DebtorIban.ofValue("DBTRIBAN"),
                 Types.CreditorIban.ofValue("CRDTRIBAN"),
+                LocalDateTime.now(),
+                false,
                 Types.Details.ofValue(" ")));
     }
 
@@ -108,6 +129,8 @@ public class ModelTest {
                 Types.Currency.EUR,
                 Types.DebtorIban.ofValue("DBTRIBAN"),
                 Types.CreditorIban.ofValue("CRDTRIBAN"),
+                LocalDateTime.now(),
+                false,
                 null));
     }
 
@@ -118,6 +141,8 @@ public class ModelTest {
                 Types.Currency.GBP,
                 Types.DebtorIban.ofValue("DBTRIBAN"),
                 Types.CreditorIban.ofValue("CRDTRIBAN"),
+                LocalDateTime.now(),
+                false,
                 Types.CreditorBankBic.ofValue("CRDTRBANKBIC")));
 
         TestUtil.assertExc("creditorBankBic", () -> new PaymentT3(
@@ -125,6 +150,8 @@ public class ModelTest {
                 Types.Currency.EUR,
                 Types.DebtorIban.ofValue("DBTRIBAN"),
                 Types.CreditorIban.ofValue("CRDTRIBAN"),
+                LocalDateTime.now(),
+                false,
                 null));
 
         TestUtil.assertExc("creditorBankBic", () -> new PaymentT3(
@@ -132,6 +159,8 @@ public class ModelTest {
                 Types.Currency.EUR,
                 Types.DebtorIban.ofValue("DBTRIBAN"),
                 Types.CreditorIban.ofValue("CRDTRIBAN"),
+                LocalDateTime.now(),
+                false,
                 Types.CreditorBankBic.ofValue(" ")));
     }
 }

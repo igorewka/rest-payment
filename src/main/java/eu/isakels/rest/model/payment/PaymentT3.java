@@ -2,6 +2,7 @@ package eu.isakels.rest.model.payment;
 
 import eu.isakels.rest.model.Util;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class PaymentT3 extends BasePayment {
@@ -13,8 +14,10 @@ public class PaymentT3 extends BasePayment {
                      final Types.Currency currency,
                      final Types.DebtorIban debtorIban,
                      final Types.CreditorIban creditorIban,
+                     final LocalDateTime created,
+                     final boolean cancelled,
                      final Types.CreditorBankBic creditorBankBic) {
-        super(id, amount, currency, debtorIban, creditorIban);
+        super(id, amount, currency, debtorIban, creditorIban, created, cancelled);
 
         Util.checkApplicableCurrencies(currency, Types.Currency.EUR, Types.Currency.USD);
 
@@ -25,8 +28,10 @@ public class PaymentT3 extends BasePayment {
                      final Types.Currency currency,
                      final Types.DebtorIban debtorIban,
                      final Types.CreditorIban creditorIban,
+                     final LocalDateTime created,
+                     final boolean cancelled,
                      final Types.CreditorBankBic creditorBankBic) {
-        this(null, amount, currency, debtorIban, creditorIban, creditorBankBic);
+        this(null, amount, currency, debtorIban, creditorIban, created, cancelled, creditorBankBic);
     }
 
     public Types.CreditorBankBic getCreditorBankBic() {
