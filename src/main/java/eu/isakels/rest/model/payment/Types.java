@@ -26,6 +26,11 @@ public abstract class Types {
             return value != null ? new Amount(value) : null;
         }
 
+        @JsonCreator
+        public static Amount ofObj(final Amount obj) {
+            return obj != null ? new Amount(obj.getValue()) : null;
+        }
+
         public BigDecimal getValue() {
             return value;
         }
@@ -61,6 +66,11 @@ public abstract class Types {
         @JsonCreator
         public static DebtorIban ofValue(final String value) {
             return value != null ? new DebtorIban(value) : null;
+        }
+
+        @JsonCreator
+        public static DebtorIban ofObj(final DebtorIban obj) {
+            return obj != null ? new DebtorIban(obj.getValue()) : null;
         }
 
         public String getValue() {
@@ -100,6 +110,11 @@ public abstract class Types {
             return value != null ? new CreditorIban(value) : null;
         }
 
+        @JsonCreator
+        public static CreditorIban ofObj(final CreditorIban obj) {
+            return obj != null ? new CreditorIban(obj.getValue()) : null;
+        }
+
         public String getValue() {
             return value;
         }
@@ -137,6 +152,11 @@ public abstract class Types {
             return value != null ? new Details(value) : null;
         }
 
+        @JsonCreator
+        public static Details ofObj(final Details obj) {
+            return obj != null ? new Details(obj.getValue()) : null;
+        }
+
         public String getValue() {
             return value;
         }
@@ -172,6 +192,11 @@ public abstract class Types {
         @JsonCreator
         public static CreditorBankBic ofValue(final String value) {
             return value != null ? new CreditorBankBic(value) : null;
+        }
+
+        @JsonCreator
+        public static CreditorBankBic ofObj(final CreditorBankBic obj) {
+            return obj != null ? new CreditorBankBic(obj.getValue()) : null;
         }
 
         public String getValue() {

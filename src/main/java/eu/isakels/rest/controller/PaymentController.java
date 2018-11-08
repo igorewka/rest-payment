@@ -24,7 +24,7 @@ public class PaymentController {
     public CreatePaymentResp create(@RequestBody CreatePaymentReq req) {
         CreatePaymentResp resp;
         try {
-            final String id = PaymentRepo.create(PaymentFactory.forReq(req));
+            final String id = PaymentRepo.create(PaymentFactory.ofReq(req));
             resp = new CreatePaymentResp(id);
         } catch (Throwable exc) {
             logger.error("", exc);

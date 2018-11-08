@@ -34,7 +34,6 @@ public class PaymentAppTest {
 
     @Test
     public void createPaymentSuccessful() throws Exception {
-// TODO: fix all NPEs
         assertCreatePayment(TestUtil.paymentReqT1(),
                 (resp) -> assertTrue(StringUtils.isNotBlank(resp.getId().toString())));
         assertCreatePayment(TestUtil.paymentReqT2(),

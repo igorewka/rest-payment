@@ -11,19 +11,19 @@ public class ModelTest {
     @Test
     public void paymentSuccessful() {
         {
-            final var payment = PaymentFactory.forReq(TestUtil.paymentReqT1());
+            final var payment = PaymentFactory.ofReq(TestUtil.paymentReqT1());
             Assert.assertTrue(payment instanceof PaymentT1);
         }
         {
-            final var payment = PaymentFactory.forReq(TestUtil.paymentReqT2());
+            final var payment = PaymentFactory.ofReq(TestUtil.paymentReqT2());
             Assert.assertTrue(payment instanceof PaymentT2);
         }
         {
-            final var payment = PaymentFactory.forReq(TestUtil.paymentReqT3(Types.Currency.USD));
+            final var payment = PaymentFactory.ofReq(TestUtil.paymentReqT3(Types.Currency.USD));
             Assert.assertTrue(payment instanceof PaymentT3);
         }
         {
-            final var payment = PaymentFactory.forReq(TestUtil.paymentReqT3(Types.Currency.EUR));
+            final var payment = PaymentFactory.ofReq(TestUtil.paymentReqT3(Types.Currency.EUR));
             Assert.assertTrue(payment instanceof PaymentT3);
         }
     }
