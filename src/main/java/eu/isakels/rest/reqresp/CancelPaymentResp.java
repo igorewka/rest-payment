@@ -12,7 +12,8 @@ public class CancelPaymentResp extends BasePaymentResp {
 
     private CancelPaymentResp(final UUID id,
                               final BigDecimal cancelFee,
-                              final Types.Currency currency, final String msg,
+                              final Types.Currency currency,
+                              final String msg,
                               final String error) {
         super(id, msg, error);
         this.cancelFee = cancelFee;
@@ -30,5 +31,9 @@ public class CancelPaymentResp extends BasePaymentResp {
 
     public BigDecimal getCancelFee() {
         return cancelFee;
+    }
+
+    public Types.Currency getCurrency() {
+        return currency;
     }
 }
