@@ -16,10 +16,15 @@ import java.util.UUID;
 
 @RestController
 public class PaymentController {
-    @Autowired
-    private PaymentService service;
 
     private static final Logger logger = LoggerFactory.getLogger(PaymentController.class);
+
+    private PaymentService service;
+
+    @Autowired
+    public PaymentController(final PaymentService service) {
+        this.service = service;
+    }
 
     @PostMapping(value = Constants.pathPayments,
             consumes = MediaType.APPLICATION_JSON_VALUE,

@@ -9,9 +9,13 @@ import java.util.UUID;
 
 @Service
 public class PaymentServiceImpl implements PaymentService {
-    @Autowired
+
     private PaymentRepo repo;
 
+    @Autowired
+    public PaymentServiceImpl(final PaymentRepo repo) {
+        this.repo = repo;
+    }
 
     @Override
     public UUID create(final BasePayment payment) {
