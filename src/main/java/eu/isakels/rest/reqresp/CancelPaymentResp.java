@@ -1,22 +1,21 @@
 package eu.isakels.rest.reqresp;
 
-import eu.isakels.rest.model.payment.Types;
-
+import java.math.BigDecimal;
 import java.util.UUID;
 
 public class CancelPaymentResp extends BasePaymentResp {
 
-    private final Types.Amount cancelFee;
+    private final BigDecimal cancelFee;
 
     private CancelPaymentResp(final UUID id,
-                              final Types.Amount cancelFee,
+                              final BigDecimal cancelFee,
                               final String msg,
                               final String error) {
         super(id, msg, error);
         this.cancelFee = cancelFee;
     }
 
-    public static CancelPaymentResp ofMsg(final UUID id, final Types.Amount cancelFee, final String msg) {
+    public static CancelPaymentResp ofMsg(final UUID id, final BigDecimal cancelFee, final String msg) {
         return new CancelPaymentResp(id, cancelFee, msg, null);
     }
 
@@ -24,7 +23,7 @@ public class CancelPaymentResp extends BasePaymentResp {
         return new CancelPaymentResp(id, null, null, error);
     }
 
-    public Types.Amount getCancelFee() {
+    public BigDecimal getCancelFee() {
         return cancelFee;
     }
 }

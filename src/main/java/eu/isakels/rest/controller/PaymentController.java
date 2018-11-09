@@ -51,7 +51,12 @@ public class PaymentController {
         try {
             final CancelResult result = service.cancel(id);
             if (result.isResult()) {
-                resp = CancelPaymentResp.ofMsg(id, result.getPayment().getCancelFee(), Constants.msgSuccessfulCancel);
+                resp = CancelPaymentResp.ofMsg(
+                        id,
+                        result.getPayment().getCancelFee()
+                                .orElseThrow(() -> new RuntimeException("Expected cancelFee missing"))
+                                .getValue(),
+                        Constants.msgSuccessfulCancel);
             } else {
                 resp = CancelPaymentResp.ofMsg(id, null, Constants.msgExpiredCancel);
             }

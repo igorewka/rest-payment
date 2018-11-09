@@ -80,12 +80,12 @@ public abstract class BasePayment {
         return cancelled;
     }
 
-    public LocalDateTime getCancelledDateTime() {
-        return cancelledDateTime;
+    public Optional<LocalDateTime> getCancelledDateTime() {
+        return Optional.ofNullable(cancelledDateTime);
     }
 
-    public Types.Amount getCancelFee() {
-        return cancelFee;
+    public Optional<Types.Amount> getCancelFee() {
+        return Optional.ofNullable(cancelFee);
     }
 
     public boolean isCancellable() {

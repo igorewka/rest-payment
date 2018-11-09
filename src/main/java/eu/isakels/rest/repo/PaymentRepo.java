@@ -35,7 +35,7 @@ public class PaymentRepo {
 
     public void cancel(final BasePayment payment) {
         paymentRepo.put(
-                payment.getId().orElseThrow(() -> new RuntimeException((Constants.expectedIdMissing))),
+                payment.getId().orElseThrow(() -> new RuntimeException(Constants.expectedIdMissing)),
                 payment);
     }
 
