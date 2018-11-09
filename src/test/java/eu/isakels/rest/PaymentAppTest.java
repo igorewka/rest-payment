@@ -61,6 +61,7 @@ public class PaymentAppTest {
 
         assertCancelPayment(id, (resp) -> {
             assertTrue(Util.nonNullNotBlank(resp.getId()));
+            assertEquals(0, resp.getCancelFee());
             assertEquals(Constants.msgSuccessfulCancel, resp.getMsg());
             assertTrue(StringUtils.isBlank(resp.getError()));
         });
@@ -73,6 +74,7 @@ public class PaymentAppTest {
 
         assertCancelPayment(id, (resp) -> {
             assertTrue(Util.nonNullNotBlank(resp.getId()));
+            assertEquals(0, resp.getCancelFee());
             assertEquals(Constants.msgExpiredCancel, resp.getMsg());
             assertTrue(StringUtils.isBlank(resp.getError()));
         });

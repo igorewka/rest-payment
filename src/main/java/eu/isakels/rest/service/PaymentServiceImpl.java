@@ -26,20 +26,20 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public boolean cancel(final UUID id) {
+    public CancelResult cancel(final UUID id) {
         final var paymentOpt = repo.getPayment(id);
         var payment = paymentOpt.orElseThrow(
                 () -> new RuntimeException(String.format("expected payment[%s] not found", id)));
 
-        final boolean result;
+        final CancelResult result;
         if (payment.isCancellable()) {
             var coeff = repo.getCoeff(payment.getType());
             var fee = payment.computeCancelFee(coeff);
             repo.cancel(payment.cancelledInstance(fee));
 
-            result = true;
+            result = new CancelResult(payment, true);
         } else {
-            result = false;
+            result = new CancelResult(payment, false);
         }
         return result;
     }

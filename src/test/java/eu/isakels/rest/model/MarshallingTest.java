@@ -38,7 +38,10 @@ public class MarshallingTest {
 
     @Test
     public void cancelPaymentResp() throws Exception {
-        final var resp = CancelPaymentResp.ofMsg(UUID.randomUUID(), "cancelled successfully");
+        final var resp = CancelPaymentResp.ofMsg(
+                UUID.randomUUID(),
+                Types.Amount.ofValue(new BigDecimal("10")),
+                "cancelled successfully");
         assertMarshallUnmarshall(resp, CancelPaymentResp.class);
     }
 
