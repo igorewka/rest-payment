@@ -9,6 +9,8 @@ public abstract class Constants {
     public static final String msgExpiredCancel = "cancel expired";
 
     public static final String expectedIdMissing = "expected id is missing";
+    public static final String expectedCancelFeeMissing = "Expected cancelFee missing";
+    public static final String expectedPaymentNotFound = "expected payment[%s] not found";
 
     public static final String timeZoneIdRiga = "Europe/Riga";
 }

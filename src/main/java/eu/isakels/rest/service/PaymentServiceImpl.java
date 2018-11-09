@@ -1,5 +1,6 @@
 package eu.isakels.rest.service;
 
+import eu.isakels.rest.model.Constants;
 import eu.isakels.rest.model.payment.BasePayment;
 import eu.isakels.rest.repo.PaymentRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class PaymentServiceImpl implements PaymentService {
     public CancelResult cancel(final UUID id) {
         final var paymentOpt = repo.getPayment(id);
         var payment = paymentOpt.orElseThrow(
-                () -> new RuntimeException(String.format("expected payment[%s] not found", id)));
+                () -> new RuntimeException(String.format(Constants.expectedPaymentNotFound, id)));
 
         final CancelResult result;
         if (payment.isCancellable()) {
@@ -43,5 +44,14 @@ public class PaymentServiceImpl implements PaymentService {
             result = new CancelResult(payment, false);
         }
         return result;
+    }
+
+    @Override
+    public BasePayment query(final UUID id) {
+        final var paymentOpt = repo.getPayment(id);
+        var payment = paymentOpt.orElseThrow(
+                () -> new RuntimeException(String.format(Constants.expectedPaymentNotFound, id)));
+
+        return payment;
     }
 }

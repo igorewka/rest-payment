@@ -4,6 +4,7 @@ import eu.isakels.rest.model.payment.Types;
 import eu.isakels.rest.reqresp.CancelPaymentResp;
 import eu.isakels.rest.reqresp.CreatePaymentReq;
 import eu.isakels.rest.reqresp.CreatePaymentResp;
+import eu.isakels.rest.reqresp.QueryPaymentResp;
 import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -38,12 +39,21 @@ public class MarshallingTest {
 
     @Test
     public void cancelPaymentResp() throws Exception {
-        final var resp = CancelPaymentResp.ofMsg(
+        final var resp = CancelPaymentResp.ofCancelFee(
                 UUID.randomUUID(),
                 new BigDecimal("10"),
                 Types.Currency.EUR,
                 "cancelled successfully");
         assertMarshallUnmarshall(resp, CancelPaymentResp.class);
+    }
+
+    @Test
+    public void queryPaymentResp() throws Exception {
+        final var resp = QueryPaymentResp.ofCancelFee(
+                UUID.randomUUID(),
+                new BigDecimal("10"),
+                Types.Currency.EUR);
+        assertMarshallUnmarshall(resp, QueryPaymentResp.class);
     }
 
     private <T> void assertMarshallUnmarshall(final T obj, Class<T> clazz) throws java.io.IOException {

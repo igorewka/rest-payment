@@ -9,4 +9,6 @@ public interface PaymentService {
     UUID create(final BasePayment payment);
 
     CancelResult cancel(final UUID id);
+
+    BasePayment query(UUID id);
 }

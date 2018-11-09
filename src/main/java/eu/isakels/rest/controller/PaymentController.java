@@ -1,10 +1,12 @@
 package eu.isakels.rest.controller;
 
 import eu.isakels.rest.model.Constants;
+import eu.isakels.rest.model.payment.BasePayment;
 import eu.isakels.rest.model.payment.PaymentFactory;
 import eu.isakels.rest.reqresp.CancelPaymentResp;
 import eu.isakels.rest.reqresp.CreatePaymentReq;
 import eu.isakels.rest.reqresp.CreatePaymentResp;
+import eu.isakels.rest.reqresp.QueryPaymentResp;
 import eu.isakels.rest.service.CancelResult;
 import eu.isakels.rest.service.PaymentService;
 import org.slf4j.Logger;
@@ -54,19 +56,43 @@ public class PaymentController {
         try {
             final CancelResult result = service.cancel(id);
             if (result.isResult()) {
-                resp = CancelPaymentResp.ofMsg(
+                resp = CancelPaymentResp.ofCancelFee(
                         id,
                         result.getPayment().getCancelFee()
-                                .orElseThrow(() -> new RuntimeException("Expected cancelFee missing"))
+                                .orElseThrow(() -> new RuntimeException(Constants.expectedCancelFeeMissing))
                                 .getValue(),
                         result.getPayment().getCurrency(),
                         Constants.msgSuccessfulCancel);
             } else {
-                resp = CancelPaymentResp.ofMsg(id, null, null, Constants.msgExpiredCancel);
+                resp = CancelPaymentResp.ofMsg(id, Constants.msgExpiredCancel);
             }
         } catch (Throwable exc) {
             logger.error("", exc);
             resp = CancelPaymentResp.ofError(id, exc.getMessage());
+        }
+        return resp;
+    }
+
+    @GetMapping(value = Constants.pathPayments + Constants.pathVarId,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public QueryPaymentResp query(@PathVariable UUID id) {
+        QueryPaymentResp resp;
+        try {
+            final BasePayment payment = service.query(id);
+            if (payment.isCancelled()) {
+                resp = QueryPaymentResp.ofCancelFee(
+                        id,
+                        payment.getCancelFee()
+                                .orElseThrow(() -> new RuntimeException(Constants.expectedCancelFeeMissing))
+                                .getValue(),
+                        payment.getCurrency());
+            } else {
+                resp = QueryPaymentResp.ofId(id);
+            }
+        } catch (Throwable exc) {
+            logger.error("", exc);
+            resp = QueryPaymentResp.ofError(id, exc.getMessage());
         }
         return resp;
     }

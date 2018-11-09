@@ -5,6 +5,7 @@ import eu.isakels.rest.model.Util;
 import eu.isakels.rest.reqresp.CancelPaymentResp;
 import eu.isakels.rest.reqresp.CreatePaymentReq;
 import eu.isakels.rest.reqresp.CreatePaymentResp;
+import eu.isakels.rest.reqresp.QueryPaymentResp;
 import eu.isakels.rest.util.TestUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
@@ -31,8 +32,7 @@ import java.util.function.Consumer;
 import static eu.isakels.rest.util.TestUtil.objMapper;
 import static org.junit.Assert.*;
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
@@ -122,23 +122,48 @@ public class PaymentAppTest {
         });
     }
 
-    private UUID assertCreatePayment(final CreatePaymentReq req
-            , final Consumer<CreatePaymentResp> azzert) throws Exception {
-        final var reqMarshalled = objMapper.writeValueAsString(req);
-        logger.info("reqMarshalled: {}", reqMarshalled);
+    @Test
+    public void queryNonCancelledPaymentSuccessful() throws Exception {
+        final var id = assertCreatePayment(TestUtil.paymentReqT1(),
+                (resp) -> assertTrue(Util.nonNullNotBlank(resp.getId())));
 
-        final MvcResult result = mvc.perform(post(Constants.pathPayments)
-                .content(reqMarshalled)
-                .contentType(MediaType.APPLICATION_JSON)
-        ).andExpect(status().isOk())
+        assertQueryPayment(id, (resp) -> {
+            assertTrue(Util.nonNullNotBlank(resp.getId()));
+            assertNull(resp.getCancelFee());
+            assertTrue(StringUtils.isBlank(resp.getMsg()));
+            assertTrue(StringUtils.isBlank(resp.getError()));
+        });
+    }
+
+    @Test
+    public void queryCancelledPaymentSuccessful() throws Exception {
+        final var instant2HoursInThePast = Instant.now().minus(Duration.ofHours(2));
+        given(clock.instant()).willReturn(instant2HoursInThePast);
+
+        final var id = assertCreatePayment(TestUtil.paymentReqT3(),
+                (resp) -> assertTrue(Util.nonNullNotBlank(resp.getId())));
+
+        assertCancelPayment(id, (resp) -> assertNotNull(resp));
+
+        assertQueryPayment(id, (resp) -> {
+            assertTrue(Util.nonNullNotBlank(resp.getId()));
+            assertEquals(new BigDecimal("0.30"), resp.getCancelFee());
+            assertTrue(StringUtils.isBlank(resp.getMsg()));
+            assertTrue(StringUtils.isBlank(resp.getError()));
+        });
+    }
+
+    private void assertQueryPayment(final UUID id
+            , final Consumer<QueryPaymentResp> azzert) throws Exception {
+        final MvcResult result = mvc.perform(
+                get(Constants.pathPayments + Constants.pathVarId, id))
+                .andExpect(status().isOk())
                 .andReturn();
 
         var respMarshalled = result.getResponse().getContentAsString();
         logger.info("respMarshalled: {}", respMarshalled);
-        var resp = objMapper.readValue(respMarshalled, CreatePaymentResp.class);
+        var resp = objMapper.readValue(respMarshalled, QueryPaymentResp.class);
         azzert.accept(resp);
-
-        return resp.getId();
     }
 
     private void assertCancelPayment(final UUID id
@@ -152,5 +177,25 @@ public class PaymentAppTest {
         logger.info("respMarshalled: {}", respMarshalled);
         var resp = objMapper.readValue(respMarshalled, CancelPaymentResp.class);
         azzert.accept(resp);
+    }
+
+    private UUID assertCreatePayment(final CreatePaymentReq req
+            , final Consumer<CreatePaymentResp> azzert) throws Exception {
+        final var reqMarshalled = objMapper.writeValueAsString(req);
+        logger.info("reqMarshalled: {}", reqMarshalled);
+
+        final MvcResult result = mvc.perform(
+                post(Constants.pathPayments)
+                        .content(reqMarshalled)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        var respMarshalled = result.getResponse().getContentAsString();
+        logger.info("respMarshalled: {}", respMarshalled);
+        var resp = objMapper.readValue(respMarshalled, CreatePaymentResp.class);
+        azzert.accept(resp);
+
+        return resp.getId();
     }
 }
