@@ -6,25 +6,27 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.Clock;
+import java.time.Instant;
 
 public class ModelTest {
     @Test
     public void paymentSuccessful() {
+        final var clock = Clock.systemDefaultZone();
         {
-            final var payment = PaymentFactory.ofReq(TestUtil.paymentReqT1());
+            final var payment = PaymentFactory.ofReq(TestUtil.paymentReqT1(), clock);
             Assert.assertEquals(Types.PaymentType.TYPE1, payment.getType());
         }
         {
-            final var payment = PaymentFactory.ofReq(TestUtil.paymentReqT2());
+            final var payment = PaymentFactory.ofReq(TestUtil.paymentReqT2(), clock);
             Assert.assertEquals(Types.PaymentType.TYPE2, payment.getType());
         }
         {
-            final var payment = PaymentFactory.ofReq(TestUtil.paymentReqT3(Types.Currency.USD));
+            final var payment = PaymentFactory.ofReq(TestUtil.paymentReqT3(Types.Currency.USD), clock);
             Assert.assertEquals(Types.PaymentType.TYPE3, payment.getType());
         }
         {
-            final var payment = PaymentFactory.ofReq(TestUtil.paymentReqT3(Types.Currency.EUR));
+            final var payment = PaymentFactory.ofReq(TestUtil.paymentReqT3(Types.Currency.EUR), clock);
             Assert.assertEquals(Types.PaymentType.TYPE3, payment.getType());
         }
     }
@@ -36,7 +38,7 @@ public class ModelTest {
                 Types.Currency.EUR,
                 Types.DebtorIban.ofValue("DBTRIBAN"),
                 Types.CreditorIban.ofValue("CRDTRIBAN"),
-                LocalDateTime.now(),
+                Instant.now(),
                 false,
                 null,
                 null,
@@ -47,7 +49,7 @@ public class ModelTest {
                 Types.Currency.EUR,
                 Types.DebtorIban.ofValue("DBTRIBAN"),
                 Types.CreditorIban.ofValue("CRDTRIBAN"),
-                LocalDateTime.now(),
+                Instant.now(),
                 false,
                 null,
                 null,
@@ -58,7 +60,7 @@ public class ModelTest {
                 null,
                 Types.DebtorIban.ofValue("DBTRIBAN"),
                 Types.CreditorIban.ofValue("CRDTRIBAN"),
-                LocalDateTime.now(),
+                Instant.now(),
                 false,
                 null,
                 null,
@@ -69,7 +71,7 @@ public class ModelTest {
                 Types.Currency.USD,
                 Types.DebtorIban.ofValue("DBTRIBAN"),
                 Types.CreditorIban.ofValue("CRDTRIBAN"),
-                LocalDateTime.now(),
+                Instant.now(),
                 false,
                 null,
                 null,
@@ -80,7 +82,7 @@ public class ModelTest {
                 Types.Currency.EUR,
                 null,
                 Types.CreditorIban.ofValue("CRDTRIBAN"),
-                LocalDateTime.now(),
+                Instant.now(),
                 false,
                 null,
                 null,
@@ -91,7 +93,7 @@ public class ModelTest {
                 Types.Currency.EUR,
                 Types.DebtorIban.ofValue(" "),
                 Types.CreditorIban.ofValue("CRDTRIBAN"),
-                LocalDateTime.now(),
+                Instant.now(),
                 false,
                 null,
                 null,
@@ -102,7 +104,7 @@ public class ModelTest {
                 Types.Currency.EUR,
                 Types.DebtorIban.ofValue("DBTRIBAN"),
                 null,
-                LocalDateTime.now(),
+                Instant.now(),
                 false,
                 null,
                 null,
@@ -113,7 +115,7 @@ public class ModelTest {
                 Types.Currency.EUR,
                 Types.DebtorIban.ofValue("DBTRIBAN"),
                 Types.CreditorIban.ofValue(" "),
-                LocalDateTime.now(),
+                Instant.now(),
                 false,
                 null,
                 null,
@@ -124,7 +126,7 @@ public class ModelTest {
                 Types.Currency.EUR,
                 Types.DebtorIban.ofValue("DBTRIBAN"),
                 Types.CreditorIban.ofValue("CRDTRIBAN"),
-                LocalDateTime.now(),
+                Instant.now(),
                 false,
                 null,
                 null,
@@ -135,7 +137,7 @@ public class ModelTest {
                 Types.Currency.EUR,
                 Types.DebtorIban.ofValue("DBTRIBAN"),
                 Types.CreditorIban.ofValue("CRDTRIBAN"),
-                LocalDateTime.now(),
+                Instant.now(),
                 false,
                 null,
                 null,
@@ -149,7 +151,7 @@ public class ModelTest {
                 Types.Currency.EUR,
                 Types.DebtorIban.ofValue("DBTRIBAN"),
                 Types.CreditorIban.ofValue("CRDTRIBAN"),
-                LocalDateTime.now(),
+                Instant.now(),
                 false,
                 null,
                 null,
@@ -163,7 +165,7 @@ public class ModelTest {
                 Types.Currency.GBP,
                 Types.DebtorIban.ofValue("DBTRIBAN"),
                 Types.CreditorIban.ofValue("CRDTRIBAN"),
-                LocalDateTime.now(),
+                Instant.now(),
                 false,
                 null,
                 null,
@@ -174,7 +176,7 @@ public class ModelTest {
                 Types.Currency.EUR,
                 Types.DebtorIban.ofValue("DBTRIBAN"),
                 Types.CreditorIban.ofValue("CRDTRIBAN"),
-                LocalDateTime.now(),
+                Instant.now(),
                 false,
                 null,
                 null,
@@ -185,7 +187,7 @@ public class ModelTest {
                 Types.Currency.EUR,
                 Types.DebtorIban.ofValue("DBTRIBAN"),
                 Types.CreditorIban.ofValue("CRDTRIBAN"),
-                LocalDateTime.now(),
+                Instant.now(),
                 false,
                 null,
                 null,

@@ -41,6 +41,7 @@ public class MarshallingTest {
         final var resp = CancelPaymentResp.ofMsg(
                 UUID.randomUUID(),
                 new BigDecimal("10"),
+                Types.Currency.EUR,
                 "cancelled successfully");
         assertMarshallUnmarshall(resp, CancelPaymentResp.class);
     }

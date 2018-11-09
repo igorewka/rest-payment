@@ -4,6 +4,7 @@ import eu.isakels.rest.model.payment.Types;
 import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
@@ -59,5 +60,9 @@ public abstract class Util {
 
             throw new IllegalArgumentException(String.format("Only %s currency is applicable", applicableCurrenciesStr));
         }
+    }
+
+    public static BigDecimal setScale(BigDecimal amount) {
+        return amount.setScale(2, RoundingMode.FLOOR);
     }
 }

@@ -1,6 +1,6 @@
 package eu.isakels.rest.model.payment;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.UUID;
 
 abstract class BasePaymentWithDetails extends BasePayment {
@@ -13,13 +13,13 @@ abstract class BasePaymentWithDetails extends BasePayment {
                            final Types.Currency currency,
                            final Types.DebtorIban debtorIban,
                            final Types.CreditorIban creditorIban,
-                           final LocalDateTime created,
+                           final Instant createdInstant,
                            final boolean cancelled,
-                           final LocalDateTime cancelledDateTime,
+                           final Instant cancelledInstant,
                            final Types.Amount cancelFee,
                            final Types.Details details) {
-        super(id, type, amount, currency, debtorIban, creditorIban, created, cancelled,
-                cancelledDateTime, cancelFee);
+        super(id, type, amount, currency, debtorIban, creditorIban, createdInstant, cancelled,
+                cancelledInstant, cancelFee);
 
         this.details = details;
     }

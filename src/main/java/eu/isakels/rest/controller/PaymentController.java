@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Clock;
 import java.util.UUID;
 
 @RestController
@@ -21,10 +22,12 @@ public class PaymentController {
     private static final Logger logger = LoggerFactory.getLogger(PaymentController.class);
 
     private PaymentService service;
+    private Clock clock;
 
     @Autowired
-    public PaymentController(final PaymentService service) {
+    public PaymentController(final PaymentService service, final Clock clock) {
         this.service = service;
+        this.clock = clock;
     }
 
     @PostMapping(value = Constants.pathPayments,
@@ -34,7 +37,7 @@ public class PaymentController {
     public CreatePaymentResp create(@RequestBody CreatePaymentReq req) {
         CreatePaymentResp resp;
         try {
-            final UUID id = service.create(PaymentFactory.ofReq(req));
+            final UUID id = service.create(PaymentFactory.ofReq(req, clock));
             resp = new CreatePaymentResp(id);
         } catch (Throwable exc) {
             logger.error("", exc);
@@ -56,9 +59,10 @@ public class PaymentController {
                         result.getPayment().getCancelFee()
                                 .orElseThrow(() -> new RuntimeException("Expected cancelFee missing"))
                                 .getValue(),
+                        result.getPayment().getCurrency(),
                         Constants.msgSuccessfulCancel);
             } else {
-                resp = CancelPaymentResp.ofMsg(id, null, Constants.msgExpiredCancel);
+                resp = CancelPaymentResp.ofMsg(id, null, null, Constants.msgExpiredCancel);
             }
         } catch (Throwable exc) {
             logger.error("", exc);

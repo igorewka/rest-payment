@@ -3,7 +3,7 @@ package eu.isakels.rest.model.payment;
 import eu.isakels.rest.model.Util;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.UUID;
 
 public class PaymentT3 extends BasePayment {
@@ -15,13 +15,13 @@ public class PaymentT3 extends BasePayment {
                      final Types.Currency currency,
                      final Types.DebtorIban debtorIban,
                      final Types.CreditorIban creditorIban,
-                     final LocalDateTime createdDateTime,
+                     final Instant createdInstant,
                      final boolean cancelled,
-                     final LocalDateTime cancelledDateTime,
+                     final Instant cancelledInstant,
                      final Types.Amount cancelFee,
                      final Types.CreditorBankBic creditorBankBic) {
         super(id, Types.PaymentType.TYPE3, amount, currency, debtorIban, creditorIban,
-                createdDateTime, cancelled, cancelledDateTime, cancelFee);
+                createdInstant, cancelled, cancelledInstant, cancelFee);
 
         Util.checkApplicableCurrencies(currency, Types.Currency.EUR, Types.Currency.USD);
 
@@ -32,13 +32,13 @@ public class PaymentT3 extends BasePayment {
                      final Types.Currency currency,
                      final Types.DebtorIban debtorIban,
                      final Types.CreditorIban creditorIban,
-                     final LocalDateTime created,
+                     final Instant createdInstant,
                      final boolean cancelled,
-                     final LocalDateTime cancelledDateTime,
+                     final Instant cancelledInstant,
                      final Types.Amount cancelFee,
                      final Types.CreditorBankBic creditorBankBic) {
-        this(null, amount, currency, debtorIban, creditorIban, created, cancelled,
-                cancelledDateTime, cancelFee, creditorBankBic);
+        this(null, amount, currency, debtorIban, creditorIban, createdInstant, cancelled,
+                cancelledInstant, cancelFee, creditorBankBic);
     }
 
     public Types.CreditorBankBic getCreditorBankBic() {
@@ -53,9 +53,9 @@ public class PaymentT3 extends BasePayment {
                 this.getCurrency(),
                 this.getDebtorIban(),
                 this.getCreditorIban(),
-                this.getCreatedDateTime(),
+                this.getCreatedInstant(),
                 true,
-                LocalDateTime.now(),
+                Instant.now(),
                 Types.Amount.ofValue(cancelFee),
                 this.getCreditorBankBic());
     }
@@ -68,7 +68,7 @@ public class PaymentT3 extends BasePayment {
                 this.getCurrency(),
                 this.getDebtorIban(),
                 this.getCreditorIban(),
-                this.getCreatedDateTime(),
+                this.getCreatedInstant(),
                 false,
                 null,
                 null,

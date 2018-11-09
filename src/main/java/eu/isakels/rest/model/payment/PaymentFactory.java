@@ -2,11 +2,13 @@ package eu.isakels.rest.model.payment;
 
 import eu.isakels.rest.reqresp.CreatePaymentReq;
 
-import java.time.LocalDateTime;
+import java.time.Clock;
+import java.time.Instant;
 
 public abstract class PaymentFactory {
 
-    public static BasePayment ofReq(final CreatePaymentReq req) {
+    // Clock is required only for testing, that's a slight smell of course
+    public static BasePayment ofReq(final CreatePaymentReq req, final Clock clock) {
         final BasePayment payment;
         switch (req.getType()) {
             case TYPE1:
@@ -15,7 +17,7 @@ public abstract class PaymentFactory {
                         req.getCurrency(),
                         Types.DebtorIban.ofValue(req.getDebtorIban()),
                         Types.CreditorIban.ofValue(req.getCreditorIban()),
-                        LocalDateTime.now(),
+                        Instant.now(clock),
                         false,
                         null,
                         null,
@@ -27,7 +29,7 @@ public abstract class PaymentFactory {
                         req.getCurrency(),
                         Types.DebtorIban.ofValue(req.getDebtorIban()),
                         Types.CreditorIban.ofValue(req.getCreditorIban()),
-                        LocalDateTime.now(),
+                        Instant.now(clock),
                         false,
                         null,
                         null,
@@ -39,7 +41,7 @@ public abstract class PaymentFactory {
                         req.getCurrency(),
                         Types.DebtorIban.ofValue(req.getDebtorIban()),
                         Types.CreditorIban.ofValue(req.getCreditorIban()),
-                        LocalDateTime.now(),
+                        Instant.now(clock),
                         false,
                         null,
                         null,

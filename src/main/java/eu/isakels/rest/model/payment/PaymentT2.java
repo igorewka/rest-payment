@@ -3,7 +3,7 @@ package eu.isakels.rest.model.payment;
 import eu.isakels.rest.model.Util;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -14,13 +14,13 @@ public class PaymentT2 extends BasePaymentWithDetails {
                      final Types.Currency currency,
                      final Types.DebtorIban debtorIban,
                      final Types.CreditorIban creditorIban,
-                     final LocalDateTime created,
+                     final Instant createdInstant,
                      final boolean cancelled,
-                     final LocalDateTime cancelledDateTime,
+                     final Instant cancelledInstant,
                      final Types.Amount cancelFee,
                      final Types.Details details) {
-        super(id, Types.PaymentType.TYPE2, amount, currency, debtorIban, creditorIban, created,
-                cancelled, cancelledDateTime, cancelFee, details);
+        super(id, Types.PaymentType.TYPE2, amount, currency, debtorIban, creditorIban, createdInstant,
+                cancelled, cancelledInstant, cancelFee, details);
 
         Util.checkApplicableCurrencies(currency, Types.Currency.USD);
     }
@@ -29,9 +29,9 @@ public class PaymentT2 extends BasePaymentWithDetails {
                      final Types.Currency currency,
                      final Types.DebtorIban debtorIban,
                      final Types.CreditorIban creditorIban,
-                     final LocalDateTime created,
+                     final Instant createdInstant,
                      final boolean cancelled,
-                     final LocalDateTime cancelledDateTime,
+                     final Instant cancelledInstant,
                      final Types.Amount cancelFee,
                      // there're clear issues with Optional design/implementation in Java comparing to e.g. Scala
                      // Java Optional is not designed to be used in class properties/fields,
@@ -40,8 +40,8 @@ public class PaymentT2 extends BasePaymentWithDetails {
                      // there're not any 100% good solution to the mentioned before issues
                      // don't have huge experience with Java Optionals, would be great to discuss.
                      final Types.Details details) {
-        this(null, amount, currency, debtorIban, creditorIban, created, cancelled,
-                cancelledDateTime, cancelFee, details);
+        this(null, amount, currency, debtorIban, creditorIban, createdInstant, cancelled,
+                cancelledInstant, cancelFee, details);
     }
 
     public Optional<Types.Details> getDetails() {
@@ -56,9 +56,9 @@ public class PaymentT2 extends BasePaymentWithDetails {
                 this.getCurrency(),
                 this.getDebtorIban(),
                 this.getCreditorIban(),
-                this.getCreatedDateTime(),
+                this.getCreatedInstant(),
                 true,
-                LocalDateTime.now(),
+                Instant.now(),
                 Types.Amount.ofValue(cancelFee),
                 this.getDetails().orElse(null));
     }
@@ -71,7 +71,7 @@ public class PaymentT2 extends BasePaymentWithDetails {
                 this.getCurrency(),
                 this.getDebtorIban(),
                 this.getCreditorIban(),
-                this.getCreatedDateTime(),
+                this.getCreatedInstant(),
                 false,
                 null,
                 null,

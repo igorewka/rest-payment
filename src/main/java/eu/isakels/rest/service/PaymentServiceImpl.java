@@ -35,9 +35,10 @@ public class PaymentServiceImpl implements PaymentService {
         if (payment.isCancellable()) {
             var coeff = repo.getCoeff(payment.getType());
             var fee = payment.computeCancelFee(coeff);
-            repo.cancel(payment.cancelledInstance(fee));
+            var cancelledPayment = payment.cancelledInstance(fee);
+            repo.cancel(cancelledPayment);
 
-            result = new CancelResult(payment, true);
+            result = new CancelResult(cancelledPayment, true);
         } else {
             result = new CancelResult(payment, false);
         }
