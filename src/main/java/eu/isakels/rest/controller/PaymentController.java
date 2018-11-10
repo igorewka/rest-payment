@@ -40,16 +40,17 @@ public class PaymentController {
             .setConnectTimeout(timeout)
             .build();
 
-    private PaymentService service;
-    private Clock clock;
+    private final PaymentService service;
+    private final Clock clock;
+    private final ObjectMapper objMapper;
 
     @Autowired
-    private ObjectMapper objMapper;
-
-    @Autowired
-    public PaymentController(final PaymentService service, final Clock clock) {
+    public PaymentController(final PaymentService service,
+                             final Clock clock,
+                             final ObjectMapper objMapper) {
         this.service = service;
         this.clock = clock;
+        this.objMapper = objMapper;
     }
 
     @PostMapping(value = Constants.pathPayments,
@@ -62,6 +63,8 @@ public class PaymentController {
         CreatePaymentResp resp;
         try {
             final UUID id = service.create(PaymentFactory.ofReq(req, clock));
+            logger.info("payment[{}] created", id);
+
             resp = new CreatePaymentResp(id);
         } catch (Throwable exc) {
             logger.error("", exc);
@@ -80,6 +83,7 @@ public class PaymentController {
         try {
             final CancelResult result = service.cancel(id);
             if (result.isResult()) {
+                logger.info("payment[{}] cancelled", id);
                 resp = CancelPaymentResp.ofCancelFee(
                         id,
                         result.getPayment().getCancelFee()
@@ -88,6 +92,7 @@ public class PaymentController {
                         result.getPayment().getCurrency(),
                         ModelConstants.msgSuccessfulCancel);
             } else {
+                logger.info("payment[{}] cancel expired", id);
                 resp = CancelPaymentResp.ofMsg(id, ModelConstants.msgExpiredCancel);
             }
         } catch (Throwable exc) {
@@ -106,6 +111,7 @@ public class PaymentController {
         QueryPaymentResp resp;
         try {
             final BasePayment payment = service.query(id);
+            logger.info("payment[{}] queried", id);
             if (payment.isCancelled()) {
                 resp = QueryPaymentResp.ofCancelFee(
                         id,
