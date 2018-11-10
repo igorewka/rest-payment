@@ -5,7 +5,7 @@ import eu.isakels.rest.model.payment.Types;
 import java.math.BigDecimal;
 import java.util.UUID;
 
-public abstract class BasePaymentRespWithCancelFee extends BasePaymentResp {
+public abstract class BasePaymentRespWithCancelFee extends BasePaymentRespWithId {
 
     private final BigDecimal cancelFee;
     private final Types.Currency currency;

@@ -3,10 +3,7 @@ package eu.isakels.rest.controller;
 import eu.isakels.rest.model.Constants;
 import eu.isakels.rest.model.payment.BasePayment;
 import eu.isakels.rest.model.payment.PaymentFactory;
-import eu.isakels.rest.reqresp.CancelPaymentResp;
-import eu.isakels.rest.reqresp.CreatePaymentReq;
-import eu.isakels.rest.reqresp.CreatePaymentResp;
-import eu.isakels.rest.reqresp.QueryPaymentResp;
+import eu.isakels.rest.reqresp.*;
 import eu.isakels.rest.service.CancelResult;
 import eu.isakels.rest.service.PaymentService;
 import org.slf4j.Logger;
@@ -15,8 +12,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.Clock;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 public class PaymentController {
@@ -95,5 +98,59 @@ public class PaymentController {
             resp = QueryPaymentResp.ofError(id, exc.getMessage());
         }
         return resp;
+    }
+
+    // TODO: pagination or limiting by period of time should be implemented
+    // there's a hardcoded limit of 3 days in the query method of repository
+    @GetMapping(value = Constants.pathPayments,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public QueryPaymentWithParamsResp queryWithParams(@RequestParam final Optional<Boolean> cancelled,
+                                                      @RequestParam final Optional<BigDecimal> amountGt,
+                                                      @RequestParam final Optional<BigDecimal> amountLt) {
+        QueryPaymentWithParamsResp resp;
+        try {
+            final var params = getParams(cancelled, amountGt, amountLt);
+
+            final Set<BasePayment> payments = service.queryWithParams(params);
+            final var respPayments = payments.stream().map((payment) -> {
+                final QueryPaymentResp paymentResp;
+                if (payment.isCancelled()) {
+                    paymentResp = QueryPaymentResp.ofCancelFee(
+                            payment.getId().orElseThrow(
+                                    () -> new RuntimeException(Constants.expectedIdMissing)),
+                            payment.getCancelFee().orElseThrow(
+                                    () -> new RuntimeException(Constants.expectedCancelFeeMissing))
+                                    .getValue(),
+                            payment.getCurrency());
+                } else {
+                    paymentResp = QueryPaymentResp.ofId(
+                            payment.getId().orElseThrow(
+                                    () -> new RuntimeException(Constants.expectedIdMissing)));
+                }
+                return paymentResp;
+            }).collect(Collectors.toSet());
+            resp = QueryPaymentWithParamsResp.ofPayments(respPayments);
+        } catch (Throwable exc) {
+            logger.error("", exc);
+            resp = QueryPaymentWithParamsResp.ofError(exc.getMessage());
+        }
+        return resp;
+    }
+
+    private Map<String, ? extends Serializable> getParams(final Optional<Boolean> cancelled,
+                                                          final Optional<BigDecimal> amountGt,
+                                                          final Optional<BigDecimal> amountLt) {
+        final var paramsOpt = Map.ofEntries(
+                Map.entry(Constants.cancelledParam, cancelled),
+                Map.entry(Constants.amountGtParam, amountGt),
+                Map.entry(Constants.amountLtParam, amountLt));
+
+        return paramsOpt.entrySet().stream()
+                .filter((entry) -> entry.getValue().isPresent())
+                .collect(Collectors.toUnmodifiableMap(
+                        (entry) -> entry.getKey(),
+                        (entry) -> entry.getValue().orElseThrow(
+                                () -> new RuntimeException("unexpected empty Optional"))));
     }
 }

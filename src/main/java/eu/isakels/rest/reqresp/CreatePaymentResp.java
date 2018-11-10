@@ -2,7 +2,7 @@ package eu.isakels.rest.reqresp;
 
 import java.util.UUID;
 
-public class CreatePaymentResp extends BasePaymentResp {
+public class CreatePaymentResp extends BasePaymentRespWithId {
 
     private CreatePaymentResp(final UUID id, final String msg, final String error) {
         super(id, msg, error);

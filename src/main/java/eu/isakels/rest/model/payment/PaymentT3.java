@@ -3,6 +3,7 @@ package eu.isakels.rest.model.payment;
 import eu.isakels.rest.model.Util;
 
 import java.math.BigDecimal;
+import java.time.Clock;
 import java.time.Instant;
 import java.util.UUID;
 
@@ -46,7 +47,7 @@ public class PaymentT3 extends BasePayment {
     }
 
     @Override
-    public BasePayment cancelledInstance(final BigDecimal cancelFee) {
+    public BasePayment cancelledInstance(final BigDecimal cancelFee, final Clock clock) {
         return new PaymentT3(
                 this.getId().orElse(null),
                 this.getAmount(),
@@ -55,7 +56,7 @@ public class PaymentT3 extends BasePayment {
                 this.getCreditorIban(),
                 this.getCreatedInstant(),
                 true,
-                Instant.now(),
+                Instant.now(clock),
                 Types.Amount.ofValue(cancelFee),
                 this.getCreditorBankBic());
     }

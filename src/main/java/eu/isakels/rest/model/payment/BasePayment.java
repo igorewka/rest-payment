@@ -4,6 +4,7 @@ import eu.isakels.rest.model.Constants;
 import eu.isakels.rest.model.Util;
 
 import java.math.BigDecimal;
+import java.time.Clock;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneId;
@@ -89,21 +90,21 @@ public abstract class BasePayment {
         return Optional.ofNullable(cancelFee);
     }
 
-    public boolean isCancellable() {
+    public boolean isCancellable(final Clock clock) {
         final var createdDate = createdInstant.atZone(ZoneId.of(Constants.timeZoneIdRiga)).toLocalDate();
-        final var nowDate = Instant.now().atZone(ZoneId.of(Constants.timeZoneIdRiga)).toLocalDate();
+        final var nowDate = Instant.now(clock).atZone(ZoneId.of(Constants.timeZoneIdRiga)).toLocalDate();
 
         return !isCancelled() && nowDate.isEqual(createdDate);
     }
 
-    public BigDecimal computeCancelFee(final BigDecimal coeff) {
-        final var hoursPassed = Duration.between(createdInstant, Instant.now()).toHours();
+    public BigDecimal computeCancelFee(final BigDecimal coeff, final Clock clock) {
+        final var hoursPassed = Duration.between(createdInstant, Instant.now(clock)).toHours();
         var res = new BigDecimal(hoursPassed).multiply(coeff);
 
         return Util.setScale(res);
     }
 
-    public abstract BasePayment cancelledInstance(final BigDecimal cancelFee);
+    public abstract BasePayment cancelledInstance(final BigDecimal cancelFee, final Clock clock);
 
     public abstract BasePayment idInstance(final UUID id);
 }

@@ -1,16 +1,14 @@
 package eu.isakels.rest.model;
 
 import eu.isakels.rest.model.payment.Types;
-import eu.isakels.rest.reqresp.CancelPaymentResp;
-import eu.isakels.rest.reqresp.CreatePaymentReq;
-import eu.isakels.rest.reqresp.CreatePaymentResp;
-import eu.isakels.rest.reqresp.QueryPaymentResp;
+import eu.isakels.rest.reqresp.*;
 import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
+import java.util.Set;
 import java.util.UUID;
 
 import static eu.isakels.rest.util.TestUtil.objMapper;
@@ -54,6 +52,23 @@ public class MarshallingTest {
                 new BigDecimal("10"),
                 Types.Currency.EUR);
         assertMarshallUnmarshall(resp, QueryPaymentResp.class);
+    }
+
+    @Test
+    public void queryPaymentWithParamsResp() throws Exception {
+        final var respPayments = Set.copyOf(Set.of(
+                QueryPaymentResp.ofCancelFee(
+                        UUID.randomUUID(),
+                        new BigDecimal("10"),
+                        Types.Currency.EUR),
+                QueryPaymentResp.ofId(UUID.randomUUID()),
+                QueryPaymentResp.ofCancelFee(
+                        UUID.randomUUID(),
+                        new BigDecimal("11"),
+                        Types.Currency.USD),
+                QueryPaymentResp.ofId(UUID.randomUUID())));
+        final var resp = QueryPaymentWithParamsResp.ofPayments(respPayments);
+        assertMarshallUnmarshall(resp, QueryPaymentWithParamsResp.class);
     }
 
     private <T> void assertMarshallUnmarshall(final T obj, Class<T> clazz) throws java.io.IOException {

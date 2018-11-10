@@ -6,16 +6,22 @@ import eu.isakels.rest.repo.PaymentRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.Serializable;
+import java.time.Clock;
+import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
 public class PaymentServiceImpl implements PaymentService {
 
     private PaymentRepo repo;
+    private Clock clock;
 
     @Autowired
-    public PaymentServiceImpl(final PaymentRepo repo) {
+    public PaymentServiceImpl(final PaymentRepo repo, final Clock clock) {
         this.repo = repo;
+        this.clock = clock;
     }
 
     @Override
@@ -29,14 +35,14 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public CancelResult cancel(final UUID id) {
         final var paymentOpt = repo.getPayment(id);
-        var payment = paymentOpt.orElseThrow(
+        final var payment = paymentOpt.orElseThrow(
                 () -> new RuntimeException(String.format(Constants.expectedPaymentNotFound, id)));
 
         final CancelResult result;
-        if (payment.isCancellable()) {
-            var coeff = repo.getCoeff(payment.getType());
-            var fee = payment.computeCancelFee(coeff);
-            var cancelledPayment = payment.cancelledInstance(fee);
+        if (payment.isCancellable(clock)) {
+            final var coeff = repo.getCoeff(payment.getType());
+            final var fee = payment.computeCancelFee(coeff, clock);
+            final var cancelledPayment = payment.cancelledInstance(fee, clock);
             repo.cancel(cancelledPayment);
 
             result = new CancelResult(cancelledPayment, true);
@@ -49,9 +55,14 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public BasePayment query(final UUID id) {
         final var paymentOpt = repo.getPayment(id);
-        var payment = paymentOpt.orElseThrow(
+        final var payment = paymentOpt.orElseThrow(
                 () -> new RuntimeException(String.format(Constants.expectedPaymentNotFound, id)));
 
         return payment;
+    }
+
+    @Override
+    public Set<BasePayment> queryWithParams(final Map<String, ? extends Serializable> params) {
+        return repo.query(params);
     }
 }

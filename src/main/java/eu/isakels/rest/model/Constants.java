@@ -13,4 +13,9 @@ public abstract class Constants {
     public static final String expectedPaymentNotFound = "expected payment[%s] not found";
 
     public static final String timeZoneIdRiga = "Europe/Riga";
+
+    // TODO: enum for params
+    public static final String cancelledParam = "cancelled";
+    public static final String amountGtParam = "amountGt";
+    public static final String amountLtParam = "amountLt";
 }
