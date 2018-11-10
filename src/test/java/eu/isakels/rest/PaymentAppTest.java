@@ -1,6 +1,6 @@
 package eu.isakels.rest;
 
-import eu.isakels.rest.model.Constants;
+import eu.isakels.rest.model.ModelConstants;
 import eu.isakels.rest.model.Util;
 import eu.isakels.rest.reqresp.*;
 import eu.isakels.rest.util.TestUtil;
@@ -79,7 +79,7 @@ public class PaymentAppTest {
             assertCancelPayment(id, (resp) -> {
                 assertTrue(Util.nonNullNotBlank(resp.getId()));
                 assertEquals(new BigDecimal("0.15"), resp.getCancelFee());
-                assertEquals(Constants.msgSuccessfulCancel, resp.getMsg());
+                assertEquals(ModelConstants.msgSuccessfulCancel, resp.getMsg());
                 assertTrue(StringUtils.isBlank(resp.getError()));
             });
         }
@@ -90,7 +90,7 @@ public class PaymentAppTest {
             assertCancelPayment(id, (resp) -> {
                 assertTrue(Util.nonNullNotBlank(resp.getId()));
                 assertEquals(new BigDecimal("0.30"), resp.getCancelFee());
-                assertEquals(Constants.msgSuccessfulCancel, resp.getMsg());
+                assertEquals(ModelConstants.msgSuccessfulCancel, resp.getMsg());
                 assertTrue(StringUtils.isBlank(resp.getError()));
             });
         }
@@ -101,7 +101,7 @@ public class PaymentAppTest {
             assertCancelPayment(id, (resp) -> {
                 assertTrue(Util.nonNullNotBlank(resp.getId()));
                 assertEquals(new BigDecimal("0.45"), resp.getCancelFee());
-                assertEquals(Constants.msgSuccessfulCancel, resp.getMsg());
+                assertEquals(ModelConstants.msgSuccessfulCancel, resp.getMsg());
                 assertTrue(StringUtils.isBlank(resp.getError()));
             });
         }
@@ -115,7 +115,7 @@ public class PaymentAppTest {
         assertCancelPayment(id, (resp) -> {
             assertTrue(Util.nonNullNotBlank(resp.getId()));
             assertNull(resp.getCancelFee());
-            assertEquals(Constants.msgExpiredCancel, resp.getMsg());
+            assertEquals(ModelConstants.msgExpiredCancel, resp.getMsg());
             assertTrue(StringUtils.isBlank(resp.getError()));
         });
     }

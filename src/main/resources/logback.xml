@@ -12,6 +12,8 @@
         <appender-ref ref="FILE"/>
     </appender>
 
+    <logger name="eu.isakels.rest" level="DEBUG"/>
+
     <root level="INFO">
         <appender-ref ref="FILE-ASYNC"/>
     </root>

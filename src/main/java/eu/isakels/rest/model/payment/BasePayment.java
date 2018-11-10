@@ -1,6 +1,6 @@
 package eu.isakels.rest.model.payment;
 
-import eu.isakels.rest.model.Constants;
+import eu.isakels.rest.model.ModelConstants;
 import eu.isakels.rest.model.Util;
 
 import java.math.BigDecimal;
@@ -92,8 +92,8 @@ public abstract class BasePayment {
 
     public boolean isCancellable(final Clock clock) {
         // TODO: probably client's time zone should be used here, depends on requirements
-        final var createdDate = createdInstant.atZone(ZoneId.of(Constants.timeZoneIdRiga)).toLocalDate();
-        final var nowDate = Instant.now(clock).atZone(ZoneId.of(Constants.timeZoneIdRiga)).toLocalDate();
+        final var createdDate = createdInstant.atZone(ZoneId.of(ModelConstants.timeZoneIdRiga)).toLocalDate();
+        final var nowDate = Instant.now(clock).atZone(ZoneId.of(ModelConstants.timeZoneIdRiga)).toLocalDate();
 
         return !isCancelled() && nowDate.isEqual(createdDate);
     }

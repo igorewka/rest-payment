@@ -1,6 +1,7 @@
 package eu.isakels.rest.repo;
 
-import eu.isakels.rest.model.Constants;
+import eu.isakels.rest.Constants;
+import eu.isakels.rest.model.ModelConstants;
 import eu.isakels.rest.model.payment.BasePayment;
 import eu.isakels.rest.model.payment.Types;
 import org.springframework.stereotype.Component;
@@ -33,7 +34,7 @@ public class PaymentRepo {
 
     public void create(final BasePayment payment) {
         paymentRepo.put(
-                payment.getId().orElseThrow(() -> new RuntimeException(Constants.expectedIdMissing)),
+                payment.getId().orElseThrow(() -> new RuntimeException(ModelConstants.expectedIdMissing)),
                 payment);
     }
 
@@ -43,7 +44,7 @@ public class PaymentRepo {
 
     public void cancel(final BasePayment payment) {
         paymentRepo.put(
-                payment.getId().orElseThrow(() -> new RuntimeException(Constants.expectedIdMissing)),
+                payment.getId().orElseThrow(() -> new RuntimeException(ModelConstants.expectedIdMissing)),
                 payment);
     }
 

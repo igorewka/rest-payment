@@ -2,6 +2,7 @@ package eu.isakels.rest.model;
 
 import eu.isakels.rest.model.payment.Types;
 import eu.isakels.rest.reqresp.*;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -69,6 +70,23 @@ public class MarshallingTest {
                 QueryPaymentResp.ofId(UUID.randomUUID())));
         final var resp = QueryPaymentWithParamsResp.ofPayments(respPayments);
         assertMarshallUnmarshall(resp, QueryPaymentWithParamsResp.class);
+    }
+
+    @Test
+    public void geoLocationResp() throws Exception {
+        final var resp = new GeoLocationResp("Latvia", "success");
+        assertMarshallUnmarshall(resp, GeoLocationResp.class);
+    }
+
+    @Test
+    public void geoLocationRespUnknownProps() throws Exception {
+        final var objMarshalled = "{\"status\": \"fail\",\n" +
+                " \"message\": \"query is not a valid IP address\"}";
+        logger.info("objMarshalled: {}", objMarshalled);
+
+        var objUnmarshalled = objMapper.readValue(objMarshalled, GeoLocationResp.class);
+        Assert.assertEquals("fail", objUnmarshalled.getStatus());
+        Assert.assertTrue(StringUtils.isBlank(objUnmarshalled.getCountry()));
     }
 
     private <T> void assertMarshallUnmarshall(final T obj, Class<T> clazz) throws java.io.IOException {

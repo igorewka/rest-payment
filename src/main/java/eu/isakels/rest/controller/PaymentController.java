@@ -1,17 +1,21 @@
 package eu.isakels.rest.controller;
 
-import eu.isakels.rest.model.Constants;
+import eu.isakels.rest.Constants;
+import eu.isakels.rest.model.ModelConstants;
 import eu.isakels.rest.model.payment.BasePayment;
 import eu.isakels.rest.model.payment.PaymentFactory;
 import eu.isakels.rest.reqresp.*;
 import eu.isakels.rest.service.CancelResult;
 import eu.isakels.rest.service.PaymentService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Clock;
@@ -19,6 +23,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 @RestController
@@ -26,6 +31,7 @@ public class PaymentController {
 
     private static final Logger logger = LoggerFactory.getLogger(PaymentController.class);
 
+    private static final RestTemplate restTemplate = new RestTemplate();
     private PaymentService service;
     private Clock clock;
 
@@ -39,7 +45,9 @@ public class PaymentController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public CreatePaymentResp create(@RequestBody CreatePaymentReq req) {
+    public CreatePaymentResp create(@RequestBody CreatePaymentReq req, HttpServletRequest httpReq) {
+        logClientCountry(httpReq);
+
         CreatePaymentResp resp;
         try {
             final UUID id = service.create(PaymentFactory.ofReq(req, clock));
@@ -54,7 +62,9 @@ public class PaymentController {
     @PutMapping(value = Constants.pathPayments + Constants.pathVarId,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public CancelPaymentResp cancel(@PathVariable UUID id) {
+    public CancelPaymentResp cancel(@PathVariable UUID id, HttpServletRequest httpReq) {
+        logClientCountry(httpReq);
+
         CancelPaymentResp resp;
         try {
             final CancelResult result = service.cancel(id);
@@ -62,12 +72,12 @@ public class PaymentController {
                 resp = CancelPaymentResp.ofCancelFee(
                         id,
                         result.getPayment().getCancelFee()
-                                .orElseThrow(() -> new RuntimeException(Constants.expectedCancelFeeMissing))
+                                .orElseThrow(() -> new RuntimeException(ModelConstants.expectedCancelFeeMissing))
                                 .getValue(),
                         result.getPayment().getCurrency(),
-                        Constants.msgSuccessfulCancel);
+                        ModelConstants.msgSuccessfulCancel);
             } else {
-                resp = CancelPaymentResp.ofMsg(id, Constants.msgExpiredCancel);
+                resp = CancelPaymentResp.ofMsg(id, ModelConstants.msgExpiredCancel);
             }
         } catch (Throwable exc) {
             logger.error("", exc);
@@ -79,7 +89,9 @@ public class PaymentController {
     @GetMapping(value = Constants.pathPayments + Constants.pathVarId,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public QueryPaymentResp query(@PathVariable UUID id) {
+    public QueryPaymentResp query(@PathVariable UUID id, HttpServletRequest httpReq) {
+        logClientCountry(httpReq);
+
         QueryPaymentResp resp;
         try {
             final BasePayment payment = service.query(id);
@@ -87,7 +99,7 @@ public class PaymentController {
                 resp = QueryPaymentResp.ofCancelFee(
                         id,
                         payment.getCancelFee()
-                                .orElseThrow(() -> new RuntimeException(Constants.expectedCancelFeeMissing))
+                                .orElseThrow(() -> new RuntimeException(ModelConstants.expectedCancelFeeMissing))
                                 .getValue(),
                         payment.getCurrency());
             } else {
@@ -107,7 +119,10 @@ public class PaymentController {
     @ResponseBody
     public QueryPaymentWithParamsResp queryWithParams(@RequestParam final Optional<Boolean> cancelled,
                                                       @RequestParam final Optional<BigDecimal> amountGt,
-                                                      @RequestParam final Optional<BigDecimal> amountLt) {
+                                                      @RequestParam final Optional<BigDecimal> amountLt,
+                                                      HttpServletRequest httpReq) {
+        logClientCountry(httpReq);
+
         QueryPaymentWithParamsResp resp;
         try {
             final var params = getParams(cancelled, amountGt, amountLt);
@@ -118,15 +133,15 @@ public class PaymentController {
                 if (payment.isCancelled()) {
                     paymentResp = QueryPaymentResp.ofCancelFee(
                             payment.getId().orElseThrow(
-                                    () -> new RuntimeException(Constants.expectedIdMissing)),
+                                    () -> new RuntimeException(ModelConstants.expectedIdMissing)),
                             payment.getCancelFee().orElseThrow(
-                                    () -> new RuntimeException(Constants.expectedCancelFeeMissing))
+                                    () -> new RuntimeException(ModelConstants.expectedCancelFeeMissing))
                                     .getValue(),
                             payment.getCurrency());
                 } else {
                     paymentResp = QueryPaymentResp.ofId(
                             payment.getId().orElseThrow(
-                                    () -> new RuntimeException(Constants.expectedIdMissing)));
+                                    () -> new RuntimeException(ModelConstants.expectedIdMissing)));
                 }
                 return paymentResp;
             }).collect(Collectors.toSet());
@@ -152,5 +167,41 @@ public class PaymentController {
                         (entry) -> entry.getKey(),
                         (entry) -> entry.getValue().orElseThrow(
                                 () -> new RuntimeException("unexpected empty Optional"))));
+    }
+
+    private void logClientCountry(final HttpServletRequest req) {
+        CompletableFuture.runAsync(() -> {
+            final var ip = getIp(req);
+            try {
+                final var respTmp = restTemplate.getForObject(
+                        Constants.geoLocationServiceUrl + ip, String.class);
+                logger.debug(respTmp);
+
+                final var respOpt = Optional.ofNullable(restTemplate.getForObject(
+                        Constants.geoLocationServiceUrl + ip, GeoLocationResp.class));
+                respOpt.map((resp) -> {
+                    final var country = resp.getCountry();
+                    if (StringUtils.isNotBlank(country)) {
+                        logger.info(String.format("client's ip[%s], country[%s]", ip, country));
+                    } else {
+                        logger.debug("client's country is blank or missing");
+                    }
+                    return "";
+                });
+            } catch (Exception e) {
+                logger.debug("geo location service", e);
+            }
+        });
+    }
+
+    private String getIp(final HttpServletRequest req) {
+        final String proxiedIp = req.getHeader("X-Forwarded-For");
+        final String ip;
+        if (StringUtils.isNotBlank(proxiedIp)) {
+            ip = proxiedIp;
+        } else {
+            ip = req.getRemoteAddr();
+        }
+        return ip;
     }
 }
