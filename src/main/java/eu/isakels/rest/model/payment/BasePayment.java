@@ -32,8 +32,8 @@ public abstract class BasePayment {
                 final Types.DebtorIban debtorIban,
                 final Types.CreditorIban creditorIban,
                 final Instant createdInstant,
-                // TODO: combine cancel related stuff
                 final boolean cancelled,
+                // TODO: combine cancel related stuff with adding currency
                 final Instant cancelledInstant,
                 final Types.Amount cancelFee) {
         this.id = id;
