@@ -1,5 +1,6 @@
 package eu.isakels.rest.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import eu.isakels.rest.Constants;
 import eu.isakels.rest.model.ModelConstants;
 import eu.isakels.rest.model.payment.BasePayment;
@@ -11,6 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -19,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Clock;
+import java.time.Duration;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -31,9 +34,17 @@ public class PaymentController {
 
     private static final Logger logger = LoggerFactory.getLogger(PaymentController.class);
 
-    private static final RestTemplate restTemplate = new RestTemplate();
+    private static final Duration timeout = Duration.ofSeconds(5);
+    private static final RestTemplate restTemplate = new RestTemplateBuilder()
+            .setReadTimeout(timeout)
+            .setConnectTimeout(timeout)
+            .build();
+
     private PaymentService service;
     private Clock clock;
+
+    @Autowired
+    private ObjectMapper objMapper;
 
     @Autowired
     public PaymentController(final PaymentService service, final Clock clock) {
@@ -173,18 +184,19 @@ public class PaymentController {
         CompletableFuture.runAsync(() -> {
             final var ip = getIp(req);
             try {
-                final var respTmp = restTemplate.getForObject(
-                        Constants.geoLocationServiceUrl + ip, String.class);
-                logger.debug(respTmp);
-
+                // This code doesn't work, because of strange unmarshalling issue
+//                final var respOpt = Optional.ofNullable(restTemplate.getForObject(
+//                        Constants.geoLocationServiceUrl + ip, GeoLocationResp.class));
                 final var respOpt = Optional.ofNullable(restTemplate.getForObject(
-                        Constants.geoLocationServiceUrl + ip, GeoLocationResp.class));
+                        Constants.geoLocationServiceUrl + ip, String.class));
                 respOpt.map((resp) -> {
-                    final var country = resp.getCountry();
-                    if (StringUtils.isNotBlank(country)) {
-                        logger.info(String.format("client's ip[%s], country[%s]", ip, country));
-                    } else {
-                        logger.debug("client's country is blank or missing");
+                    try {
+                        logger.debug("client's ip: {}", ip);
+                        logger.debug("geo location service resp: {}"
+                                , resp.replaceAll("\n", ""));
+                        unmarshallAndLogCountry(ip, resp);
+                    } catch (Exception e) {
+                        logger.debug("geo location service", e);
                     }
                     return "";
                 });
@@ -192,6 +204,16 @@ public class PaymentController {
                 logger.debug("geo location service", e);
             }
         });
+    }
+
+    private void unmarshallAndLogCountry(final String ip, final String resp) throws java.io.IOException {
+        final var respObj = objMapper.readValue(resp, GeoLocationResp.class);
+        final var country = respObj.getCountry();
+        if (StringUtils.isNotBlank(country)) {
+            logger.info(String.format("client's ip[%s], country[%s]", ip, country));
+        } else {
+            logger.debug("client's country is blank or missing");
+        }
     }
 
     private String getIp(final HttpServletRequest req) {

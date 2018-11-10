@@ -2,6 +2,7 @@ package eu.isakels.rest.util;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
@@ -18,6 +19,7 @@ public abstract class TestUtil {
         registerModule(new ParameterNamesModule(JsonCreator.Mode.PROPERTIES));
         enable(SerializationFeature.INDENT_OUTPUT);
         setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
     }};
 
     public static CreatePaymentReq paymentReqT1() {
