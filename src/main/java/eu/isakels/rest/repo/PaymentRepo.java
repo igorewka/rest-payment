@@ -1,7 +1,7 @@
 package eu.isakels.rest.repo;
 
 import eu.isakels.rest.Constants;
-import eu.isakels.rest.model.ModelConstants;
+import eu.isakels.rest.model.NotificationInfo;
 import eu.isakels.rest.model.payment.BasePayment;
 import eu.isakels.rest.model.payment.Types;
 import org.springframework.stereotype.Component;
@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 public class PaymentRepo {
 
     private final Map<UUID, BasePayment> paymentRepo = new ConcurrentHashMap<>();
+    private final Map<UUID, NotificationInfo> notificationRepo = new ConcurrentHashMap<>();
     // Local cache must be added for coefficient fetching from real DB
     private final Map<Types.PaymentType, BigDecimal> coeffRepo = new ConcurrentHashMap<>();
 
@@ -33,9 +34,7 @@ public class PaymentRepo {
     }
 
     public void create(final BasePayment payment) {
-        paymentRepo.put(
-                payment.getId().orElseThrow(() -> new RuntimeException(ModelConstants.expectedIdMissing)),
-                payment);
+        paymentRepo.put(payment.getIdUnwrapped(), payment);
     }
 
     public Optional<BasePayment> getPayment(final UUID id) {
@@ -43,9 +42,7 @@ public class PaymentRepo {
     }
 
     public void cancel(final BasePayment payment) {
-        paymentRepo.put(
-                payment.getId().orElseThrow(() -> new RuntimeException(ModelConstants.expectedIdMissing)),
-                payment);
+        paymentRepo.put(payment.getIdUnwrapped(), payment);
     }
 
     public BigDecimal getCoeff(final Types.PaymentType type) {
@@ -57,6 +54,10 @@ public class PaymentRepo {
                 .filter((payment) ->
                         isNewerThan3Days(payment) && paramsCondition(payment, params))
                 .collect(Collectors.toSet()));
+    }
+
+    public void createNotification(final NotificationInfo notificationInfo) {
+        notificationRepo.put(notificationInfo.getPaymentId(), notificationInfo);
     }
 
     private boolean paramsCondition(final BasePayment payment,

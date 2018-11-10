@@ -25,13 +25,14 @@ public abstract class BasePayment {
 
     // TODO: think about grouping some params
     BasePayment(final UUID id,
-                // TODO: combine amount with currency
                 final Types.PaymentType type,
+                // TODO: combine amount with currency
                 final Types.Amount amount,
                 final Types.Currency currency,
                 final Types.DebtorIban debtorIban,
                 final Types.CreditorIban creditorIban,
                 final Instant createdInstant,
+                // TODO: combine cancel related stuff
                 final boolean cancelled,
                 final Instant cancelledInstant,
                 final Types.Amount cancelFee) {
@@ -108,4 +109,14 @@ public abstract class BasePayment {
     public abstract BasePayment cancelledInstance(final BigDecimal cancelFee, final Clock clock);
 
     public abstract BasePayment idInstance(final UUID id);
+
+    public UUID getIdUnwrapped() {
+        return this.getId().orElseThrow(() ->
+                new RuntimeException(ModelConstants.expectedIdMissing));
+    }
+
+    public Types.Amount getCancelFeeUnwrapped() {
+        return this.getCancelFee().orElseThrow(() ->
+                new RuntimeException(ModelConstants.expectedCancelFeeMissing));
+    }
 }

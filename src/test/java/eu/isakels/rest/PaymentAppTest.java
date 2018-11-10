@@ -20,6 +20,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
 import java.time.*;
@@ -44,8 +45,10 @@ public class PaymentAppTest {
     private MockMvc mvc;
     @MockBean
     private Clock clock;
+    @MockBean
+    private RestTemplate restTemplate;
 
-    final static Instant instant = LocalDateTime
+    private final static Instant instant = LocalDateTime
             .of(2018, Month.NOVEMBER, 9, 15, 0)
             .toInstant(ZoneOffset.UTC);
 

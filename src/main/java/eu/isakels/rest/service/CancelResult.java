@@ -4,18 +4,18 @@ import eu.isakels.rest.model.payment.BasePayment;
 
 public class CancelResult {
     private final BasePayment payment;
-    private final boolean result;
+    private final boolean success;
 
-    public CancelResult(final BasePayment payment, final boolean result) {
+    public CancelResult(final BasePayment payment, final boolean success) {
         this.payment = payment;
-        this.result = result;
+        this.success = success;
     }
 
     public BasePayment getPayment() {
         return payment;
     }
 
-    public boolean isResult() {
-        return result;
+    public boolean isSuccess() {
+        return success;
     }
 }
