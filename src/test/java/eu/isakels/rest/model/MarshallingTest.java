@@ -1,7 +1,7 @@
 package eu.isakels.rest.model;
 
-import eu.isakels.rest.model.payment.Types;
 import eu.isakels.rest.controller.dto.*;
+import eu.isakels.rest.model.payment.Types;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
 import org.junit.Test;
@@ -57,7 +57,7 @@ public class MarshallingTest {
 
     @Test
     public void queryPaymentWithParamsResp() throws Exception {
-        final var respPayments = Set.copyOf(Set.of(
+        final var respPayments = Set.of(
                 QueryPaymentResp.ofCancelFee(
                         UUID.randomUUID(),
                         new BigDecimal("10"),
@@ -67,7 +67,7 @@ public class MarshallingTest {
                         UUID.randomUUID(),
                         new BigDecimal("11"),
                         Types.Currency.USD),
-                QueryPaymentResp.ofId(UUID.randomUUID())));
+                QueryPaymentResp.ofId(UUID.randomUUID()));
         final var resp = QueryPaymentWithParamsResp.ofPayments(respPayments);
         assertMarshallUnmarshall(resp, QueryPaymentWithParamsResp.class);
     }

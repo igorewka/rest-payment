@@ -1,10 +1,10 @@
 package eu.isakels.rest.service;
 
 import eu.isakels.rest.Constants;
+import eu.isakels.rest.dao.PaymentDao;
 import eu.isakels.rest.model.ModelConstants;
 import eu.isakels.rest.model.Notification;
 import eu.isakels.rest.model.payment.BasePayment;
-import eu.isakels.rest.repo.PaymentRepo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,29 +26,31 @@ public class PaymentServiceImpl implements PaymentService {
 
     private static final Logger logger = LoggerFactory.getLogger(PaymentServiceImpl.class);
 
-    private PaymentRepo repo;
-    private Clock clock;
+    private final Clock clock;
     private final RestTemplate restTemplate;
+    private final PaymentDao dao;
 
     @Autowired
-    public PaymentServiceImpl(final PaymentRepo repo,
-                              final Clock clock,
-                              final RestTemplate restTemplate) {
-        this.repo = repo;
+    public PaymentServiceImpl(final Clock clock,
+                              final RestTemplate restTemplate,
+                              final PaymentDao dao) {
         this.clock = clock;
         this.restTemplate = restTemplate;
+        this.dao = dao;
     }
 
     @Override
     public BasePayment create(final BasePayment payment) {
         final var id = UUID.randomUUID();
         final BasePayment paymentWithId = payment.idInstance(id);
-        repo.create(paymentWithId);
+        dao.create(paymentWithId);
 
         return paymentWithId;
     }
 
     // TODO: create test
+    // Could be moved into separate service as well
+    // @Async could be used as well
     @Override
     public CompletableFuture notify(final BasePayment payment) {
         return CompletableFuture.runAsync(() -> {
@@ -68,7 +70,8 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public BasePayment cancel(final UUID id) {
-        final var paymentOpt = repo.getPayment(id);
+        final var paymentOpt = dao.query(id);
+        // This logic depends on the fact that it is not normal to pass wrong ids
         final var payment = paymentOpt.orElseThrow(
                 () -> new RuntimeException(String.format(ModelConstants.expectedPaymentMssing, id)));
 
@@ -77,7 +80,7 @@ public class PaymentServiceImpl implements PaymentService {
             final var coeff = Constants.coefficients.get(payment.getType());
             final var fee = payment.computeCancelFee(coeff, clock);
             final var cancelledPayment = payment.cancelledInstance(fee, clock);
-            repo.cancel(cancelledPayment);
+            dao.create(cancelledPayment);
 
             result = cancelledPayment;
         } else {
@@ -88,7 +91,8 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public BasePayment query(final UUID id) {
-        final var paymentOpt = repo.getPayment(id);
+        final var paymentOpt = dao.query(id);
+        // This logic depends on the fact that it is not normal to pass wrong ids
         final var payment = paymentOpt.orElseThrow(
                 () -> new RuntimeException(String.format(ModelConstants.expectedPaymentMssing, id)));
 
@@ -96,8 +100,8 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public Set<BasePayment> queryWithParams(final Map<String, ? extends Serializable> params) {
-        return repo.query(params);
+    public Set<BasePayment> query(final Map<String, ? extends Serializable> params) {
+        return dao.query(params);
     }
 
     private boolean notifyAndCreate(final BasePayment payment, final String serviceUrl) {
@@ -110,8 +114,8 @@ public class PaymentServiceImpl implements PaymentService {
         } else {
             logger.info("payment[{}] notification failed", id);
         }
-        var result = new Notification(id, success);
-        repo.createNotification(result);
+        final var notif = new Notification(id, success);
+        dao.create(notif);
 
         return success;
     }

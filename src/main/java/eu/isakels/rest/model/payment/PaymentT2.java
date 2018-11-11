@@ -52,7 +52,7 @@ public class PaymentT2 extends BasePaymentWithDetails {
     @Override
     public BasePayment cancelledInstance(final BigDecimal cancelFee, final Clock clock) {
         return new PaymentT2(
-                this.getId().orElse(null),
+                this.getIdUnwrapped(),
                 this.getAmount(),
                 this.getCurrency(),
                 this.getDebtorIban(),

@@ -49,7 +49,7 @@ public class PaymentT3 extends BasePayment {
     @Override
     public BasePayment cancelledInstance(final BigDecimal cancelFee, final Clock clock) {
         return new PaymentT3(
-                this.getId().orElse(null),
+                this.getIdUnwrapped(),
                 this.getAmount(),
                 this.getCurrency(),
                 this.getDebtorIban(),

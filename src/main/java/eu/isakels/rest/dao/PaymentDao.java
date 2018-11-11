@@ -1,22 +1,20 @@
-package eu.isakels.rest.service;
+package eu.isakels.rest.dao;
 
+import eu.isakels.rest.model.Notification;
 import eu.isakels.rest.model.payment.BasePayment;
 
 import java.io.Serializable;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 
-public interface PaymentService {
-
+public interface PaymentDao {
     BasePayment create(final BasePayment payment);
 
-    CompletableFuture notify(final BasePayment payment);
+    Notification create(final Notification notif);
 
-    BasePayment cancel(final UUID id);
-
-    BasePayment query(final UUID id);
+    Optional<BasePayment> query(final UUID id);
 
     Set<BasePayment> query(final Map<String, ? extends Serializable> params);
 }

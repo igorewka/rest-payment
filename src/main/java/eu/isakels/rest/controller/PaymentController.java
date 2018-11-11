@@ -1,10 +1,10 @@
 package eu.isakels.rest.controller;
 
 import eu.isakels.rest.Constants;
+import eu.isakels.rest.controller.dto.*;
 import eu.isakels.rest.model.ModelConstants;
 import eu.isakels.rest.model.payment.BasePayment;
 import eu.isakels.rest.model.payment.PaymentFactory;
-import eu.isakels.rest.controller.dto.*;
 import eu.isakels.rest.service.GeoLocationService;
 import eu.isakels.rest.service.PaymentService;
 import org.apache.commons.lang3.StringUtils;
@@ -121,17 +121,20 @@ public class PaymentController {
     @GetMapping(value = Constants.pathPayments,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public QueryPaymentWithParamsResp queryWithParams(@RequestParam final Optional<Boolean> cancelled,
-                                                      @RequestParam final Optional<BigDecimal> amountGt,
-                                                      @RequestParam final Optional<BigDecimal> amountLt,
-                                                      HttpServletRequest httpReq) {
+    public QueryPaymentWithParamsResp query(@RequestParam final Optional<Boolean> cancelled,
+                                            @RequestParam final Optional<BigDecimal> amountGt,
+                                            @RequestParam final Optional<BigDecimal> amountLt,
+                                            HttpServletRequest httpReq) {
         geoService.logCountry(getIp(httpReq));
 
         QueryPaymentWithParamsResp resp;
         try {
             final var params = getParams(cancelled, amountGt, amountLt);
 
-            final Set<BasePayment> payments = service.queryWithParams(params);
+            final Set<BasePayment> payments = service.query(params);
+            logger.info("payments[{}] queried", payments.stream()
+                    .map(p -> p.getIdUnwrapped().toString())
+                    .collect(Collectors.joining(", ")));
             final var respPayments = payments.stream().map((payment) -> {
                 final QueryPaymentResp paymentResp;
                 if (payment.isCancelled()) {
