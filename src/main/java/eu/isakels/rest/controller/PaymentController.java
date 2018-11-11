@@ -117,7 +117,7 @@ public class PaymentController {
     }
 
     // TODO: pagination or limiting by period of time should be implemented
-    // there's a hardcoded limit of 3 days in dao
+    // There's a hardcoded limit of 3 days in dao
     @GetMapping(value = Constants.pathPayments,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
