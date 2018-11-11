@@ -8,7 +8,7 @@ import java.util.Map;
 
 // To hide exception stacktrace in the default generated error json
 @Component
-public class CusomErrorAttrs extends DefaultErrorAttributes {
+public class CustomErrorAttrs extends DefaultErrorAttributes {
     @Override
     public Map<String, Object> getErrorAttributes(final WebRequest webRequest, final boolean includeStackTrace) {
         final var errAttrs = super.getErrorAttributes(webRequest, includeStackTrace);
