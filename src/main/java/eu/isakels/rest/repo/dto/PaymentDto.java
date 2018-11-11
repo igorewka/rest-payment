@@ -4,6 +4,8 @@ import eu.isakels.rest.model.ModelConstants;
 import eu.isakels.rest.model.payment.*;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -16,8 +18,10 @@ public class PaymentDto {
     // final properties are impossible because of empty constructor required by JPA/Hibernate
     @Id
     private UUID id;
+    @Enumerated(EnumType.STRING)
     private Types.PaymentType type;
     private BigDecimal amount;
+    @Enumerated(EnumType.STRING)
     private Types.Currency currency;
     // Model types not used here because of unnecessary complicated ORM configuration
     private String debtorIban;

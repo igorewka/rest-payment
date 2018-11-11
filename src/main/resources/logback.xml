@@ -13,6 +13,7 @@
     </appender>
 
     <logger name="eu.isakels.rest" level="DEBUG"/>
+    <logger name="com.zaxxer.hikari.HikariConfig" level="DEBUG"/>
 
     <root level="INFO">
         <appender-ref ref="FILE-ASYNC"/>
