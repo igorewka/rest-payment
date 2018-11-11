@@ -2,7 +2,7 @@ package eu.isakels.rest.service;
 
 import eu.isakels.rest.Constants;
 import eu.isakels.rest.model.ModelConstants;
-import eu.isakels.rest.model.NotificationInfo;
+import eu.isakels.rest.model.Notification;
 import eu.isakels.rest.model.payment.BasePayment;
 import eu.isakels.rest.repo.PaymentRepo;
 import org.slf4j.Logger;
@@ -110,7 +110,7 @@ public class PaymentServiceImpl implements PaymentService {
         } else {
             logger.info("payment[{}] notification failed", id);
         }
-        var result = new NotificationInfo(id, success);
+        var result = new Notification(id, success);
         repo.createNotification(result);
 
         return success;
