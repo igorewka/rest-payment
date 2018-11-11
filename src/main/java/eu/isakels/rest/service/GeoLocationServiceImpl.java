@@ -27,18 +27,18 @@ public class GeoLocationServiceImpl implements GeoLocationService {
         this.restTemplate = restTemplate;
     }
 
-    @Override
     // TODO: create test
-    public void logClientCountry(final String ip) {
-        CompletableFuture.runAsync(() -> {
+    @Override
+    public CompletableFuture logCountry(final String ip) {
+        return CompletableFuture.runAsync(() -> {
             logger.debug("client's ip: {}", ip);
             requestGeoLocation(ip).map((resp) -> {
                 logger.debug("geo location service resp: {}", resp.replaceAll("\n", ""));
                 unmarshallAndLogCountry(ip, resp);
-                return "";
+                return resp;
             });
         }).exceptionally((exc) -> {
-            logger.debug("logClientCountry future", exc);
+            logger.debug("logCountry future", exc);
             return null;
         });
     }

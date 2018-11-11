@@ -5,7 +5,6 @@ import eu.isakels.rest.model.ModelConstants;
 import eu.isakels.rest.model.payment.BasePayment;
 import eu.isakels.rest.model.payment.PaymentFactory;
 import eu.isakels.rest.reqresp.*;
-import eu.isakels.rest.service.CancelResult;
 import eu.isakels.rest.service.GeoLocationService;
 import eu.isakels.rest.service.PaymentService;
 import org.apache.commons.lang3.StringUtils;
@@ -48,14 +47,16 @@ public class PaymentController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public CreatePaymentResp create(@RequestBody CreatePaymentReq req, HttpServletRequest httpReq) {
-        geoService.logClientCountry(getIp(httpReq));
+        geoService.logCountry(getIp(httpReq));
 
         CreatePaymentResp resp;
         try {
-            final UUID id = service.create(PaymentFactory.ofReq(req, clock));
-            logger.info("payment[{}] created", id);
+            final BasePayment result = service.create(PaymentFactory.ofReq(req, clock));
+            logger.info("payment[{}] created", result.getIdUnwrapped());
 
-            resp = new CreatePaymentResp(id);
+            service.notify(result);
+
+            resp = new CreatePaymentResp(result.getIdUnwrapped());
         } catch (Throwable exc) {
             logger.error("", exc);
             resp = new CreatePaymentResp(exc.getMessage());
@@ -67,17 +68,17 @@ public class PaymentController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public CancelPaymentResp cancel(@PathVariable UUID id, HttpServletRequest httpReq) {
-        geoService.logClientCountry(getIp(httpReq));
+        geoService.logCountry(getIp(httpReq));
 
         CancelPaymentResp resp;
         try {
-            final CancelResult result = service.cancel(id);
-            if (result.isSuccess()) {
+            final BasePayment result = service.cancel(id);
+            if (result.isCancelled()) {
                 logger.info("payment[{}] cancelled", id);
                 resp = CancelPaymentResp.ofCancelFee(
                         id,
-                        result.getPayment().getCancelFeeUnwrapped().getValue(),
-                        result.getPayment().getCurrency(),
+                        result.getCancelFeeUnwrapped().getValue(),
+                        result.getCurrency(),
                         ModelConstants.msgSuccessfulCancel);
             } else {
                 logger.info("payment[{}] cancel expired", id);
@@ -94,7 +95,7 @@ public class PaymentController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public QueryPaymentResp query(@PathVariable UUID id, HttpServletRequest httpReq) {
-        geoService.logClientCountry(getIp(httpReq));
+        geoService.logCountry(getIp(httpReq));
 
         QueryPaymentResp resp;
         try {
@@ -124,7 +125,7 @@ public class PaymentController {
                                                       @RequestParam final Optional<BigDecimal> amountGt,
                                                       @RequestParam final Optional<BigDecimal> amountLt,
                                                       HttpServletRequest httpReq) {
-        geoService.logClientCountry(getIp(httpReq));
+        geoService.logCountry(getIp(httpReq));
 
         QueryPaymentWithParamsResp resp;
         try {

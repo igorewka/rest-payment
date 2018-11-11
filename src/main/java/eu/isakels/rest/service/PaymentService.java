@@ -6,12 +6,15 @@ import java.io.Serializable;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 public interface PaymentService {
 
-    UUID create(final BasePayment payment);
+    BasePayment create(final BasePayment payment);
 
-    CancelResult cancel(final UUID id);
+    CompletableFuture notify(final BasePayment payment);
+
+    BasePayment cancel(final UUID id);
 
     BasePayment query(final UUID id);
 

@@ -1,6 +1,8 @@
 package eu.isakels.rest.service;
 
+import java.util.concurrent.CompletableFuture;
+
 public interface GeoLocationService {
 
-    void logClientCountry(final String ip);
+    CompletableFuture logCountry(final String ip);
 }

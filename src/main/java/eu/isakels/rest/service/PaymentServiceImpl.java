@@ -40,32 +40,48 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
-    public UUID create(final BasePayment payment) {
+    public BasePayment create(final BasePayment payment) {
         final var id = UUID.randomUUID();
         final BasePayment paymentWithId = payment.idInstance(id);
         repo.create(paymentWithId);
 
-        notifyOnCreate(paymentWithId);
+        return paymentWithId;
+    }
 
-        return id;
+    // TODO: create test
+    @Override
+    public CompletableFuture notify(final BasePayment payment) {
+        return CompletableFuture.runAsync(() -> {
+            switch (payment.getType()) {
+                case TYPE1:
+                    notifyAndCreate(payment, Constants.type1ServiceUrl);
+                    break;
+                case TYPE2:
+                    notifyAndCreate(payment, Constants.type2ServiceUrl);
+                    break;
+            }
+        }).exceptionally((exc) -> {
+            logger.error("notify future", exc);
+            return null;
+        });
     }
 
     @Override
-    public CancelResult cancel(final UUID id) {
+    public BasePayment cancel(final UUID id) {
         final var paymentOpt = repo.getPayment(id);
         final var payment = paymentOpt.orElseThrow(
                 () -> new RuntimeException(String.format(ModelConstants.expectedPaymentNotFound, id)));
 
-        final CancelResult result;
+        final BasePayment result;
         if (payment.isCancellable(clock)) {
             final var coeff = repo.getCoeff(payment.getType());
             final var fee = payment.computeCancelFee(coeff, clock);
             final var cancelledPayment = payment.cancelledInstance(fee, clock);
             repo.cancel(cancelledPayment);
 
-            result = new CancelResult(cancelledPayment, true);
+            result = cancelledPayment;
         } else {
-            result = new CancelResult(payment, false);
+            result = payment;
         }
         return result;
     }
@@ -84,24 +100,7 @@ public class PaymentServiceImpl implements PaymentService {
         return repo.query(params);
     }
 
-    // TODO: make testable and create test
-    private void notifyOnCreate(final BasePayment payment) {
-        CompletableFuture.runAsync(() -> {
-            switch (payment.getType()) {
-                case TYPE1:
-                    notifyAndCreate(payment, Constants.type1ServiceUrl);
-                    break;
-                case TYPE2:
-                    notifyAndCreate(payment, Constants.type2ServiceUrl);
-                    break;
-            }
-        }).exceptionally((exc) -> {
-            logger.error("notifyOnCreate future", exc);
-            return null;
-        });
-    }
-
-    private void notifyAndCreate(final BasePayment payment, final String serviceUrl) {
+    private boolean notifyAndCreate(final BasePayment payment, final String serviceUrl) {
         final var respOpt = requestService(serviceUrl);
         final var success = respOpt.isPresent() && isRespSuccessful(respOpt.get());
 
@@ -113,6 +112,8 @@ public class PaymentServiceImpl implements PaymentService {
         }
         var result = new NotificationInfo(id, success);
         repo.createNotification(result);
+
+        return success;
     }
 
     private boolean isRespSuccessful(final ResponseEntity<String> resp) {
