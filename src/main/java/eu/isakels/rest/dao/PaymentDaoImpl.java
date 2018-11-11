@@ -1,12 +1,13 @@
 package eu.isakels.rest.dao;
 
-import eu.isakels.rest.Constants;
+import eu.isakels.rest.dao.factory.DaoPaymentFactory;
+import eu.isakels.rest.dao.factory.NotificationDtoFactory;
+import eu.isakels.rest.dao.factory.PaymentDtoFactory;
+import eu.isakels.rest.misc.Constants;
 import eu.isakels.rest.model.Notification;
 import eu.isakels.rest.model.payment.BasePayment;
-import eu.isakels.rest.model.payment.PaymentFactory;
 import eu.isakels.rest.repo.NotificationRepo;
 import eu.isakels.rest.repo.PaymentRepo;
-import eu.isakels.rest.repo.dto.NotificationDto;
 import eu.isakels.rest.repo.dto.PaymentDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
@@ -34,27 +35,27 @@ public class PaymentDaoImpl implements PaymentDao {
 
     @Override
     public BasePayment create(final BasePayment payment) {
-        repo.save(PaymentDto.ofPayment(payment));
+        repo.save(PaymentDtoFactory.ofPayment(payment));
 
         return payment;
     }
 
     @Override
     public Notification create(final Notification notif) {
-        repoNotif.save(NotificationDto.ofNotif(notif));
+        repoNotif.save(NotificationDtoFactory.ofNotif(notif));
 
         return notif;
     }
 
     @Override
     public Optional<BasePayment> query(final UUID id) {
-        return repo.findById(id).map(dto -> PaymentFactory.ofDto(dto));
+        return repo.findById(id).map(dto -> DaoPaymentFactory.ofDto(dto));
     }
 
     @Override
     public Set<BasePayment> query(final Map<String, ? extends Serializable> params) {
         final var set = repo.findAll(spec(params)).stream()
-                .map(dto -> PaymentFactory.ofDto(dto))
+                .map(dto -> DaoPaymentFactory.ofDto(dto))
                 .collect(Collectors.toSet());
 
         return Set.copyOf(set);

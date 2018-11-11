@@ -1,8 +1,8 @@
 package eu.isakels.rest;
 
 import eu.isakels.rest.controller.dto.*;
-import eu.isakels.rest.model.ModelConstants;
-import eu.isakels.rest.model.Util;
+import eu.isakels.rest.misc.Constants;
+import eu.isakels.rest.misc.Util;
 import eu.isakels.rest.util.TestUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
@@ -82,7 +82,7 @@ public class PaymentAppTest {
             assertCancelPayment(id, (resp) -> {
                 assertTrue(Util.nonNullNotBlank(resp.getId()));
                 assertEquals(new BigDecimal("0.15"), resp.getCancelFee());
-                assertEquals(ModelConstants.msgSuccessfulCancel, resp.getMsg());
+                assertEquals(Constants.msgSuccessfulCancel, resp.getMsg());
                 assertTrue(StringUtils.isBlank(resp.getError()));
             });
         }
@@ -93,7 +93,7 @@ public class PaymentAppTest {
             assertCancelPayment(id, (resp) -> {
                 assertTrue(Util.nonNullNotBlank(resp.getId()));
                 assertEquals(new BigDecimal("0.30"), resp.getCancelFee());
-                assertEquals(ModelConstants.msgSuccessfulCancel, resp.getMsg());
+                assertEquals(Constants.msgSuccessfulCancel, resp.getMsg());
                 assertTrue(StringUtils.isBlank(resp.getError()));
             });
         }
@@ -104,7 +104,7 @@ public class PaymentAppTest {
             assertCancelPayment(id, (resp) -> {
                 assertTrue(Util.nonNullNotBlank(resp.getId()));
                 assertEquals(new BigDecimal("0.45"), resp.getCancelFee());
-                assertEquals(ModelConstants.msgSuccessfulCancel, resp.getMsg());
+                assertEquals(Constants.msgSuccessfulCancel, resp.getMsg());
                 assertTrue(StringUtils.isBlank(resp.getError()));
             });
         }
@@ -118,7 +118,7 @@ public class PaymentAppTest {
         assertCancelPayment(id, (resp) -> {
             assertTrue(Util.nonNullNotBlank(resp.getId()));
             assertNull(resp.getCancelFee());
-            assertEquals(ModelConstants.msgExpiredCancel, resp.getMsg());
+            assertEquals(Constants.msgExpiredCancel, resp.getMsg());
             assertTrue(StringUtils.isBlank(resp.getError()));
         });
     }

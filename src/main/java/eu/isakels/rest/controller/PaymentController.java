@@ -1,10 +1,8 @@
 package eu.isakels.rest.controller;
 
-import eu.isakels.rest.Constants;
+import eu.isakels.rest.misc.Constants;
 import eu.isakels.rest.controller.dto.*;
-import eu.isakels.rest.model.ModelConstants;
 import eu.isakels.rest.model.payment.BasePayment;
-import eu.isakels.rest.model.payment.PaymentFactory;
 import eu.isakels.rest.service.GeoLocationService;
 import eu.isakels.rest.service.PaymentService;
 import org.apache.commons.lang3.StringUtils;
@@ -51,7 +49,7 @@ public class PaymentController {
 
         CreatePaymentResp resp;
         try {
-            final BasePayment result = service.create(PaymentFactory.ofReq(req, clock));
+            final BasePayment result = service.create(ControllerPaymentFactory.ofReq(req, clock));
             logger.info("payment[{}] created", result.getIdUnwrapped());
 
             service.notify(result);
@@ -79,10 +77,10 @@ public class PaymentController {
                         id,
                         result.getCancelFeeUnwrapped().getValue(),
                         result.getCurrency(),
-                        ModelConstants.msgSuccessfulCancel);
+                        Constants.msgSuccessfulCancel);
             } else {
                 logger.info("payment[{}] cancel expired", id);
-                resp = CancelPaymentResp.ofMsg(id, ModelConstants.msgExpiredCancel);
+                resp = CancelPaymentResp.ofMsg(id, Constants.msgExpiredCancel);
             }
         } catch (Throwable exc) {
             logger.error("", exc);

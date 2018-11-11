@@ -1,6 +1,8 @@
 package eu.isakels.rest.model.payment;
 
-import eu.isakels.rest.model.Util;
+import eu.isakels.rest.misc.Util;
+import eu.isakels.rest.misc.Types;
+import eu.isakels.rest.model.ModelTypes;
 
 import java.math.BigDecimal;
 import java.time.Clock;
@@ -9,40 +11,40 @@ import java.util.UUID;
 
 public class PaymentT3 extends BasePayment {
 
-    private final Types.CreditorBankBic creditorBankBic;
+    private final ModelTypes.CreditorBankBic creditorBankBic;
 
     public PaymentT3(final UUID id,
-                     final Types.Amount amount,
+                     final ModelTypes.Amount amount,
                      final Types.Currency currency,
-                     final Types.DebtorIban debtorIban,
-                     final Types.CreditorIban creditorIban,
+                     final ModelTypes.DebtorIban debtorIban,
+                     final ModelTypes.CreditorIban creditorIban,
                      final Instant createdInstant,
                      final boolean cancelled,
                      final Instant cancelledInstant,
-                     final Types.Amount cancelFee,
-                     final Types.CreditorBankBic creditorBankBic) {
+                     final ModelTypes.Amount cancelFee,
+                     final ModelTypes.CreditorBankBic creditorBankBic) {
         super(id, Types.PaymentType.TYPE3, amount, currency, debtorIban, creditorIban,
                 createdInstant, cancelled, cancelledInstant, cancelFee);
 
         Util.checkApplicableCurrencies(currency, Types.Currency.EUR, Types.Currency.USD);
 
-        this.creditorBankBic = (Types.CreditorBankBic) Util.requireNonNullNotBlank(creditorBankBic, "creditorBankBic is mandatory");
+        this.creditorBankBic = (ModelTypes.CreditorBankBic) ModelTypes.requireNonNullNotBlank(creditorBankBic, "creditorBankBic is mandatory");
     }
 
-    public PaymentT3(final Types.Amount amount,
+    public PaymentT3(final ModelTypes.Amount amount,
                      final Types.Currency currency,
-                     final Types.DebtorIban debtorIban,
-                     final Types.CreditorIban creditorIban,
+                     final ModelTypes.DebtorIban debtorIban,
+                     final ModelTypes.CreditorIban creditorIban,
                      final Instant createdInstant,
                      final boolean cancelled,
                      final Instant cancelledInstant,
-                     final Types.Amount cancelFee,
-                     final Types.CreditorBankBic creditorBankBic) {
+                     final ModelTypes.Amount cancelFee,
+                     final ModelTypes.CreditorBankBic creditorBankBic) {
         this(null, amount, currency, debtorIban, creditorIban, createdInstant, cancelled,
                 cancelledInstant, cancelFee, creditorBankBic);
     }
 
-    public Types.CreditorBankBic getCreditorBankBic() {
+    public ModelTypes.CreditorBankBic getCreditorBankBic() {
         return creditorBankBic;
     }
 
@@ -57,7 +59,7 @@ public class PaymentT3 extends BasePayment {
                 this.getCreatedInstant(),
                 true,
                 Instant.now(clock),
-                Types.Amount.ofValue(cancelFee),
+                ModelTypes.Amount.ofValue(cancelFee),
                 this.getCreditorBankBic());
     }
 

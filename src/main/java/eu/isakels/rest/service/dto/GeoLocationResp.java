@@ -1,4 +1,4 @@
-package eu.isakels.rest.controller.dto;
+package eu.isakels.rest.service.dto;
 
 import java.util.Objects;
 

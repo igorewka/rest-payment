@@ -1,6 +1,6 @@
-package eu.isakels.rest.model;
+package eu.isakels.rest.misc;
 
-import eu.isakels.rest.model.payment.Types;
+import eu.isakels.rest.misc.Types;
 import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
@@ -20,14 +20,6 @@ public abstract class Util {
         return amount;
     }
 
-    public static Types.Value<BigDecimal> requireNonNullPositive(final Types.Value<BigDecimal> obj,
-                                                                 final String msg) {
-        if (obj == null || obj.getValue() == null || isNegativeOrZero(obj.getValue()))
-            throw new IllegalArgumentException(msg);
-
-        return obj;
-    }
-
     public static <T> T requireNonNull(final T obj, final String msg) {
         if (obj == null) throw new IllegalArgumentException(msg);
 
@@ -38,14 +30,6 @@ public abstract class Util {
         if (StringUtils.isBlank(str)) throw new IllegalArgumentException(msg);
 
         return str;
-    }
-
-    public static Types.Value<String> requireNonNullNotBlank(final Types.Value<String> obj,
-                                                             final String msg) {
-        if (obj == null || obj.getValue() == null || StringUtils.isBlank(obj.getValue()))
-            throw new IllegalArgumentException(msg);
-
-        return obj;
     }
 
     public static <T> boolean nonNullNotBlank(final T obj) {

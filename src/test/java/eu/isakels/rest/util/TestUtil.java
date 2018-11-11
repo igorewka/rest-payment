@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
-import eu.isakels.rest.model.payment.Types;
+import eu.isakels.rest.misc.Types;
 import eu.isakels.rest.controller.dto.CreatePaymentReq;
 import org.junit.Assert;
 

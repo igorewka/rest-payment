@@ -1,6 +1,8 @@
 package eu.isakels.rest.model.payment;
 
-import eu.isakels.rest.model.Util;
+import eu.isakels.rest.misc.Util;
+import eu.isakels.rest.misc.Types;
+import eu.isakels.rest.model.ModelTypes;
 
 import java.math.BigDecimal;
 import java.time.Clock;
@@ -10,36 +12,36 @@ import java.util.UUID;
 public class PaymentT1 extends BasePaymentWithDetails {
 
     public PaymentT1(final UUID id,
-                     final Types.Amount amount,
+                     final ModelTypes.Amount amount,
                      final Types.Currency currency,
-                     final Types.DebtorIban debtorIban,
-                     final Types.CreditorIban creditorIban,
+                     final ModelTypes.DebtorIban debtorIban,
+                     final ModelTypes.CreditorIban creditorIban,
                      final Instant createdInstant,
                      final boolean cancelled,
                      final Instant cancelledInstant,
-                     final Types.Amount cancelFee,
-                     final Types.Details details) {
+                     final ModelTypes.Amount cancelFee,
+                     final ModelTypes.Details details) {
         super(id, Types.PaymentType.TYPE1, amount, currency, debtorIban, creditorIban, createdInstant,
                 cancelled, cancelledInstant, cancelFee, details);
 
         Util.checkApplicableCurrencies(currency, Types.Currency.EUR);
-        Util.requireNonNullNotBlank(details, "details is mandatory");
+        ModelTypes.requireNonNullNotBlank(details, "details is mandatory");
     }
 
-    public PaymentT1(final Types.Amount amount,
+    public PaymentT1(final ModelTypes.Amount amount,
                      final Types.Currency currency,
-                     final Types.DebtorIban debtorIban,
-                     final Types.CreditorIban creditorIban,
+                     final ModelTypes.DebtorIban debtorIban,
+                     final ModelTypes.CreditorIban creditorIban,
                      final Instant createdInstant,
                      final boolean cancelled,
                      final Instant cancelledInstant,
-                     final Types.Amount cancelFee,
-                     final Types.Details details) {
+                     final ModelTypes.Amount cancelFee,
+                     final ModelTypes.Details details) {
         this(null, amount, currency, debtorIban, creditorIban, createdInstant, cancelled,
                 cancelledInstant, cancelFee, details);
     }
 
-    public Types.Details getDetails() {
+    public ModelTypes.Details getDetails() {
         return details;
     }
 
@@ -54,7 +56,7 @@ public class PaymentT1 extends BasePaymentWithDetails {
                 this.getCreatedInstant(),
                 true,
                 Instant.now(clock),
-                Types.Amount.ofValue(cancelFee),
+                ModelTypes.Amount.ofValue(cancelFee),
                 this.getDetails());
     }
 

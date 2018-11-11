@@ -1,7 +1,7 @@
 package eu.isakels.rest.controller.dto;
 
-import eu.isakels.rest.model.Util;
-import eu.isakels.rest.model.payment.Types;
+import eu.isakels.rest.misc.Util;
+import eu.isakels.rest.misc.Types;
 
 import java.math.BigDecimal;
 import java.util.Objects;

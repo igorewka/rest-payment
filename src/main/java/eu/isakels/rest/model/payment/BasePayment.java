@@ -1,7 +1,9 @@
 package eu.isakels.rest.model.payment;
 
+import eu.isakels.rest.misc.Types;
 import eu.isakels.rest.model.ModelConstants;
-import eu.isakels.rest.model.Util;
+import eu.isakels.rest.misc.Util;
+import eu.isakels.rest.model.ModelTypes;
 
 import java.math.BigDecimal;
 import java.time.Clock;
@@ -14,36 +16,36 @@ import java.util.UUID;
 public abstract class BasePayment {
     private final UUID id;
     private final Types.PaymentType type;
-    private final Types.Amount amount;
+    private final ModelTypes.Amount amount;
     private final Types.Currency currency;
-    private final Types.DebtorIban debtorIban;
-    private final Types.CreditorIban creditorIban;
+    private final ModelTypes.DebtorIban debtorIban;
+    private final ModelTypes.CreditorIban creditorIban;
     private final Instant createdInstant;
     private final boolean cancelled;
     private final Instant cancelledInstant;
-    private final Types.Amount cancelFee;
+    private final ModelTypes.Amount cancelFee;
 
     // TODO: think about grouping some params
     BasePayment(final UUID id,
                 final Types.PaymentType type,
                 // TODO: combine amount with currency
-                final Types.Amount amount,
+                final ModelTypes.Amount amount,
                 final Types.Currency currency,
-                final Types.DebtorIban debtorIban,
-                final Types.CreditorIban creditorIban,
+                final ModelTypes.DebtorIban debtorIban,
+                final ModelTypes.CreditorIban creditorIban,
                 final Instant createdInstant,
                 final boolean cancelled,
                 // TODO: combine cancel related stuff with adding currency
                 final Instant cancelledInstant,
-                final Types.Amount cancelFee) {
+                final ModelTypes.Amount cancelFee) {
         this.id = id;
         this.type = type;
-        this.amount = (Types.Amount) Util.requireNonNullPositive(amount,
+        this.amount = (ModelTypes.Amount) ModelTypes.requireNonNullPositive(amount,
                 "amount is mandatory and must be positive");
         this.currency = Util.requireNonNull(currency, "currency is mandatory");
-        this.debtorIban = (Types.DebtorIban) Util.requireNonNullNotBlank(debtorIban,
+        this.debtorIban = (ModelTypes.DebtorIban) ModelTypes.requireNonNullNotBlank(debtorIban,
                 "debtorIban is mandatory");
-        this.creditorIban = (Types.CreditorIban) Util.requireNonNullNotBlank(creditorIban,
+        this.creditorIban = (ModelTypes.CreditorIban) ModelTypes.requireNonNullNotBlank(creditorIban,
                 "creditorIban is mandatory");
         this.createdInstant = Util.requireNonNull(createdInstant, "createdInstant is mandatory");
         this.cancelled = cancelled;
@@ -59,7 +61,7 @@ public abstract class BasePayment {
         return type;
     }
 
-    public Types.Amount getAmount() {
+    public ModelTypes.Amount getAmount() {
         return amount;
     }
 
@@ -67,11 +69,11 @@ public abstract class BasePayment {
         return currency;
     }
 
-    public Types.DebtorIban getDebtorIban() {
+    public ModelTypes.DebtorIban getDebtorIban() {
         return debtorIban;
     }
 
-    public Types.CreditorIban getCreditorIban() {
+    public ModelTypes.CreditorIban getCreditorIban() {
         return creditorIban;
     }
 
@@ -87,7 +89,7 @@ public abstract class BasePayment {
         return Optional.ofNullable(cancelledInstant);
     }
 
-    public Optional<Types.Amount> getCancelFee() {
+    public Optional<ModelTypes.Amount> getCancelFee() {
         return Optional.ofNullable(cancelFee);
     }
 
@@ -115,7 +117,7 @@ public abstract class BasePayment {
                 new RuntimeException(ModelConstants.expectedIdMissing));
     }
 
-    public Types.Amount getCancelFeeUnwrapped() {
+    public ModelTypes.Amount getCancelFeeUnwrapped() {
         return this.getCancelFee().orElseThrow(() ->
                 new RuntimeException(ModelConstants.expectedCancelFeeMissing));
     }

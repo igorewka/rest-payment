@@ -1,23 +1,26 @@
 package eu.isakels.rest.model.payment;
 
+import eu.isakels.rest.misc.Types;
+import eu.isakels.rest.model.ModelTypes;
+
 import java.time.Instant;
 import java.util.UUID;
 
 abstract class BasePaymentWithDetails extends BasePayment {
 
-    final Types.Details details;
+    final ModelTypes.Details details;
 
     BasePaymentWithDetails(final UUID id,
                            final Types.PaymentType type,
-                           final Types.Amount amount,
+                           final ModelTypes.Amount amount,
                            final Types.Currency currency,
-                           final Types.DebtorIban debtorIban,
-                           final Types.CreditorIban creditorIban,
+                           final ModelTypes.DebtorIban debtorIban,
+                           final ModelTypes.CreditorIban creditorIban,
                            final Instant createdInstant,
                            final boolean cancelled,
                            final Instant cancelledInstant,
-                           final Types.Amount cancelFee,
-                           final Types.Details details) {
+                           final ModelTypes.Amount cancelFee,
+                           final ModelTypes.Details details) {
         super(id, type, amount, currency, debtorIban, creditorIban, createdInstant, cancelled,
                 cancelledInstant, cancelFee);
 

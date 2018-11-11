@@ -1,12 +1,28 @@
-package eu.isakels.rest.model.payment;
+package eu.isakels.rest.model;
+
+import eu.isakels.rest.misc.Util;
+import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
 import java.util.Objects;
 
-public abstract class Types {
-    public enum Currency {EUR, USD, GBP}
+public abstract class ModelTypes {
 
-    public enum PaymentType {TYPE1, TYPE2, TYPE3}
+    public static Value<BigDecimal> requireNonNullPositive(final Value<BigDecimal> obj,
+                                                           final String msg) {
+        if (obj == null || obj.getValue() == null || Util.isNegativeOrZero(obj.getValue()))
+            throw new IllegalArgumentException(msg);
+
+        return obj;
+    }
+
+    public static Value<String> requireNonNullNotBlank(final Value<String> obj,
+                                                       final String msg) {
+        if (obj == null || obj.getValue() == null || StringUtils.isBlank(obj.getValue()))
+            throw new IllegalArgumentException(msg);
+
+        return obj;
+    }
 
     public interface Value<T> {
         T getValue();

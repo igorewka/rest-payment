@@ -1,6 +1,6 @@
 package eu.isakels.rest.service;
 
-import eu.isakels.rest.Constants;
+import eu.isakels.rest.misc.Constants;
 import eu.isakels.rest.dao.PaymentDao;
 import eu.isakels.rest.model.ModelConstants;
 import eu.isakels.rest.model.Notification;
@@ -73,11 +73,11 @@ public class PaymentServiceImpl implements PaymentService {
         final var paymentOpt = dao.query(id);
         // This logic depends on the fact that it is not normal to pass wrong ids
         final var payment = paymentOpt.orElseThrow(
-                () -> new RuntimeException(ModelConstants.expectedPaymentMssing));
+                () -> new RuntimeException(Constants.expectedPaymentMssing));
 
         final BasePayment result;
         if (payment.isCancellable(clock)) {
-            final var coeff = Constants.coefficients.get(payment.getType());
+            final var coeff = ModelConstants.coefficients.get(payment.getType());
             final var fee = payment.computeCancelFee(coeff, clock);
             final var cancelledPayment = payment.cancelledInstance(fee, clock);
             dao.create(cancelledPayment);
@@ -94,7 +94,7 @@ public class PaymentServiceImpl implements PaymentService {
         final var paymentOpt = dao.query(id);
         // This logic depends on the fact that it is not normal to pass wrong ids
         final var payment = paymentOpt.orElseThrow(
-                () -> new RuntimeException(ModelConstants.expectedPaymentMssing));
+                () -> new RuntimeException(Constants.expectedPaymentMssing));
 
         return payment;
     }

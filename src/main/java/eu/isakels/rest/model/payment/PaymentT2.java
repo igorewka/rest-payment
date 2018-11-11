@@ -1,6 +1,8 @@
 package eu.isakels.rest.model.payment;
 
-import eu.isakels.rest.model.Util;
+import eu.isakels.rest.misc.Util;
+import eu.isakels.rest.misc.Types;
+import eu.isakels.rest.model.ModelTypes;
 
 import java.math.BigDecimal;
 import java.time.Clock;
@@ -11,41 +13,41 @@ import java.util.UUID;
 public class PaymentT2 extends BasePaymentWithDetails {
 
     public PaymentT2(final UUID id,
-                     final Types.Amount amount,
+                     final ModelTypes.Amount amount,
                      final Types.Currency currency,
-                     final Types.DebtorIban debtorIban,
-                     final Types.CreditorIban creditorIban,
+                     final ModelTypes.DebtorIban debtorIban,
+                     final ModelTypes.CreditorIban creditorIban,
                      final Instant createdInstant,
                      final boolean cancelled,
                      final Instant cancelledInstant,
-                     final Types.Amount cancelFee,
-                     final Types.Details details) {
+                     final ModelTypes.Amount cancelFee,
+                     final ModelTypes.Details details) {
         super(id, Types.PaymentType.TYPE2, amount, currency, debtorIban, creditorIban, createdInstant,
                 cancelled, cancelledInstant, cancelFee, details);
 
         Util.checkApplicableCurrencies(currency, Types.Currency.USD);
     }
 
-    public PaymentT2(final Types.Amount amount,
+    public PaymentT2(final ModelTypes.Amount amount,
                      final Types.Currency currency,
-                     final Types.DebtorIban debtorIban,
-                     final Types.CreditorIban creditorIban,
+                     final ModelTypes.DebtorIban debtorIban,
+                     final ModelTypes.CreditorIban creditorIban,
                      final Instant createdInstant,
                      final boolean cancelled,
                      final Instant cancelledInstant,
-                     final Types.Amount cancelFee,
+                     final ModelTypes.Amount cancelFee,
                      // there're clear issues with Optional design/implementation in Java comparing to e.g. Scala
                      // Java Optional is not designed to be used in class properties/fields,
                      // also Java Optional usage in method/constructor parameters is considered a bad practice,
                      // but Java don't provide default/optional method parameters as well
                      // there're not any 100% good solution to the mentioned before issues
                      // don't have huge experience with Java Optionals, would be great to discuss.
-                     final Types.Details details) {
+                     final ModelTypes.Details details) {
         this(null, amount, currency, debtorIban, creditorIban, createdInstant, cancelled,
                 cancelledInstant, cancelFee, details);
     }
 
-    public Optional<Types.Details> getDetails() {
+    public Optional<ModelTypes.Details> getDetails() {
         return Optional.ofNullable(details);
     }
 
@@ -60,7 +62,7 @@ public class PaymentT2 extends BasePaymentWithDetails {
                 this.getCreatedInstant(),
                 true,
                 Instant.now(clock),
-                Types.Amount.ofValue(cancelFee),
+                ModelTypes.Amount.ofValue(cancelFee),
                 this.getDetails().orElse(null));
     }
 

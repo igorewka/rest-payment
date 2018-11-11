@@ -1,7 +1,5 @@
 package eu.isakels.rest.repo.dto;
 
-import eu.isakels.rest.model.Notification;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,7 +14,7 @@ public class NotificationDto {
     private final UUID paymentId;
     private final boolean success;
 
-    public NotificationDto(final UUID id, final UUID paymentId, final boolean success) {
+    private NotificationDto(final UUID id, final UUID paymentId, final boolean success) {
         this.id = id;
         this.paymentId = paymentId;
         this.success = success;
@@ -24,10 +22,6 @@ public class NotificationDto {
 
     public NotificationDto(final UUID paymentId, final boolean success) {
         this(null, paymentId, success);
-    }
-
-    public static NotificationDto ofNotif(final Notification notif) {
-        return new NotificationDto(notif.getPaymentId(), notif.isSuccess());
     }
 
     public UUID getId() {
