@@ -27,6 +27,7 @@ import java.time.*;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 import static eu.isakels.rest.util.TestUtil.objMapper;
@@ -247,6 +248,37 @@ public class PaymentAppTest {
             assertTrue(StringUtils.isBlank(resp.getMsg()));
             assertTrue(StringUtils.isBlank(resp.getError()));
         });
+    }
+
+    @Test
+    public void parallelCancels() throws Exception {
+        final var id = createPayment(TestUtil.paymentReqT3()).getId();
+        CompletableFuture.allOf(
+                CompletableFuture.runAsync(() -> {
+                    try {
+                        cancelPayment(id);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                }),
+                CompletableFuture.runAsync(() -> {
+                    try {
+                        cancelPayment(id);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                }),
+                CompletableFuture.runAsync(() -> {
+                    try {
+                        cancelPayment(id);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                })
+        ).exceptionally((exc) -> {
+            logger.error("", exc);
+            return null;
+        }).join();
     }
 
     private void assertQueryPaymentWithParams(
