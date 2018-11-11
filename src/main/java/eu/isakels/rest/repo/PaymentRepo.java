@@ -3,7 +3,6 @@ package eu.isakels.rest.repo;
 import eu.isakels.rest.Constants;
 import eu.isakels.rest.model.Notification;
 import eu.isakels.rest.model.payment.BasePayment;
-import eu.isakels.rest.model.payment.Types;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
@@ -24,14 +23,6 @@ public class PaymentRepo {
 
     private final Map<UUID, BasePayment> paymentRepo = new ConcurrentHashMap<>();
     private final Map<UUID, Notification> notificationRepo = new ConcurrentHashMap<>();
-    // Local cache must be added for coefficient fetching from real DB
-    private final Map<Types.PaymentType, BigDecimal> coeffRepo = new ConcurrentHashMap<>();
-
-    {
-        coeffRepo.put(Types.PaymentType.TYPE1, new BigDecimal("0.05"));
-        coeffRepo.put(Types.PaymentType.TYPE2, new BigDecimal("0.1"));
-        coeffRepo.put(Types.PaymentType.TYPE3, new BigDecimal("0.15"));
-    }
 
     public void create(final BasePayment payment) {
         paymentRepo.put(payment.getIdUnwrapped(), payment);
@@ -43,10 +34,6 @@ public class PaymentRepo {
 
     public void cancel(final BasePayment payment) {
         paymentRepo.put(payment.getIdUnwrapped(), payment);
-    }
-
-    public BigDecimal getCoeff(final Types.PaymentType type) {
-        return coeffRepo.get(type);
     }
 
     public Set<BasePayment> query(final Map<String, ? extends Serializable> params) {

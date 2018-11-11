@@ -1,4 +1,4 @@
-package eu.isakels.rest.reqresp;
+package eu.isakels.rest.controller.dto;
 
 import java.util.Objects;
 import java.util.UUID;

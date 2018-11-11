@@ -7,7 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import eu.isakels.rest.model.payment.Types;
-import eu.isakels.rest.reqresp.CreatePaymentReq;
+import eu.isakels.rest.controller.dto.CreatePaymentReq;
 import org.junit.Assert;
 
 import java.math.BigDecimal;

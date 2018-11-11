@@ -2,7 +2,7 @@ package eu.isakels.rest.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import eu.isakels.rest.Constants;
-import eu.isakels.rest.reqresp.GeoLocationResp;
+import eu.isakels.rest.controller.dto.GeoLocationResp;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

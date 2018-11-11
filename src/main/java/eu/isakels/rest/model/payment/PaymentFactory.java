@@ -1,6 +1,6 @@
 package eu.isakels.rest.model.payment;
 
-import eu.isakels.rest.reqresp.CreatePaymentReq;
+import eu.isakels.rest.controller.dto.CreatePaymentReq;
 
 import java.time.Clock;
 import java.time.Instant;

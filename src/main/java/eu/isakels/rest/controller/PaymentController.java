@@ -4,7 +4,7 @@ import eu.isakels.rest.Constants;
 import eu.isakels.rest.model.ModelConstants;
 import eu.isakels.rest.model.payment.BasePayment;
 import eu.isakels.rest.model.payment.PaymentFactory;
-import eu.isakels.rest.reqresp.*;
+import eu.isakels.rest.controller.dto.*;
 import eu.isakels.rest.service.GeoLocationService;
 import eu.isakels.rest.service.PaymentService;
 import org.apache.commons.lang3.StringUtils;

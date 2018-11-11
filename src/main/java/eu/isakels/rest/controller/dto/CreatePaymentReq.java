@@ -1,4 +1,4 @@
-package eu.isakels.rest.reqresp;
+package eu.isakels.rest.controller.dto;
 
 import eu.isakels.rest.model.Util;
 import eu.isakels.rest.model.payment.Types;

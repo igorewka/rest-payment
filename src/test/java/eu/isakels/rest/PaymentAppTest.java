@@ -2,7 +2,7 @@ package eu.isakels.rest;
 
 import eu.isakels.rest.model.ModelConstants;
 import eu.isakels.rest.model.Util;
-import eu.isakels.rest.reqresp.*;
+import eu.isakels.rest.controller.dto.*;
 import eu.isakels.rest.util.TestUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;

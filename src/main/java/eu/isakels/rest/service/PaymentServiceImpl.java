@@ -70,11 +70,11 @@ public class PaymentServiceImpl implements PaymentService {
     public BasePayment cancel(final UUID id) {
         final var paymentOpt = repo.getPayment(id);
         final var payment = paymentOpt.orElseThrow(
-                () -> new RuntimeException(String.format(ModelConstants.expectedPaymentNotFound, id)));
+                () -> new RuntimeException(String.format(ModelConstants.expectedPaymentMssing, id)));
 
         final BasePayment result;
         if (payment.isCancellable(clock)) {
-            final var coeff = repo.getCoeff(payment.getType());
+            final var coeff = Constants.coefficients.get(payment.getType());
             final var fee = payment.computeCancelFee(coeff, clock);
             final var cancelledPayment = payment.cancelledInstance(fee, clock);
             repo.cancel(cancelledPayment);
@@ -90,7 +90,7 @@ public class PaymentServiceImpl implements PaymentService {
     public BasePayment query(final UUID id) {
         final var paymentOpt = repo.getPayment(id);
         final var payment = paymentOpt.orElseThrow(
-                () -> new RuntimeException(String.format(ModelConstants.expectedPaymentNotFound, id)));
+                () -> new RuntimeException(String.format(ModelConstants.expectedPaymentMssing, id)));
 
         return payment;
     }
