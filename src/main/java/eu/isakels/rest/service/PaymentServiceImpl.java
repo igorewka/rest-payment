@@ -73,7 +73,7 @@ public class PaymentServiceImpl implements PaymentService {
         final var paymentOpt = dao.query(id);
         // This logic depends on the fact that it is not normal to pass wrong ids
         final var payment = paymentOpt.orElseThrow(
-                () -> new RuntimeException(String.format(ModelConstants.expectedPaymentMssing, id)));
+                () -> new RuntimeException(ModelConstants.expectedPaymentMssing));
 
         final BasePayment result;
         if (payment.isCancellable(clock)) {
@@ -94,7 +94,7 @@ public class PaymentServiceImpl implements PaymentService {
         final var paymentOpt = dao.query(id);
         // This logic depends on the fact that it is not normal to pass wrong ids
         final var payment = paymentOpt.orElseThrow(
-                () -> new RuntimeException(String.format(ModelConstants.expectedPaymentMssing, id)));
+                () -> new RuntimeException(ModelConstants.expectedPaymentMssing));
 
         return payment;
     }

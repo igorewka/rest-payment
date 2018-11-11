@@ -7,7 +7,7 @@ public abstract class ModelConstants {
 
     public static final String expectedIdMissing = "expected id is missing";
     public static final String expectedCancelFeeMissing = "Expected cancelFee missing";
-    public static final String expectedPaymentMssing = "expected payment[%s] missing";
+    public static final String expectedPaymentMssing = "expected payment missing";
     public static final String unknownPaymentType = "unknown payment type";
 
     public static final String timeZoneIdRiga = "Europe/Riga";
