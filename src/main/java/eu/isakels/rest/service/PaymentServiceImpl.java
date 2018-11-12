@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -71,33 +72,44 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public BasePayment cancel(final UUID id) {
-        final var paymentOpt = dao.query(id);
-        // This logic depends on the fact that it is not normal to pass wrong ids
-        final var payment = paymentOpt.orElseThrow(
-                () -> new RuntimeException(Constants.expectedPaymentMssing));
+        final BasePayment payment = queryExistingPayment(id);
 
-        final BasePayment result;
+        BasePayment result;
         if (payment.isCancellable(clock)) {
             final var coeff = ModelConstants.coefficients.get(payment.getType());
             final var fee = payment.computeCancelFee(coeff, clock);
             final var cancelledPayment = payment.cancelledInstance(fee, clock);
-            dao.create(cancelledPayment);
+            // Makes cancel requests failing with ObjectOptimisticLockingFailureException idempotent
+            try {
+                dao.create(cancelledPayment);
 
-            result = cancelledPayment;
+                result = cancelledPayment;
+            } catch (ObjectOptimisticLockingFailureException exc) {
+                final BasePayment p = queryExistingPayment(id);
+                if (p.isCancelled()) {
+                    logger.error("", exc);
+                    result = p;
+                } else {
+                    throw new RuntimeException(exc);
+                }
+            }
+
         } else {
             result = payment;
         }
         return result;
     }
 
-    @Override
-    public BasePayment query(final UUID id) {
+    private BasePayment queryExistingPayment(final UUID id) {
         final var paymentOpt = dao.query(id);
         // This logic depends on the fact that it is not normal to pass wrong ids
-        final var payment = paymentOpt.orElseThrow(
+        return paymentOpt.orElseThrow(
                 () -> new RuntimeException(Constants.expectedPaymentMssing));
+    }
 
-        return payment;
+    @Override
+    public BasePayment query(final UUID id) {
+        return queryExistingPayment(id);
     }
 
     @Override
