@@ -57,7 +57,7 @@ public class PaymentController {
             resp = new CreatePaymentResp(result.getIdUnwrapped());
         } catch (Throwable exc) {
             logger.error("", exc);
-            resp = new CreatePaymentResp(exc.getMessage());
+            resp = new CreatePaymentResp(Constants.genericError);
         }
         return resp;
     }
@@ -84,7 +84,7 @@ public class PaymentController {
             }
         } catch (Throwable exc) {
             logger.error("", exc);
-            resp = CancelPaymentResp.ofError(id, exc.getMessage());
+            resp = CancelPaymentResp.ofError(id, Constants.genericError);
         }
         return resp;
     }
@@ -109,7 +109,7 @@ public class PaymentController {
             }
         } catch (Throwable exc) {
             logger.error("", exc);
-            resp = QueryPaymentResp.ofError(id, exc.getMessage());
+            resp = QueryPaymentResp.ofError(id, Constants.genericError);
         }
         return resp;
     }
@@ -148,7 +148,7 @@ public class PaymentController {
             resp = QueryPaymentWithParamsResp.ofPayments(respPayments);
         } catch (Throwable exc) {
             logger.error("", exc);
-            resp = QueryPaymentWithParamsResp.ofError(exc.getMessage());
+            resp = QueryPaymentWithParamsResp.ofError(Constants.genericError);
         }
         return resp;
     }

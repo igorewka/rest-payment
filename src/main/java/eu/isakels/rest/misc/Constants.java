@@ -19,6 +19,7 @@ public abstract class Constants {
     public static final String unknownPaymentType = "unknown payment type";
     public static final String msgSuccessfulCancel = "cancel successful";
     public static final String msgExpiredCancel = "cancel expired";
+    public static final String genericError = "error";
 
     private Constants() {
     }
