@@ -65,4 +65,7 @@ public abstract class PaymentDtoFactory {
         }
         return paymentDto;
     }
+
+    private PaymentDtoFactory() {
+    }
 }

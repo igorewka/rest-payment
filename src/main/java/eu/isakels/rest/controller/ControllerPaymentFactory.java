@@ -57,4 +57,7 @@ public abstract class ControllerPaymentFactory {
         }
         return payment;
     }
+
+    private ControllerPaymentFactory() {
+    }
 }

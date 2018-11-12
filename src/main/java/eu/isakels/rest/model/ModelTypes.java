@@ -237,4 +237,7 @@ public abstract class ModelTypes {
             return Objects.hash(value);
         }
     }
+
+    private ModelTypes() {
+    }
 }

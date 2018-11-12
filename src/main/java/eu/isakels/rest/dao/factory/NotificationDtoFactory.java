@@ -8,4 +8,7 @@ public abstract class NotificationDtoFactory {
     public static NotificationDto ofNotif(final Notification notif) {
         return new NotificationDto(notif.getPaymentId(), notif.isSuccess());
     }
+
+    private NotificationDtoFactory() {
+    }
 }

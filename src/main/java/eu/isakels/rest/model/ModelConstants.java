@@ -19,4 +19,7 @@ public abstract class ModelConstants {
                     Map.entry(Types.PaymentType.TYPE1, new BigDecimal("0.05")),
                     Map.entry(Types.PaymentType.TYPE2, new BigDecimal("0.1")),
                     Map.entry(Types.PaymentType.TYPE3, new BigDecimal("0.15")));
+
+    private ModelConstants() {
+    }
 }

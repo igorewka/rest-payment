@@ -57,4 +57,7 @@ public abstract class DaoPaymentFactory {
         }
         return payment;
     }
+
+    private DaoPaymentFactory() {
+    }
 }

@@ -1,7 +1,7 @@
 package eu.isakels.rest.controller;
 
-import eu.isakels.rest.misc.Constants;
 import eu.isakels.rest.controller.dto.*;
+import eu.isakels.rest.misc.Constants;
 import eu.isakels.rest.model.payment.BasePayment;
 import eu.isakels.rest.service.GeoLocationService;
 import eu.isakels.rest.service.PaymentService;
@@ -120,8 +120,8 @@ public class PaymentController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public QueryPaymentWithParamsResp query(@RequestParam final Optional<Boolean> cancelled,
-                                            @RequestParam final Optional<BigDecimal> amountGt,
-                                            @RequestParam final Optional<BigDecimal> amountLt,
+                                            @RequestParam(Constants.amountGtParam) final Optional<BigDecimal> amountGt,
+                                            @RequestParam(Constants.amountLtParam) final Optional<BigDecimal> amountLt,
                                             HttpServletRequest httpReq) {
         geoService.logCountry(getIp(httpReq));
 

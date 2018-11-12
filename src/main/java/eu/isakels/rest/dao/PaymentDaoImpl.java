@@ -64,6 +64,8 @@ public class PaymentDaoImpl implements PaymentDao {
     private Specification<PaymentDto> spec(final Map<String, ? extends Serializable> params) {
         return (root, query, builder) -> {
             final var pList = new ArrayList<Predicate>();
+            // Those hardcoded property names could be eliminated
+            // with the usage of some code generation tool for Specifications
             pList.add(builder.greaterThan(root.get("createdInstant"),
                     Instant.now().minus(Period.ofDays(3))));
             if (params.containsKey(Constants.cancelledParam)) {

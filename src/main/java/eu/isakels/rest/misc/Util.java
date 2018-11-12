@@ -1,6 +1,5 @@
 package eu.isakels.rest.misc;
 
-import eu.isakels.rest.misc.Types;
 import org.apache.commons.lang3.StringUtils;
 
 import java.math.BigDecimal;
@@ -48,5 +47,8 @@ public abstract class Util {
 
     public static BigDecimal setScale(BigDecimal amount) {
         return amount.setScale(2, RoundingMode.FLOOR);
+    }
+
+    private Util() {
     }
 }
