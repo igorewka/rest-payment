@@ -2,10 +2,7 @@ package eu.isakels.rest.repo.dto;
 
 import eu.isakels.rest.misc.Types;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.UUID;
@@ -31,6 +28,9 @@ public class PaymentDto {
     private boolean cancelled;
     private Instant cancelledInstant;
     private BigDecimal cancelFee;
+    @Version
+    // For JPA/Hibernate internal use only
+    private Long version;
 
     // required by JPA/Hibernate
     public PaymentDto() {
@@ -47,7 +47,8 @@ public class PaymentDto {
                       final Instant createdInstant,
                       final boolean cancelled,
                       final Instant cancelledInstant,
-                      final BigDecimal cancelFee) {
+                      final BigDecimal cancelFee,
+                      final Long version) {
         this.id = id;
         this.type = type;
         this.amount = amount;
@@ -60,6 +61,7 @@ public class PaymentDto {
         this.cancelled = cancelled;
         this.cancelledInstant = cancelledInstant;
         this.cancelFee = cancelFee;
+        this.version = version;
     }
 
     public UUID getId() {
@@ -108,5 +110,9 @@ public class PaymentDto {
 
     public BigDecimal getCancelFee() {
         return cancelFee;
+    }
+
+    public Long getVersion() {
+        return version;
     }
 }

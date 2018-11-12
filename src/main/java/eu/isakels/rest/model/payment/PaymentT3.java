@@ -1,7 +1,7 @@
 package eu.isakels.rest.model.payment;
 
-import eu.isakels.rest.misc.Util;
 import eu.isakels.rest.misc.Types;
+import eu.isakels.rest.misc.Util;
 import eu.isakels.rest.model.ModelTypes;
 
 import java.math.BigDecimal;
@@ -22,9 +22,10 @@ public class PaymentT3 extends BasePayment {
                      final boolean cancelled,
                      final Instant cancelledInstant,
                      final ModelTypes.Amount cancelFee,
-                     final ModelTypes.CreditorBankBic creditorBankBic) {
+                     final ModelTypes.CreditorBankBic creditorBankBic,
+                     final Long version) {
         super(id, Types.PaymentType.TYPE3, amount, currency, debtorIban, creditorIban,
-                createdInstant, cancelled, cancelledInstant, cancelFee);
+                createdInstant, cancelled, cancelledInstant, cancelFee, version);
 
         Util.checkApplicableCurrencies(currency, Types.Currency.EUR, Types.Currency.USD);
 
@@ -39,9 +40,10 @@ public class PaymentT3 extends BasePayment {
                      final boolean cancelled,
                      final Instant cancelledInstant,
                      final ModelTypes.Amount cancelFee,
-                     final ModelTypes.CreditorBankBic creditorBankBic) {
+                     final ModelTypes.CreditorBankBic creditorBankBic,
+                     final Long version) {
         this(null, amount, currency, debtorIban, creditorIban, createdInstant, cancelled,
-                cancelledInstant, cancelFee, creditorBankBic);
+                cancelledInstant, cancelFee, creditorBankBic, version);
     }
 
     public ModelTypes.CreditorBankBic getCreditorBankBic() {
@@ -60,7 +62,8 @@ public class PaymentT3 extends BasePayment {
                 true,
                 Instant.now(clock),
                 ModelTypes.Amount.ofValue(cancelFee),
-                this.getCreditorBankBic());
+                this.getCreditorBankBic(),
+                this.getVersion());
     }
 
     @Override
@@ -75,6 +78,7 @@ public class PaymentT3 extends BasePayment {
                 false,
                 null,
                 null,
-                this.getCreditorBankBic());
+                this.getCreditorBankBic(),
+                this.getVersion());
     }
 }

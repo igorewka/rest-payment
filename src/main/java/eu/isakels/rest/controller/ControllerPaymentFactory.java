@@ -26,7 +26,8 @@ public abstract class ControllerPaymentFactory {
                         false,
                         null,
                         null,
-                        ModelTypes.Details.ofValue(req.getDetails()));
+                        ModelTypes.Details.ofValue(req.getDetails()),
+                        null);
                 break;
             case TYPE2:
                 payment = new PaymentT2(
@@ -38,7 +39,8 @@ public abstract class ControllerPaymentFactory {
                         false,
                         null,
                         null,
-                        ModelTypes.Details.ofValue(req.getDetails()));
+                        ModelTypes.Details.ofValue(req.getDetails()),
+                        null);
                 break;
             case TYPE3:
                 payment = new PaymentT3(
@@ -50,7 +52,8 @@ public abstract class ControllerPaymentFactory {
                         false,
                         null,
                         null,
-                        ModelTypes.CreditorBankBic.ofValue(req.getCreditorBankBic()));
+                        ModelTypes.CreditorBankBic.ofValue(req.getCreditorBankBic()),
+                        null);
                 break;
             default:
                 throw new RuntimeException(Constants.unknownPaymentType);

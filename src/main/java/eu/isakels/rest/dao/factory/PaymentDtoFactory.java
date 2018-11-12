@@ -26,7 +26,8 @@ public abstract class PaymentDtoFactory {
                         p1.getCreatedInstant(),
                         p1.isCancelled(),
                         p1.getCancelledInstant().orElse(null),
-                        p1.getCancelFee().map(val -> val.getValue()).orElse(null));
+                        p1.getCancelFee().map(val -> val.getValue()).orElse(null),
+                        p1.getVersion());
                 break;
             case TYPE2:
                 final var p2 = (PaymentT2) payment;
@@ -42,7 +43,8 @@ public abstract class PaymentDtoFactory {
                         p2.getCreatedInstant(),
                         p2.isCancelled(),
                         p2.getCancelledInstant().orElse(null),
-                        p2.getCancelFee().map(val -> val.getValue()).orElse(null));
+                        p2.getCancelFee().map(val -> val.getValue()).orElse(null),
+                        p2.getVersion());
                 break;
             case TYPE3:
                 final var p3 = (PaymentT3) payment;
@@ -58,7 +60,8 @@ public abstract class PaymentDtoFactory {
                         p3.getCreatedInstant(),
                         p3.isCancelled(),
                         p3.getCancelledInstant().orElse(null),
-                        p3.getCancelFee().map(val -> val.getValue()).orElse(null));
+                        p3.getCancelFee().map(val -> val.getValue()).orElse(null),
+                        p3.getVersion());
                 break;
             default:
                 throw new RuntimeException(Constants.unknownPaymentType);

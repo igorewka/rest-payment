@@ -1,7 +1,7 @@
 package eu.isakels.rest.model.payment;
 
-import eu.isakels.rest.misc.Util;
 import eu.isakels.rest.misc.Types;
+import eu.isakels.rest.misc.Util;
 import eu.isakels.rest.model.ModelTypes;
 
 import java.math.BigDecimal;
@@ -20,9 +20,10 @@ public class PaymentT1 extends BasePaymentWithDetails {
                      final boolean cancelled,
                      final Instant cancelledInstant,
                      final ModelTypes.Amount cancelFee,
-                     final ModelTypes.Details details) {
+                     final ModelTypes.Details details,
+                     final Long version) {
         super(id, Types.PaymentType.TYPE1, amount, currency, debtorIban, creditorIban, createdInstant,
-                cancelled, cancelledInstant, cancelFee, details);
+                cancelled, cancelledInstant, cancelFee, details, version);
 
         Util.checkApplicableCurrencies(currency, Types.Currency.EUR);
         ModelTypes.requireNonNullNotBlank(details, "details is mandatory");
@@ -36,9 +37,10 @@ public class PaymentT1 extends BasePaymentWithDetails {
                      final boolean cancelled,
                      final Instant cancelledInstant,
                      final ModelTypes.Amount cancelFee,
-                     final ModelTypes.Details details) {
+                     final ModelTypes.Details details,
+                     final Long version) {
         this(null, amount, currency, debtorIban, creditorIban, createdInstant, cancelled,
-                cancelledInstant, cancelFee, details);
+                cancelledInstant, cancelFee, details, version);
     }
 
     public ModelTypes.Details getDetails() {
@@ -57,7 +59,8 @@ public class PaymentT1 extends BasePaymentWithDetails {
                 true,
                 Instant.now(clock),
                 ModelTypes.Amount.ofValue(cancelFee),
-                this.getDetails());
+                this.getDetails(),
+                this.getVersion());
     }
 
     @Override
@@ -72,6 +75,7 @@ public class PaymentT1 extends BasePaymentWithDetails {
                 false,
                 null,
                 null,
-                this.getDetails());
+                this.getDetails(),
+                this.getVersion());
     }
 }

@@ -2,7 +2,9 @@ package eu.isakels.rest.model;
 
 import eu.isakels.rest.controller.ControllerPaymentFactory;
 import eu.isakels.rest.misc.Types;
-import eu.isakels.rest.model.payment.*;
+import eu.isakels.rest.model.payment.PaymentT1;
+import eu.isakels.rest.model.payment.PaymentT2;
+import eu.isakels.rest.model.payment.PaymentT3;
 import eu.isakels.rest.util.TestUtil;
 import org.junit.Assert;
 import org.junit.Test;
@@ -44,7 +46,8 @@ public class ModelTest {
                 false,
                 null,
                 null,
-                ModelTypes.Details.ofValue("payment type1 details")));
+                ModelTypes.Details.ofValue("payment type1 details"),
+                null));
 
         TestUtil.assertExc("amount", () -> new PaymentT1(
                 ModelTypes.Amount.ofValue(new BigDecimal("-10.35")),
@@ -55,7 +58,8 @@ public class ModelTest {
                 false,
                 null,
                 null,
-                ModelTypes.Details.ofValue("payment type1 details")));
+                ModelTypes.Details.ofValue("payment type1 details"),
+                null));
 
         TestUtil.assertExc("currency", () -> new PaymentT1(
                 ModelTypes.Amount.ofValue(new BigDecimal("10.35")),
@@ -66,7 +70,8 @@ public class ModelTest {
                 false,
                 null,
                 null,
-                ModelTypes.Details.ofValue("payment type1 details")));
+                ModelTypes.Details.ofValue("payment type1 details"),
+                null));
 
         TestUtil.assertExc("currency", () -> new PaymentT1(
                 ModelTypes.Amount.ofValue(new BigDecimal("10.35")),
@@ -77,7 +82,8 @@ public class ModelTest {
                 false,
                 null,
                 null,
-                ModelTypes.Details.ofValue("payment type1 details")));
+                ModelTypes.Details.ofValue("payment type1 details"),
+                null));
 
         TestUtil.assertExc("debtorIban", () -> new PaymentT1(
                 ModelTypes.Amount.ofValue(new BigDecimal("10.35")),
@@ -88,7 +94,8 @@ public class ModelTest {
                 false,
                 null,
                 null,
-                ModelTypes.Details.ofValue("payment type1 details")));
+                ModelTypes.Details.ofValue("payment type1 details"),
+                null));
 
         TestUtil.assertExc("debtorIban", () -> new PaymentT1(
                 ModelTypes.Amount.ofValue(new BigDecimal("10.35")),
@@ -99,7 +106,8 @@ public class ModelTest {
                 false,
                 null,
                 null,
-                ModelTypes.Details.ofValue("payment type1 details")));
+                ModelTypes.Details.ofValue("payment type1 details"),
+                null));
 
         TestUtil.assertExc("creditorIban", () -> new PaymentT1(
                 ModelTypes.Amount.ofValue(new BigDecimal("10.35")),
@@ -110,7 +118,8 @@ public class ModelTest {
                 false,
                 null,
                 null,
-                ModelTypes.Details.ofValue("payment type1 details")));
+                ModelTypes.Details.ofValue("payment type1 details"),
+                null));
 
         TestUtil.assertExc("creditorIban", () -> new PaymentT1(
                 ModelTypes.Amount.ofValue(new BigDecimal("10.35")),
@@ -121,7 +130,8 @@ public class ModelTest {
                 false,
                 null,
                 null,
-                ModelTypes.Details.ofValue("payment type1 details")));
+                ModelTypes.Details.ofValue("payment type1 details"),
+                null));
 
         TestUtil.assertExc("details", () -> new PaymentT1(
                 ModelTypes.Amount.ofValue(new BigDecimal("10.35")),
@@ -130,6 +140,7 @@ public class ModelTest {
                 ModelTypes.CreditorIban.ofValue("CRDTRIBAN"),
                 Instant.now(),
                 false,
+                null,
                 null,
                 null,
                 null));
@@ -143,7 +154,8 @@ public class ModelTest {
                 false,
                 null,
                 null,
-                ModelTypes.Details.ofValue(" ")));
+                ModelTypes.Details.ofValue(" "),
+                null));
     }
 
     @Test
@@ -155,6 +167,7 @@ public class ModelTest {
                 ModelTypes.CreditorIban.ofValue("CRDTRIBAN"),
                 Instant.now(),
                 false,
+                null,
                 null,
                 null,
                 null));
@@ -171,7 +184,8 @@ public class ModelTest {
                 false,
                 null,
                 null,
-                ModelTypes.CreditorBankBic.ofValue("CRDTRBANKBIC")));
+                ModelTypes.CreditorBankBic.ofValue("CRDTRBANKBIC"),
+                null));
 
         TestUtil.assertExc("creditorBankBic", () -> new PaymentT3(
                 ModelTypes.Amount.ofValue(new BigDecimal("10.35")),
@@ -180,6 +194,7 @@ public class ModelTest {
                 ModelTypes.CreditorIban.ofValue("CRDTRIBAN"),
                 Instant.now(),
                 false,
+                null,
                 null,
                 null,
                 null));
@@ -193,6 +208,7 @@ public class ModelTest {
                 false,
                 null,
                 null,
-                ModelTypes.CreditorBankBic.ofValue(" ")));
+                ModelTypes.CreditorBankBic.ofValue(" "),
+                null));
     }
 }

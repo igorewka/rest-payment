@@ -21,9 +21,10 @@ public class PaymentT2 extends BasePaymentWithDetails {
                      final boolean cancelled,
                      final Instant cancelledInstant,
                      final ModelTypes.Amount cancelFee,
-                     final ModelTypes.Details details) {
+                     final ModelTypes.Details details,
+                     final Long version) {
         super(id, Types.PaymentType.TYPE2, amount, currency, debtorIban, creditorIban, createdInstant,
-                cancelled, cancelledInstant, cancelFee, details);
+                cancelled, cancelledInstant, cancelFee, details, version);
 
         Util.checkApplicableCurrencies(currency, Types.Currency.USD);
     }
@@ -42,9 +43,10 @@ public class PaymentT2 extends BasePaymentWithDetails {
                      // but Java don't provide default/optional method parameters as well
                      // there're not any 100% good solution to the mentioned before issues
                      // don't have huge experience with Java Optionals, would be great to discuss.
-                     final ModelTypes.Details details) {
+                     final ModelTypes.Details details,
+                     final Long version) {
         this(null, amount, currency, debtorIban, creditorIban, createdInstant, cancelled,
-                cancelledInstant, cancelFee, details);
+                cancelledInstant, cancelFee, details, version);
     }
 
     public Optional<ModelTypes.Details> getDetails() {
@@ -63,7 +65,8 @@ public class PaymentT2 extends BasePaymentWithDetails {
                 true,
                 Instant.now(clock),
                 ModelTypes.Amount.ofValue(cancelFee),
-                this.getDetails().orElse(null));
+                this.getDetails().orElse(null),
+                this.getVersion());
     }
 
     @Override
@@ -78,6 +81,7 @@ public class PaymentT2 extends BasePaymentWithDetails {
                 false,
                 null,
                 null,
-                this.getDetails().orElse(null));
+                this.getDetails().orElse(null),
+                this.getVersion());
     }
 }

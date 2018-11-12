@@ -24,7 +24,8 @@ public abstract class DaoPaymentFactory {
                         dto.isCancelled(),
                         dto.getCancelledInstant(),
                         ModelTypes.Amount.ofValue(dto.getCancelFee()),
-                        ModelTypes.Details.ofValue(dto.getDetails()));
+                        ModelTypes.Details.ofValue(dto.getDetails()),
+                        dto.getVersion());
                 break;
             case TYPE2:
                 payment = new PaymentT2(
@@ -37,7 +38,8 @@ public abstract class DaoPaymentFactory {
                         dto.isCancelled(),
                         dto.getCancelledInstant(),
                         ModelTypes.Amount.ofValue(dto.getCancelFee()),
-                        ModelTypes.Details.ofValue(dto.getDetails()));
+                        ModelTypes.Details.ofValue(dto.getDetails()),
+                        dto.getVersion());
                 break;
             case TYPE3:
                 payment = new PaymentT3(
@@ -50,7 +52,8 @@ public abstract class DaoPaymentFactory {
                         dto.isCancelled(),
                         dto.getCancelledInstant(),
                         ModelTypes.Amount.ofValue(dto.getCancelFee()),
-                        ModelTypes.CreditorBankBic.ofValue(dto.getCreditorBankBic()));
+                        ModelTypes.CreditorBankBic.ofValue(dto.getCreditorBankBic()),
+                        dto.getVersion());
                 break;
             default:
                 throw new RuntimeException(Constants.unknownPaymentType);

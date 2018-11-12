@@ -1,8 +1,8 @@
 package eu.isakels.rest.model.payment;
 
 import eu.isakels.rest.misc.Types;
-import eu.isakels.rest.model.ModelConstants;
 import eu.isakels.rest.misc.Util;
+import eu.isakels.rest.model.ModelConstants;
 import eu.isakels.rest.model.ModelTypes;
 
 import java.math.BigDecimal;
@@ -24,6 +24,8 @@ public abstract class BasePayment {
     private final boolean cancelled;
     private final Instant cancelledInstant;
     private final ModelTypes.Amount cancelFee;
+    // For JPA/Hibernate internal use only
+    private final Long version;
 
     // TODO: think about grouping some params
     BasePayment(final UUID id,
@@ -37,7 +39,8 @@ public abstract class BasePayment {
                 final boolean cancelled,
                 // TODO: combine cancel related stuff with adding currency
                 final Instant cancelledInstant,
-                final ModelTypes.Amount cancelFee) {
+                final ModelTypes.Amount cancelFee,
+                final Long version) {
         this.id = id;
         this.type = type;
         this.amount = (ModelTypes.Amount) ModelTypes.requireNonNullPositive(amount,
@@ -51,6 +54,7 @@ public abstract class BasePayment {
         this.cancelled = cancelled;
         this.cancelledInstant = cancelledInstant;
         this.cancelFee = cancelFee;
+        this.version = version;
     }
 
     public Optional<UUID> getId() {
@@ -91,6 +95,10 @@ public abstract class BasePayment {
 
     public Optional<ModelTypes.Amount> getCancelFee() {
         return Optional.ofNullable(cancelFee);
+    }
+
+    public Long getVersion() {
+        return version;
     }
 
     public boolean isCancellable(final Clock clock) {

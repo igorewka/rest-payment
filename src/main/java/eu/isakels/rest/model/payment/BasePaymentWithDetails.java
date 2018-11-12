@@ -20,9 +20,10 @@ abstract class BasePaymentWithDetails extends BasePayment {
                            final boolean cancelled,
                            final Instant cancelledInstant,
                            final ModelTypes.Amount cancelFee,
-                           final ModelTypes.Details details) {
+                           final ModelTypes.Details details,
+                           final Long version) {
         super(id, type, amount, currency, debtorIban, creditorIban, createdInstant, cancelled,
-                cancelledInstant, cancelFee);
+                cancelledInstant, cancelFee, version);
 
         this.details = details;
     }
