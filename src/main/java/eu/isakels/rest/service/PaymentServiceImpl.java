@@ -1,7 +1,7 @@
 package eu.isakels.rest.service;
 
-import eu.isakels.rest.misc.Constants;
 import eu.isakels.rest.dao.PaymentDao;
+import eu.isakels.rest.misc.Constants;
 import eu.isakels.rest.model.ModelConstants;
 import eu.isakels.rest.model.Notification;
 import eu.isakels.rest.model.payment.BasePayment;
@@ -51,6 +51,7 @@ public class PaymentServiceImpl implements PaymentService {
     // TODO: create test
     // Could be moved into separate service as well
     // @Async could be used as well
+    // Using dedicated Executor is a good idea
     @Override
     public CompletableFuture notify(final BasePayment payment) {
         return CompletableFuture.runAsync(() -> {

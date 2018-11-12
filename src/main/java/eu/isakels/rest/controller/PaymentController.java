@@ -22,6 +22,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+// TODO: Http status returned in a case of exception should be 5xx
 @RestController
 public class PaymentController {
 

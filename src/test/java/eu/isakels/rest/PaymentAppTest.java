@@ -250,6 +250,9 @@ public class PaymentAppTest {
         });
     }
 
+    // It's not easy to make any good assert because mvc.perform doesn't forward the exception,
+    // probably result http status code could be checked.
+    // So currently this test is just for manual checking
     @Test
     public void parallelCancels() throws Exception {
         final var id = createPayment(TestUtil.paymentReqT3()).getId();

@@ -29,6 +29,7 @@ public class GeoLocationServiceImpl implements GeoLocationService {
 
     // TODO: create test
     // @Async could be used as well
+    // Using dedicated Executor is a good idea
     @Override
     public CompletableFuture logCountry(final String ip) {
         return CompletableFuture.runAsync(() -> {
