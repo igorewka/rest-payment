@@ -50,12 +50,12 @@ public class PaymentController {
 
         CreatePaymentResp resp;
         try {
-            final BasePayment result = service.create(ControllerPaymentFactory.ofReq(req, clock));
-            logger.info("payment[{}] created", result.getIdUnwrapped());
+            final BasePayment payment = service.create(ControllerPaymentFactory.ofReq(req, clock));
+            logger.info("payment[{}] created", payment.getIdUnwrapped());
 
-            service.notify(result);
+            service.notify(payment);
 
-            resp = new CreatePaymentResp(result.getIdUnwrapped());
+            resp = new CreatePaymentResp(payment.getIdUnwrapped());
         } catch (Throwable exc) {
             logger.error("", exc);
             resp = new CreatePaymentResp(Constants.genericError);
@@ -71,13 +71,13 @@ public class PaymentController {
 
         CancelPaymentResp resp;
         try {
-            final BasePayment result = service.cancel(id);
-            if (result.isCancelled()) {
+            final BasePayment payment = service.cancel(id);
+            if (payment.isCancelled()) {
                 logger.info("payment[{}] cancelled", id);
                 resp = CancelPaymentResp.ofCancelFee(
                         id,
-                        result.getCancelFeeUnwrapped().getValue(),
-                        result.getCurrency(),
+                        payment.getCancelFeeUnwrapped().getValue(),
+                        payment.getCurrency(),
                         Constants.msgSuccessfulCancel);
             } else {
                 logger.info("payment[{}] cancel expired", id);
