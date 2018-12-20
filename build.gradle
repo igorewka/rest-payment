@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '2.1.0.RELEASE'
+    id 'org.springframework.boot' version '2.1.1.RELEASE'
 }
 
 compileJava {
@@ -10,15 +10,15 @@ compileJava {
 group 'eu.isakels.rest'
 version '1.0-SNAPSHOT'
 
-sourceCompatibility = 10
-targetCompatibility = 10
+sourceCompatibility = 11
+targetCompatibility = 11
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    def springBootVer = '2.1.0.RELEASE'
+    def springBootVer = '2.1.1.RELEASE'
 
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: springBootVer
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: springBootVer
